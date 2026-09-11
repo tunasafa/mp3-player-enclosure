@@ -184,7 +184,9 @@ def main():
         report['stls'].append(stl_export(shape, OUT/'STL'/f'{name}.stl', rear=name=='rear_shell'))
         cq.exporters.export(shape, str(OUT/f'{name}.step'))
     for name, shape in dict(parts, **components).items():
-        cq.exporters.export(shape, str(OUT/'reference_only'/f'{name}.stl'), tolerance=.06, angularTolerance=.15)
+        # Do not overwrite detailed parametric models with primitive boxes
+        if name not in ('xiao', 'dac', 'fpc8', 'microsd', 'battery_envelope'):
+            cq.exporters.export(shape, str(OUT/'reference_only'/f'{name}.stl'), tolerance=.06, angularTolerance=.15)
         color = (.88,.87,.82) if name=='front_bezel' else (.45,.60,.55)
         if name=='battery_envelope': color=(.85,.68,.3)
         assembly.add(shape, name=name if name in parts else 'ASSUMED_'+name, color=cq.Color(*color))
