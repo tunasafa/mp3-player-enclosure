@@ -31,12 +31,19 @@ def package(target=None):
         if not entry['cad_valid'] or entry['solid_count_cad'] != 1:
             raise RuntimeError('CAD validation failed.')
     names = ['BOM.csv','vendor/6309.step','vendor/README.md','vendor/LICENSE-Adafruit-CAD.txt','README.md','HARDWARE_NOTES.md','requirements.json',
-             'parameters.json','layout_baseline.json','requirements.txt','build.py',
+             'parameters.json','layout_baseline.json','thickness_baseline.json','requirements.txt','build.py',
              'make_viewer.py','make_components.py','make_branding.py','viewer.html','viewer.js','package.json','package-lock.json',
              'vendor/viewer.bundle.js','vendor/LICENSE-viewer.txt','vendor/XIAO-ESP32S3 v2.step',
              'make_drawings.py','make_layout.py','verify_viewer.mjs','package_designs.py',
              'validation.json','viewer_validation.json','preview.html','design_overview.png','design_overview.pdf',
-             'internal_layout.png']
+             'internal_layout.png','study_dac_orientation.py','studies/dac_orientation/README.md',
+             'studies/dac_orientation/results.json','studies/dac_orientation/comparison.png',
+             'studies/dac_orientation/comparison.pdf','studies/dac_orientation/current_REFERENCE_ONLY.step',
+             'studies/dac_orientation/flipped_REFERENCE_ONLY.step']
+    study = json.loads((ROOT/'studies/dac_orientation/results.json').read_text())
+    for name, digest in study['source_sha256'].items():
+        if hashlib.sha256((ROOT/name).read_bytes()).hexdigest() != digest:
+            raise RuntimeError(f'Rerun the DAC orientation study after changing {name}.')
     files = [ROOT/name for name in names]
     files += sorted(p for p in (ROOT/'assets').rglob('*') if p.is_file() and not p.name.startswith('.'))
     files += sorted(p for p in (ROOT/'designs').rglob('*') if p.is_file() and not p.name.startswith('.'))

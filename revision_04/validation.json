@@ -1,18 +1,18 @@
 {
-  "revision": "P04 - compact repack, unchanged components",
+  "revision": "P04 - compact repack, lowered LCD seat, unchanged components",
   "units": "mm",
   "outer_length_width_thickness_mm": [
-    110.0,
-    70.0,
-    13.4
+    115.0,
+    60.0,
+    13.1
   ],
   "scope": "CAD/mesh, assembly interference, and designated empty routing-volume checks; no physical fit, wiring, battery expansion or load validation.",
   "stls": [
     {
       "file": "designs/P04_compact/STL/front_bezel.stl",
       "bounds_mm": [
-        70.0,
-        110.0,
+        60.0,
+        115.0,
         6.400000095367432
       ],
       "watertight": true,
@@ -21,15 +21,15 @@
       "mesh_bodies": 1,
       "positive_volume": true,
       "cad_valid": true,
-      "volume_mm3": 8305.34534225353,
-      "faces": 11060
+      "volume_mm3": 7230.29849269368,
+      "faces": 10880
     },
     {
       "file": "designs/P04_compact/STL/rear_shell.stl",
       "bounds_mm": [
-        70.0,
-        110.0,
-        8.199999709265143
+        60.0,
+        114.9999999,
+        7.9000000953674325
       ],
       "watertight": true,
       "winding_consistent": true,
@@ -37,8 +37,8 @@
       "mesh_bodies": 1,
       "positive_volume": true,
       "cad_valid": true,
-      "volume_mm3": 13827.498329753396,
-      "faces": 15782
+      "volume_mm3": 12458.392051534698,
+      "faces": 15720
     },
     {
       "file": "designs/P04_compact/STL/insert_and_clearance_fit_coupon.stl",
@@ -65,23 +65,26 @@
     "recess_count": 8,
     "removed_volume_mm3": 85.5748,
     "expected_removed_volume_mm3": 85.5748,
-    "floor_z_mm": 13.1,
+    "floor_z_mm": 12.799999999999999,
     "readable_from": "rear exterior",
     "logo_width_mm": 24.0,
     "wordmark_width_mm": 26.0
   },
   "routing_reserve_collisions": [],
   "nominal_clearances_mm": {
-    "fpc8_to_sidewall": 6.35,
-    "fpc8_to_front_shell_cad_distance": 2.8336556083356315,
+    "fpc8_to_sidewall": 2.35,
+    "fpc8_to_front_shell_cad_distance": 2.349999999999998,
     "dac_to_display": 0.3,
     "dac_to_rear_skin": 0.3,
+    "lens_to_display": 0.7,
+    "display_to_front_shell": 0.19999999999999973,
+    "jack_rear_aperture_ligament": 0.8725,
     "display_to_wheel": 1.0,
-    "wheel_to_fastener": 0.7051,
-    "battery_to_dac": 2.1999999999999957,
-    "usb_to_card_board": 6.6,
+    "wheel_to_fastener": 1.3,
+    "battery_to_dac": 4.699999999999996,
+    "usb_to_card_board": 26.6,
     "wheel_to_battery": 0.3,
-    "battery_to_rear_skin": 2.0,
+    "battery_to_rear_skin": 1.7,
     "battery_to_side_guide": 0.8,
     "board_support_adhesive": 0.2,
     "screw_tip_above_pilot_bottom": 1.0,
@@ -94,6 +97,10 @@
     "fpc8_to_sidewall": true,
     "dac_to_display": true,
     "dac_to_rear_skin": true,
+    "lens_to_display": true,
+    "display_to_front_shell": true,
+    "battery_to_rear_skin": true,
+    "jack_rear_aperture_ligament": true,
     "display_to_wheel": true,
     "wheel_to_fastener": true,
     "battery_to_dac": true,
@@ -101,27 +108,27 @@
   },
   "jack_axis_assembly_mm": [
     4.05915274704965,
-    55.0,
-    8.02751704190317
+    57.5,
+    7.72751704190317
   ],
   "vendor_dac": {
     "contained_in_planning_envelope": true,
     "assembly_bounds_mm": [
       [
         -12.700000000000006,
-        19.19999999999999,
-        5.527517041903165
+        21.69999999999999,
+        5.227517041903167
       ],
       [
         12.700000000000006,
-        52.73700952556963,
-        11.9
+        55.23700952556963,
+        11.600000000000001
       ]
     ],
     "socket_mouth_axis_mm": [
       4.059152747049652,
-      52.73700952556964,
-      8.027517041903169
+      55.23700952556964,
+      7.72751704190317
     ],
     "socket_mouth_recess_mm": 2.26299047443036,
     "orientation": "PCB back toward rear; components toward display",
@@ -130,13 +137,13 @@
   "vendor_xiao": {
     "assembly_bounds_mm": [
       [
-        12.021908685586421,
-        -4.390000044587502,
+        7.0219086855864195,
+        0.609999955412498,
         5.200000014901159
       ],
       [
-        34.503889835740345,
-        13.38999995541252,
+        29.503889835740353,
+        18.38999995541252,
         9.660000014901309
       ]
     ],
@@ -150,20 +157,38 @@
       13.4
     ],
     "current_length_width_thickness_mm": [
-      110.0,
-      70.0,
-      13.4
+      115.0,
+      60.0,
+      13.1
     ],
-    "external_volume_reduction_percent": 20.19,
-    "footprint_reduction_percent": 20.19,
+    "external_volume_reduction_percent": 30.08,
+    "footprint_reduction_percent": 28.48,
     "component_envelopes_preserved": true,
     "battery_rotated_in_plane": true,
     "note": "External bounding-box comparison, not a claim of optimal packing or measured physical fit."
   },
+  "thickness_optimization": {
+    "previous_length_width_thickness_mm": [
+      110.0,
+      70.0,
+      13.4
+    ],
+    "current_length_width_thickness_mm": [
+      115.0,
+      60.0,
+      13.1
+    ],
+    "reduction_mm": 0.3,
+    "external_volume_reduction_percent": 12.4,
+    "display_seat_shift_mm": -0.3,
+    "published_dac_height_retained_mm": 7.1,
+    "note": "Lowered LCD seat and DAC together; no board flip or component substitution. Battery rear allowance falls from 2.0 to 1.7 mm, not a qualified expansion specification."
+  },
   "input_sha256": {
-    "build.py": "097107a24d7506e6c27f9f6a83cf4e59ac2ca1145b2001ecb060e21d7c602b0c",
-    "parameters.json": "745675c315326d3d315e660aa68a59b31893486bde21addacb083f82b20870e3",
+    "build.py": "92ee66ebfe5a62d559f167fb72b4c68471ff4d152f89259dae32648172304121",
+    "parameters.json": "5c951018f8e41ea7c87919d21562bb0b9dd475bc300af961f757187f3a65ff8c",
     "layout_baseline.json": "f2d910a3c5718a59529c13aef7f7ac0943931893ae607a4229b28c4d542c18e7",
+    "thickness_baseline.json": "86f12c3e2bd95a3f6570e782e3cd138ac3cc1f25cf828bf6f374a853c51d8d89",
     "vendor/6309.step": "3eba386a14eb87e26fc5a287a6e5b4a30515306079798d11c45fc202c79b4627",
     "vendor/XIAO-ESP32S3 v2.step": "870ad45c7af5d92324cec4c6ae65fbf86e3b049d5a97ab9ffd9039ebd73455dd",
     "assets/mytunas-branding.json": "e0126f5f70fbdedc5157ae24d24881cd849a8849cac4337d5e95f05debc454f1"

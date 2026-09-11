@@ -1,0 +1,189 @@
+{
+  "scope": "Orientation study only; production parameters and printable shells unchanged.",
+  "date": "2026-09-11",
+  "units": "mm",
+  "source_sha256": {
+    "parameters.json": "5c951018f8e41ea7c87919d21562bb0b9dd475bc300af961f757187f3a65ff8c",
+    "vendor/6309.step": "3eba386a14eb87e26fc5a287a6e5b4a30515306079798d11c45fc202c79b4627",
+    "study_dac_orientation.py": "8f37b7b41cc359fda710742a9a52a6947dee68e7bd1ab8113fb0210bcb8f510f",
+    "make_components.py": "4bad2250837584f0723ce637f33552822ee29d2b00c1e8ad5844e416488463fd",
+    "designs/P04_compact/front_bezel.step": "b86acf9e27653b63ac4e774c6b0e9f112597704c7f10f146bc6a350d204afc2c",
+    "designs/P04_compact/rear_shell.step": "792847963650b3cd585c38746959288ba91f57ee269b5442b852000b219e5630"
+  },
+  "vendor_height_mm": 6.37248295809683,
+  "published_height_mm": 7.1,
+  "published_minus_cad_height_mm": 0.7275170419031696,
+  "gap_assumption_mm": 0.3,
+  "port_ligament_study_criterion_mm": 0.8,
+  "poses": [
+    {
+      "orientation": "current",
+      "cad_bounds_mm": [
+        [
+          -12.700000000000006,
+          21.69999999999999,
+          5.227517041903167
+        ],
+        [
+          12.700000000000006,
+          55.23700952556963,
+          11.600000000000001
+        ]
+      ],
+      "socket_axis_mm": [
+        4.059152747049652,
+        55.23700952556964,
+        7.72751704190317
+      ],
+      "existing_geometry_intersections": [],
+      "rear_port_ligament_mm": 0.8724829580968301
+    },
+    {
+      "orientation": "flipped",
+      "cad_bounds_mm": [
+        [
+          -12.7,
+          21.699999999999996,
+          4.5
+        ],
+        [
+          12.700000000000003,
+          55.23700952556963,
+          10.87248295809683
+        ]
+      ],
+      "socket_axis_mm": [
+        -4.059152747049652,
+        55.23700952556964,
+        8.37248295809683
+      ],
+      "existing_geometry_intersections": [],
+      "rear_port_ligament_mm": 0.22751704190316957
+    }
+  ],
+  "thickness_stack": {
+    "lcd_rear_z_mm": 4.199999999999999,
+    "published_stack_mm": 13.099999999999998,
+    "cad_only_stack_mm": 12.372482958096828,
+    "cad_only_target_mm": 12.4
+  },
+  "nesting": {
+    "jack_axial_length_mm": 14.000000100000005,
+    "lcd_side_lane_mm": 2.4,
+    "lcd_top_lane_mm": 5.899999999999999
+  },
+  "sweep": {
+    "candidates": 380,
+    "best_per_edge_and_face": [
+      {
+        "edge": "top",
+        "components_face": "front",
+        "center_xy_mm": [
+          0.0,
+          38.75
+        ],
+        "cad_only_stack_thickness_mm": 12.372482958096828,
+        "published_envelope_stack_thickness_mm": 13.099999999999998
+      },
+      {
+        "edge": "top",
+        "components_face": "rear",
+        "center_xy_mm": [
+          0.0,
+          38.75
+        ],
+        "cad_only_stack_thickness_mm": 13.672482958096829,
+        "published_envelope_stack_thickness_mm": 13.672482958096829
+      },
+      {
+        "edge": "right",
+        "components_face": "front",
+        "center_xy_mm": [
+          11.249999999999996,
+          -7.900000000000006
+        ],
+        "cad_only_stack_thickness_mm": 14.970000000000104,
+        "published_envelope_stack_thickness_mm": 19.1
+      },
+      {
+        "edge": "right",
+        "components_face": "rear",
+        "center_xy_mm": [
+          11.249999999999996,
+          -36.900000000000006
+        ],
+        "cad_only_stack_thickness_mm": 19.07248295809683,
+        "published_envelope_stack_thickness_mm": 19.07248295809683
+      },
+      {
+        "edge": "bottom",
+        "components_face": "front",
+        "center_xy_mm": [
+          8.600000000000001,
+          -38.75
+        ],
+        "cad_only_stack_thickness_mm": 17.37248295809683,
+        "published_envelope_stack_thickness_mm": 19.1
+      },
+      {
+        "edge": "bottom",
+        "components_face": "rear",
+        "center_xy_mm": [
+          0.0,
+          -38.75
+        ],
+        "cad_only_stack_thickness_mm": 19.672482958096833,
+        "published_envelope_stack_thickness_mm": 19.672482958096833
+      },
+      {
+        "edge": "left",
+        "components_face": "front",
+        "center_xy_mm": [
+          -11.249999999999996,
+          34.099999999999994
+        ],
+        "cad_only_stack_thickness_mm": 12.372482958096828,
+        "published_envelope_stack_thickness_mm": 13.099999999999998
+      },
+      {
+        "edge": "left",
+        "components_face": "rear",
+        "center_xy_mm": [
+          -11.249999999999996,
+          34.099999999999994
+        ],
+        "cad_only_stack_thickness_mm": 13.672482958096829,
+        "published_envelope_stack_thickness_mm": 13.672482958096829
+      }
+    ],
+    "method": "Four socket directions, two board faces, 1 mm lateral steps plus endpoints/center. Per-part CAD bounding boxes. Front UI and all other component/routing envelopes fixed. Corner boss exclusion. Rear-layer placements only. 0.3 mm study clearance.",
+    "limits": "Optimistic thickness screening, not full enclosure feasibility. Excludes new mounting lands, rounded cavity corners, full wiring, plug insertion forces and battery expansion qualification. Does not search tilted boards, shifted UI or all global arrangements."
+  },
+  "relocated_top_strip": {
+    "evaluated": 50,
+    "thinnest_per_battery_reserve": [
+      {
+        "length_width_thickness_mm": [
+          115.0,
+          60.0,
+          13.1
+        ],
+        "battery_rear_reserve_mm": 1.7,
+        "external_volume_change_percent": 0.0,
+        "dac_envelope_front_z_mm": 4.499999999999999
+      },
+      {
+        "length_width_thickness_mm": [
+          125.0,
+          60.0,
+          12.4
+        ],
+        "battery_rear_reserve_mm": 1.0,
+        "external_volume_change_percent": 2.8874875539329548,
+        "dac_envelope_front_z_mm": 2.0724829580968303
+      }
+    ],
+    "method": "Top-strip relocation, 0-24 mm added length, other modules/UI translated toward bottom. Both onboard connectors retained. Per-part nominal boxes with 0.7275 mm extra height on component side.",
+    "status": "Conditional profile hypothesis only. New supports, flex routes, optical openings, rounded corners and screw placement unvalidated. Published height does not certify this local height distribution. 1.0 mm battery allowance needs actual supplier qualification. No printable shells exported."
+  }
+}

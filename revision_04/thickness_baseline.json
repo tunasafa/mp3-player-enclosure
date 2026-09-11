@@ -1,0 +1,7 @@
+{
+  "description": "Compact P04 before the LCD-seat depth improvement; same selected components.",
+  "outer_length_width_thickness_mm": [110.0, 70.0, 13.4],
+  "display_z_mm": 1.7,
+  "dac_z_mm": 4.8,
+  "battery_to_rear_skin_mm": 2.0
+}

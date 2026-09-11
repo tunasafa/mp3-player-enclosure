@@ -6,8 +6,8 @@ Clickwheel,1,Original iPod 4th-generation monochrome wheel,Identity user confirm
 Wheel adapter,1,8-pin FPC breakout,Your Cee listing: obverse 0.5mm pitch; reverse 1.0mm pitch; PCB thickness 1.6mm; locking bottom-contact socket included per user; clickwheel pitch confirmed 0.5mm so use 8P 0.5mm side; 26.1x19.1x4.2mm assembled planning envelope
 Storage,1,microSD module,Retained 22x18x4mm envelope
 Battery,1,Protected 503040 3.7V 600mAh,User selected advertised 5x30x40mm; finished dimensions and charge rating unverified
-Front shell,1,P04 front_bezel.stl,110x70mm repacked fit prototype; use matching rear shell
-Rear shell,1,P04 rear_shell.stl,110x70mm repacked fit prototype; centered mytunas logo and name engraved 0.3mm into exterior
+Front shell,1,P04 front_bezel.stl,115x60mm repacked fit prototype; lowered LCD seat; use matching rear shell
+Rear shell,1,P04 rear_shell.stl,115x60x13.1mm assembled fit prototype; centered mytunas logo and name engraved 0.3mm into exterior
 Fit coupon,1,insert_and_clearance_fit_coupon.stl,Print before selecting inserts
 Lens,1,Clear sheet 43x33x0.6mm,Reference DXF; confirm actual display offsets
 Inserts,4,M2 heat-set inserts,Select for provisional 3.2mm diameter by 3.2mm deep pilots using coupon

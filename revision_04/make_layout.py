@@ -40,7 +40,7 @@ def main():
     fig.text(.045,.945,'MYTUNAS / COMPACT REPACK',fontsize=24,color=INK,weight='bold')
     b=P['body'];old=BASELINE['outer_length_width_thickness_mm']
     reduction=100*(1-b['length']*b['width']/(old[0]*old[1]))
-    fig.text(.045,.91,f"{old[0]:g} × {old[1]:g} → {b['length']:g} × {b['width']:g} mm · thickness unchanged at {b['thickness']:g} mm · same scale in all views",fontsize=12,color=MUTED)
+    fig.text(.045,.91,f"{old[0]:g} × {old[1]:g} → {b['length']:g} × {b['width']:g} mm · depth {old[2]:g} → {b['thickness']:g} mm · same scale in all views",fontsize=12,color=MUTED)
     front=fig.add_axes([.015,.16,.245,.67]);body(front,'FRONT / REPACKED')
     d,q=P['display'],P['wheel']
     box(front,d['center'],d['size'][:2],'#9fb7bd','LANDSCAPE LCD\n52 × 40 body assumption')
@@ -61,12 +61,12 @@ def main():
         y=boards[key]['center'][1]
         rear.annotate(label,xy=(b['width']/2,y),xytext=(42,y),ha='center',va='center',fontsize=7,arrowprops={'arrowstyle':'-','color':MUTED})
     fig.text(.79,.78,'LESS ENCLOSURE',fontsize=11,color='#0b756d',weight='bold')
-    fig.text(.79,.73,f'{reduction:.1f}% smaller',fontsize=22,color=INK,weight='bold')
-    fig.text(.79,.68,'24 mm shorter, 2 mm narrower.\nSame screen, wheel and boards.\nSame 600 mAh battery.',fontsize=10,color=MUTED,linespacing=1.6,va='top')
+    fig.text(.79,.73,f'{reduction:.1f}% less area',fontsize=20,color=INK,weight='bold')
+    fig.text(.79,.68,f"{old[0]-b['length']:g} mm shorter, {old[1]-b['width']:g} mm narrower.\nSame screen, wheel and boards.\nSame 600 mAh battery.",fontsize=10,color=MUTED,linespacing=1.6,va='top')
     fig.text(.79,.54,'REPACKED REAR LAYER',fontsize=11,color='#0b756d',weight='bold')
-    fig.text(.79,.49,'Battery turned lengthwise.\nUSB and SD beside the cell.\nFPC below it, near the wheel.\nDAC still behind the LCD.',fontsize=10,color=MUTED,linespacing=1.6,va='top')
-    fig.text(.79,.32,'DEPTH RETAINED',fontsize=11,color='#0b756d',weight='bold')
-    fig.text(.79,.27,'13.4 mm for the LCD/DAC stack.\n0.3 mm gaps around the DAC.\n2.0 mm cell-to-rear-skin gap.\nPhysical fit still unverified.',fontsize=10,color=MUTED,linespacing=1.6,va='top')
+    fig.text(.79,.49,'USB above the card module.\nFPC beside the card module.\nCell connector above USB.\nWiring passes below cell guides.',fontsize=10,color=MUTED,linespacing=1.6,va='top')
+    fig.text(.79,.32,'LOWERED LCD SEAT',fontsize=11,color='#0b756d',weight='bold')
+    fig.text(.79,.27,f"{b['thickness']:g} mm for the LCD/DAC stack.\n0.3 mm gaps around the DAC.\n{b['thickness']-b['skin']-P['battery']['z']-P['battery']['size'][2]:.1f} mm cell-to-rear-skin gap.\nPhysical fit still unverified.",fontsize=10,color=MUTED,linespacing=1.6,va='top')
     fig.text(.045,.10,'All views look through the front. Dashed blue regions reserve harness/connector space, not verified cable routes.',fontsize=10,color=MUTED)
     fig.text(.045,.06,'FIT PROTOTYPE · exact modules, flex bends, mounting lands and battery maximum dimensions still need physical samples.',fontsize=10,color=INK)
     fig.savefig(ROOT/'internal_layout.png',dpi=180,facecolor=BG);plt.close(fig)

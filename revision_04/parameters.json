@@ -1,10 +1,10 @@
 {
-  "revision": "P04 - compact repack, unchanged components",
+  "revision": "P04 - compact repack, lowered LCD seat, unchanged components",
   "units": "mm",
   "body": {
-    "width": 70.0,
-    "length": 110.0,
-    "thickness": 13.4,
+    "width": 60.0,
+    "length": 115.0,
+    "thickness": 13.1,
     "corner_radius": 6.0,
     "skin": 1.2,
     "wall": 1.6,
@@ -12,10 +12,10 @@
     "seam_gap": 0.2
   },
   "fasteners": {
-    "x": 30.5,
+    "x": 25.5,
     "y": [
-      -50.5,
-      50.5
+      -53.5,
+      53.5
     ],
     "boss_radius": 3.2,
     "clearance_diameter": 2.3,
@@ -43,25 +43,25 @@
   "display": {
     "center": [
       0.0,
-      31.5
+      30.0
     ],
     "size": [
       52.0,
       40.0,
       2.8
     ],
-    "z": 1.7,
+    "z": 1.4,
     "window": [
       41.0,
       31.0
     ],
-    "window_y": 31.5,
+    "window_y": 30.0,
     "status": "Retained P02 working envelope; supplied vendor range does not identify the exact board. This does not cover every 61.1mm board or an upright header."
   },
   "wheel": {
     "center": [
       0.0,
-      -18.5
+      -20.0
     ],
     "backing": [
       56.0,
@@ -75,7 +75,7 @@
   },
   "battery": {
     "center": [
-      -11.5,
+      -11.2,
       -3.0
     ],
     "size": [
@@ -100,7 +100,7 @@
       "id": "fpc8",
       "label": "Clickwheel 8-pin breakout",
       "center": [
-        -14.0,
+        -13.0,
         -36.0
       ],
       "size": [
@@ -114,38 +114,39 @@
       "id": "xiao",
       "label": "XIAO ESP32-S3",
       "center": [
-        22.5,
-        4.5
+        17.5,
+        9.5
       ],
       "size": [
         21.0,
         17.8,
         4.2
       ],
-      "z": 5.2
+      "z": 5.2,
+      "retention_fence": {"length": 2.0, "y_offset": 7.9}
     },
     {
       "id": "dac",
       "label": "Adafruit TLV320DAC3100 #6309 / stereo headphone jack",
       "center": [
         0,
-        36.05
+        38.55
       ],
       "size": [
         25.4,
         33.7,
         7.1
       ],
-      "z": 4.8,
-      "status": "Published maximum planning envelope; components face front, bare PCB back at Z11.9. Direct solder wiring, no fitted headers. Vendor CAD establishes nominal socket axis; sample fit still required.",
+      "z": 4.5,
+      "status": "Published maximum planning envelope; components face front, bare PCB back at Z11.6. Direct solder wiring, no fitted headers. Vendor CAD establishes nominal socket axis; sample fit still required.",
       "product_url": "https://www.adafruit.com/product/6309"
     },
     {
       "id": "microsd",
       "label": "microSD module",
       "center": [
-        22.0,
-        -20.0
+        17.0,
+        -35.0
       ],
       "size": [
         22.0,
@@ -184,13 +185,13 @@
     {
       "id": "central_harness",
       "size": [
-        4.0,
-        62.0,
-        5.0
+        2.6,
+        39.7,
+        4.2
       ],
       "center": [
-        8.0,
-        -13.5
+        5.4,
+        -4.85
       ],
       "z": 5.4
     },
@@ -198,12 +199,12 @@
       "id": "right_flex_and_lead_lane",
       "size": [
         4.0,
-        32.0,
+        29.0,
         4.8
       ],
       "center": [
         22.0,
-        32.0
+        34.0
       ],
       "z": 5.5
     },
@@ -215,21 +216,33 @@
         5.0
       ],
       "center": [
-        8.0,
-        -6.0
+        18.0,
+        26.0
       ],
       "z": 5.1
     },
     {
       "id": "upper_harness_bridge",
-      "size": [18.0, 3.0, 5.0],
-      "center": [15.0, 16.0],
+      "size": [20.0, 1.8, 4.2],
+      "center": [14.0, 20.0],
+      "z": 5.4
+    },
+    {
+      "id": "upper_harness_neck",
+      "size": [1.4, 6.9, 4.2],
+      "center": [4.9, 17.45],
+      "z": 5.4
+    },
+    {
+      "id": "lower_harness_bridge",
+      "size": [22.0, 2.4, 4.2],
+      "center": [-4.0, -24.5],
       "z": 5.4
     },
     {
       "id": "clickwheel_flex",
       "size": [6.0, 3.4, 3.5],
-      "center": [-14.0, -24.75],
+      "center": [-13.0, -24.75],
       "z": 4.95
     }
   ],
@@ -237,6 +250,10 @@
     "fpc8_to_sidewall": 2.0,
     "dac_to_display": 0.25,
     "dac_to_rear_skin": 0.25,
+    "lens_to_display": 0.5,
+    "display_to_front_shell": 0.19,
+    "battery_to_rear_skin": 1.7,
+    "jack_rear_aperture_ligament": 0.8,
     "display_to_wheel": 1.0,
     "wheel_to_fastener": 0.5,
     "battery_to_dac": 2.0,

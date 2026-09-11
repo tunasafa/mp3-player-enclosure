@@ -68,13 +68,16 @@ try {
   }
   checks.push('Compact layout dimensions follow CAD parameters; battery rotates 90 degrees; connector stays in its reserved pocket');
   assert.equal(detail.screen.parent, 'display_envelope');
-  assert(detail.screen.localZ > 1.5 && detail.screen.localZ < 2, 'LCD must be recessed behind lens');
+  assert(Math.abs(detail.screen.localZ - (parameters.display.z - 0.012)) < 1e-4,
+    'Screen must follow the LCD face');
+  assert(detail.screen.localZ > 0.7, 'LCD must be recessed behind lens');
   assert.equal(detail.screen.depthTest, true);
   assert.equal(detail.branding.name, 'mytunas');
   assert.equal(detail.branding.parent, 'rear_shell');
   assert.equal(detail.branding.depth, 0.3);
-  assert(Math.abs(detail.branding.bounds.min[2] - 13.1) < 1e-4);
-  assert(Math.abs(detail.branding.bounds.max[2] - 13.1) < 1e-4, 'Engraving must be the recessed CAD floor');
+  const engravingZ = parameters.body.thickness - parameters.branding.depth;
+  assert(Math.abs(detail.branding.bounds.min[2] - engravingZ) < 1e-4);
+  assert(Math.abs(detail.branding.bounds.max[2] - engravingZ) < 1e-4, 'Engraving must be the recessed CAD floor');
   for (const part of detail.parts.filter(p => !['front_bezel', 'rear_shell', 'clear_lens_reference'].includes(p.id))) {
     assert(part.meshes >= 3, `${part.id} remains a single envelope`);
   }
@@ -128,7 +131,7 @@ try {
   assert.equal(afterExplode.parts.find(p => p.id === 'display_envelope').offset, -0.82 * 65 * 0.43);
   await capture('preview_exploded_check.png');
   checks.push('LCD visibility follows display, not lens; LCD moves with display during explosion');
-  checks.push('mytunas CAD engraving at Z13.1; lettering/logo follow rear-cap visibility and explosion');
+  checks.push(`mytunas CAD engraving at Z${engravingZ.toFixed(1)}; lettering/logo follow rear-cap visibility and explosion`);
   await page.click('[data-group=components]');
   assert.equal((await state()).visible, 2);
   await page.click('#reset');

@@ -265,12 +265,13 @@ function battery(parent) {
   box(group, [3.8, h - 0.7, d - 0.1], [x + w / 2 - 2, y, z + d / 2], mats.tape, 0.35);
   label(group, ['Li-ion Polymer', '503040   3.7 V', '600 mAh / 2.22 Wh', '+                 -'], 28, 16, [x - 2, y, z + d + 0.01], true, '#eef0ed', '#273139');
   const pocket = parameters.routing_reserves.find(r => r.id === 'battery_connector_pocket');
+  const bridge = parameters.routing_reserves.find(r => r.id === 'upper_harness_bridge');
   const [cx, cy] = pocket.center;
   for (const [dx, mat] of [[0.7, mats.red], [-0.7, mats.black]]) {
     path(parent, [[bx + dx, by + w / 2 - 1, z + 2.5],
-      [bx + dx, by + w / 2 + 0.55, z + 2.5], [bx + 2, by + w / 2 + 0.55, z + 2.5],
-      [cx + dx - 1, by + w / 2 + 0.55, z + 2.5], [cx + dx, by + w / 2 - 0.5, z + 2.5],
-      [cx + dx, cy + 3.5, z + 2.6], [cx + dx, cy + 2.6, z + 2.6]], 0.32, mat);
+      [bx + dx, by + w / 2 + 1, z + 2.5], [bx + 2, bridge.center[1] + dx * 0.5, z + 2.5],
+      [cx + dx, bridge.center[1] + dx * 0.5, z + 2.5],
+      [cx + dx, cy - 3.5, z + 2.6], [cx + dx, cy - 2.6, z + 2.6]], 0.32, mat);
   }
   const connector = new THREE.Group(); connector.name = 'battery-connector'; parent.add(connector);
   box(connector, [4.2, 5.2, 2.9], [cx, cy, z + 2.6], mats.white, 0.3);

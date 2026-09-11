@@ -59,9 +59,11 @@ def main():
     ax.set_xticks(range(len(stacks)),[s[0] for s in stacks],rotation=30,ha='right',fontsize=8)
     ax.set_title('COMPONENT DEPTH RANGES',fontsize=11,pad=15)
     ax.spines[['top','right']].set_visible(False);ax.grid(axis='y',alpha=.15)
-    c=json.loads((ROOT/'validation.json').read_text())['nominal_clearances_mm']
+    validation=json.loads((ROOT/'validation.json').read_text())
+    c=validation['nominal_clearances_mm']
     fig.text(.7,.31,f"Clickwheel adapter to wall: {c['fpc8_to_sidewall']:.2f} mm.\nBattery to rear skin: {c['battery_to_rear_skin']:.1f} mm.\nDAC to LCD / rear skin: {c['dac_to_display']:.1f} / {c['dac_to_rear_skin']:.1f} mm.\nThese gaps still need real-part verification.",fontsize=9.5,color=MUTED,linespacing=1.6)
-    fig.text(.7,.19,'20.2% less external volume than the earlier P04.\nSame 600 mAh cell, rotated 90 degrees.\nUSB/card boards share the lane beside the battery.',fontsize=10,color=INK,linespacing=1.6)
+    reduction=validation['thickness_optimization']['external_volume_reduction_percent']
+    fig.text(.7,.19,f'{reduction:.1f}% less volume than the last compact P04.\nSame 600 mAh cell, rotated 90 degrees.\nCard module beside FPC; cell connector above USB.',fontsize=10,color=INK,linespacing=1.6)
     fig.text(.06,.09,'CAD/mesh checks passed. The component envelopes and connector positions remain provisional.',fontsize=11,color=INK)
     fig.text(.06,.058,'Print an empty-shell fit set first. Exact wheel/LCD geometry, flex routes, audio mounting and battery sample fit are still required.',fontsize=10,color=MUTED)
     fig.savefig(ROOT/'design_overview.png',dpi=180,facecolor=BG)

@@ -179,7 +179,9 @@ def rear_shell(engraved=True):
     for e in P['electronics']:
         if e['id'] in ('xiao', 'microsd'):
             x, y = e['center']; w = e['size'][0]
-            a = a.union(block(.8, 8, inner+.2-5.4, x-w/2-.6, y, 5.4))
+            fence = e.get('retention_fence', {})
+            a = a.union(block(.8, fence.get('length', 8), inner+.2-5.4,
+                              x-w/2-.6, y+fence.get('y_offset', 0), 5.4))
     # Guides follow the selected battery body. Listing size is not a certified max.
     b = P['battery']; bx, by = b['center']; bw, bl, _ = b['size']
     gap, t, h = b['guide_gap_xy'], b['guide_thickness'], b['guide_height']
@@ -256,6 +258,9 @@ def main():
         'fpc8_to_sidewall': round(fpc_wall, 4),
         'fpc8_to_front_shell_cad_distance': components['fpc8'].val().distance(parts['front_bezel'].val()),
         'dac_to_display': round(dac_display, 4), 'dac_to_rear_skin': round(dac_rear, 4),
+        'lens_to_display': components['display_envelope'].val().distance(components['clear_lens_reference'].val()),
+        'display_to_front_shell': components['display_envelope'].val().distance(parts['front_bezel'].val()),
+        'jack_rear_aperture_ligament': round(T-(dac['z']+P['ports']['jack']['axis_offset_z']+P['ports']['jack']['diameter']/2), 4),
         'display_to_wheel': components['display_envelope'].val().distance(components['clickwheel_envelope'].val()),
         'wheel_to_fastener': round(wheel_fastener, 4),
         'battery_to_dac': components['battery_envelope'].val().distance(components['dac'].val()),
@@ -323,8 +328,18 @@ def main():
         'component_envelopes_preserved': unchanged,
         'battery_rotated_in_plane': True,
         'note': 'External bounding-box comparison, not a claim of optimal packing or measured physical fit.'}
+    thickness_baseline = json.loads((ROOT/'thickness_baseline.json').read_text())
+    previous_compact = thickness_baseline['outer_length_width_thickness_mm']
+    report['thickness_optimization'] = {
+        'previous_length_width_thickness_mm': previous_compact,
+        'current_length_width_thickness_mm': [L, W, T],
+        'reduction_mm': round(previous_compact[2]-T, 4),
+        'external_volume_reduction_percent': round(100*(1-L*W*T/math.prod(previous_compact)), 2),
+        'display_seat_shift_mm': round(P['display']['z']-thickness_baseline['display_z_mm'], 4),
+        'published_dac_height_retained_mm': dac['size'][2],
+        'note': 'Lowered LCD seat and DAC together; no board flip or component substitution. Battery rear allowance falls from 2.0 to 1.7 mm, not a qualified expansion specification.'}
     report['input_sha256'] = {name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
-                              for name in ['build.py','parameters.json','layout_baseline.json',
+                              for name in ['build.py','parameters.json','layout_baseline.json','thickness_baseline.json',
                                            'vendor/6309.step','vendor/XIAO-ESP32S3 v2.step',P['branding']['artwork']]}
     (ROOT/'validation.json').write_text(json.dumps(report, indent=2)+'\n')
     if report['envelope_collisions'] or report['routing_reserve_collisions'] or not all(report['minimum_clearance_checks'].values()):

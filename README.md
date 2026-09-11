@@ -14,7 +14,7 @@ So I'm building my own player.
 
 Not a phone app. Not a streaming box. A physical device — with a screen, a clickwheel, a headphone jack, and a microSD card full of music that belongs to me. No accounts, no telemetry, no monthly fee. It plays MP3s. It fits in a pocket. I designed every millimetre of the case myself.
 
-**This is the enclosure for that device.** 110 × 70 × 13.4 mm of 3D-printed refusal to keep paying rent on my own music collection.
+**This is the enclosure for that device.** 115 × 60 × 13.1 mm of 3D-printed refusal to keep paying rent on my own music collection.
 
 ---
 
@@ -34,7 +34,9 @@ Not a phone app. Not a streaming box. A physical device — with a screen, a cli
 
 ## Internal layout
 
-Repacked from 134 × 72 mm to **110 × 70 mm**, with unchanged thickness and components: **20.2% less external volume**. The battery is turned lengthwise, USB and microSD sit beside it, and the wheel adapter sits below it. Mounts, ports and screw positions follow the new layout.
+Repacked to **115 × 60 × 13.1 mm**, retaining every selected component: **12.4% less external volume than the previous 110 × 70 × 13.4 mm version**, and 30.1% less than the original 134 × 72 × 13.4 mm layout. It is 10 mm narrower, 0.3 mm thinner and 5 mm longer than the previous compact version. The card module now sits beside the wheel adapter, the battery connector sits above USB, and the LCD sits closer to the lens. Mounts, ports, wiring reserves and screws follow the new positions.
+
+The [DAC orientation and compact-player research](revision_04/studies/dac_orientation/README.md) compares flipping, side ports and relocating the tall connectors beyond the display. The top jack remains the selected arrangement after comparison; its position is not a fixed requirement.
 
 ![Internal layout](revision_04/internal_layout.png)
 
@@ -104,7 +106,7 @@ python3 -m venv .venv
 
 | Measurement | Value |
 |---|---|
-| Overall | 110 × 70 × 13.4 mm |
+| Overall | 115 × 60 × 13.1 mm |
 | Wall thickness | 1.6 mm |
 | Skin thickness | 1.2 mm |
 | Corner radius | 6.0 mm |
