@@ -1,11 +1,11 @@
 {
-  "revision": "P04 - compact repack, lowered LCD seat, unchanged components",
+  "revision": "P04 - 12.9mm thin repack, battery below LCD, flipped upper DAC",
   "units": "mm",
   "body": {
-    "width": 60.0,
-    "length": 115.0,
-    "thickness": 13.1,
-    "corner_radius": 6.0,
+    "width": 60,
+    "length": 115,
+    "thickness": 12.9,
+    "corner_radius": 6,
     "skin": 1.2,
     "wall": 1.6,
     "front_height": 5.2,
@@ -22,8 +22,8 @@
     "insert_pilot_diameter": 3.2,
     "insert_depth": 3.2,
     "head_recess_diameter": 4.5,
-    "head_seat_z": 10.0,
-    "screw_length": 7.0
+    "head_seat_z": 10,
+    "screw_length": 7
   },
   "branding": {
     "name": "mytunas",
@@ -32,232 +32,286 @@
     "minimum_remaining_skin": 0.9,
     "artwork": "assets/mytunas-branding.json",
     "logo": {
-      "width": 24.0,
-      "center": [0.0, 6.0]
+      "width": 24,
+      "center": [
+        0,
+        6
+      ]
     },
     "wordmark": {
-      "width": 26.0,
-      "center": [0.0, -9.0]
+      "width": 26,
+      "center": [
+        0,
+        -9
+      ]
     }
   },
   "display": {
     "center": [
-      0.0,
-      30.0
+      0,
+      30
     ],
     "size": [
-      52.0,
-      40.0,
+      52,
+      40,
       2.8
     ],
-    "z": 1.4,
+    "z": 1.2,
     "window": [
-      41.0,
-      31.0
+      41,
+      31
     ],
-    "window_y": 30.0,
-    "status": "Retained P02 working envelope; supplied vendor range does not identify the exact board. This does not cover every 61.1mm board or an upright header."
+    "window_y": 30,
+    "status": "Retained P02 working envelope; supplied vendor range does not identify the exact board. This does not cover every 61.1mm board or an upright header.",
+    "seat_floor_z": 1
   },
   "wheel": {
     "center": [
-      0.0,
-      -20.0
+      0,
+      -20
     ],
     "backing": [
-      56.0,
-      58.0,
+      56,
+      58,
       3.3
     ],
-    "backing_z": 1.6,
-    "face_diameter": 44.0,
+    "backing_z": 1.4,
+    "face_diameter": 44,
     "aperture_diameter": 44.6,
     "status": "Actual 4th-generation monochrome assembly confirmed; envelope and flex bend geometry remain provisional."
   },
   "battery": {
     "center": [
-      -11.2,
-      -3.0
+      0,
+      -8
     ],
     "size": [
-      30.0,
-      40.0,
-      5.0
+      40,
+      30,
+      5
     ],
-    "z": 5.2,
+    "z": 5,
     "capacity_mah": 600,
     "nominal_voltage": 3.7,
     "candidate": "User-selected protected 503040, advertised 5 x 30 x 40mm",
     "guide_gap_xy": 0.8,
     "guide_thickness": 1.2,
-    "guide_height": 2.0,
+    "guide_height": 2.3,
     "working_discharge_current_a": "1-1.5 (seller listing)",
     "maximum_discharge_current_a": "3 (seller listing)",
     "connector": "Likely JST-PH / PH 2.0 plug; verify polarity on the actual pack before connecting",
-    "status": "Seller listing confirms protected 503040, 3.7V, 600mAh, 5 x 30 x 40mm size, 1-1.5A working/discharge range and up to 3A maximum discharge. Connector is likely PH 2.0; polarity and finished-pack/protection-board details still require sample verification."
+    "status": "Seller listing confirms protected 503040, 3.7V, 600mAh, 5 x 30 x 40mm size, 1-1.5A working/discharge range and up to 3A maximum discharge. Connector is likely PH 2.0; polarity and finished-pack/protection-board details still require sample verification.",
+    "rotation_degrees": 0
   },
   "electronics": [
     {
       "id": "fpc8",
       "label": "Clickwheel 8-pin breakout",
       "center": [
-        -13.0,
-        -36.0
+        -13,
+        -37
       ],
       "size": [
         26.1,
         19.1,
         4.2
       ],
-      "z": 5.2
+      "z": 5
     },
     {
       "id": "xiao",
       "label": "XIAO ESP32-S3",
       "center": [
-        17.5,
-        9.5
+        17.9961102,
+        30
       ],
       "size": [
-        21.0,
+        21,
         17.8,
         4.2
       ],
-      "z": 5.2,
-      "retention_fence": {"length": 2.0, "y_offset": 7.9}
+      "z": 4.3,
+      "retention_fence": {
+        "length": 2,
+        "y_offset": 7.9
+      }
     },
     {
       "id": "dac",
       "label": "Adafruit TLV320DAC3100 #6309 / stereo headphone jack",
       "center": [
-        0,
-        38.55
+        -9.3,
+        40.76299047443
       ],
       "size": [
         25.4,
         33.7,
         7.1
       ],
-      "z": 4.5,
-      "status": "Published maximum planning envelope; components face front, bare PCB back at Z11.6. Direct solder wiring, no fitted headers. Vendor CAD establishes nominal socket axis; sample fit still required.",
+      "z": 4.3,
+      "status": "180-degree Y flip relative to the original 13.1mm layout: components toward rear, bare PCB toward LCD; jack at top. Full published 7.1mm height preserved; no headers.",
       "product_url": "https://www.adafruit.com/product/6309"
     },
     {
       "id": "microsd",
       "label": "microSD module",
       "center": [
-        17.0,
-        -35.0
+        17.7,
+        -36
       ],
       "size": [
-        22.0,
-        18.0,
-        4.0
+        22,
+        18,
+        4
       ],
-      "z": 5.2
+      "z": 5
     }
   ],
   "variants": {
     "P04_compact": {
-      "construction": "Two printed shells, local supports, one top stereo headphone jack opening"
+      "construction": "Two printed shells; recessed LCD seat; near-flush wheel; rear-facing upper DAC; close-fitting top headphone aperture"
     }
   },
   "ports": {
     "usb": {
-      "width": 10.4,
-      "height": 4.8,
-      "z": 7.5
+      "width": 9.4,
+      "height": 3.7,
+      "z": 7.155
     },
     "microsd": {
-      "width": 15.0,
-      "height": 3.2,
-      "z": 7.2
+      "width": 11.5,
+      "height": 1.5,
+      "z": 6.95
     },
     "jack": {
-      "diameter": 9.0,
+      "diameter": 5,
       "board": "dac",
-      "axis_offset_x": 4.05915274704965,
-      "axis_offset_z": 3.22751704190317,
+      "axis_offset_x": -4.05915274704965,
+      "axis_offset_z": 3.87248295809683,
       "edge": "top",
-      "status": "9mm plug-body access opening to recessed jack; axis derived from vendor STEP with component face toward front. Verify actual plug shoulder and board dimensions."
+      "status": "5mm circular aperture around the vendor 4.6mm barrel, nominally 0.05mm recessed. Inner relief does not enlarge the exterior mouth. Not sealed or IP rated."
     }
   },
   "routing_reserves": [
     {
       "id": "central_harness",
       "size": [
-        2.6,
-        39.7,
+        3,
+        22,
         4.2
       ],
       "center": [
-        5.4,
-        -4.85
+        3.3,
+        -38
       ],
-      "z": 5.4
+      "z": 5.2
     },
     {
       "id": "right_flex_and_lead_lane",
       "size": [
-        4.0,
-        29.0,
-        4.8
+        2.5,
+        20,
+        4.2
       ],
       "center": [
-        22.0,
-        34.0
+        24.5,
+        10
       ],
-      "z": 5.5
+      "z": 5.2
     },
     {
       "id": "battery_connector_pocket",
       "size": [
-        8.0,
-        10.0,
-        5.0
+        8,
+        10,
+        5
       ],
       "center": [
-        18.0,
-        26.0
+        18,
+        15.5
       ],
       "z": 5.1
     },
     {
       "id": "upper_harness_bridge",
-      "size": [20.0, 1.8, 4.2],
-      "center": [14.0, 20.0],
-      "z": 5.4
+      "size": [
+        23,
+        1,
+        4.2
+      ],
+      "center": [
+        14,
+        9.8
+      ],
+      "z": 5.2
     },
     {
       "id": "upper_harness_neck",
-      "size": [1.4, 6.9, 4.2],
-      "center": [4.9, 17.45],
-      "z": 5.4
+      "size": [
+        2.6,
+        10.8,
+        4.2
+      ],
+      "center": [
+        5.45,
+        15.2
+      ],
+      "z": 5.2
+    },
+    {
+      "id": "dac_signal_lane",
+      "size": [
+        2.4,
+        29,
+        4.2
+      ],
+      "center": [
+        5.0,
+        35
+      ],
+      "z": 5.2
     },
     {
       "id": "lower_harness_bridge",
-      "size": [22.0, 2.4, 4.2],
-      "center": [-4.0, -24.5],
-      "z": 5.4
+      "size": [
+        18,
+        2,
+        4.2
+      ],
+      "center": [
+        -2,
+        -25.2
+      ],
+      "z": 5.2
     },
     {
       "id": "clickwheel_flex",
-      "size": [6.0, 3.4, 3.5],
-      "center": [-13.0, -24.75],
-      "z": 4.95
+      "size": [
+        6,
+        3.4,
+        3.5
+      ],
+      "center": [
+        -13,
+        -25.2
+      ],
+      "z": 4.75
     }
   ],
   "minimum_clearances": {
-    "fpc8_to_sidewall": 2.0,
+    "fpc8_to_sidewall": 2,
     "dac_to_display": 0.25,
     "dac_to_rear_skin": 0.25,
     "lens_to_display": 0.5,
     "display_to_front_shell": 0.19,
     "battery_to_rear_skin": 1.7,
     "jack_rear_aperture_ligament": 0.8,
-    "display_to_wheel": 1.0,
+    "display_to_wheel": 1,
     "wheel_to_fastener": 0.5,
-    "battery_to_dac": 2.0,
-    "usb_to_card_board": 6.0
+    "battery_to_dac": 2,
+    "usb_to_card_board": 0.7,
+    "wheel_to_battery": 0.25,
+    "battery_to_display": 2.5
   },
   "confirmed_exclusions": [
     "Both unrelated 15-pin boards",

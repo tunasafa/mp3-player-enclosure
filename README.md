@@ -14,7 +14,7 @@ So I'm building my own player.
 
 Not a phone app. Not a streaming box. A physical device — with a screen, a clickwheel, a headphone jack, and a microSD card full of music that belongs to me. No accounts, no telemetry, no monthly fee. It plays MP3s. It fits in a pocket. I designed every millimetre of the case myself.
 
-**This is the enclosure for that device.** 115 × 60 × 13.1 mm of 3D-printed refusal to keep paying rent on my own music collection.
+**This is the enclosure for that device.** 115 × 60 × 12.9 mm of 3D-printed refusal to keep paying rent on my own music collection.
 
 ---
 
@@ -34,9 +34,11 @@ Not a phone app. Not a streaming box. A physical device — with a screen, a cli
 
 ## Internal layout
 
-Repacked to **115 × 60 × 13.1 mm**, retaining every selected component: **12.4% less external volume than the previous 110 × 70 × 13.4 mm version**, and 30.1% less than the original 134 × 72 × 13.4 mm layout. It is 10 mm narrower, 0.3 mm thinner and 5 mm longer than the previous compact version. The card module now sits beside the wheel adapter, the battery connector sits above USB, and the LCD sits closer to the lens. Mounts, ports, wiring reserves and screws follow the new positions.
+The new layout keeps the **600 mAh battery entirely below the display**, behind the wheel. The **DAC is flipped 180 degrees about Y at the upper left**, components toward the rear, with its headphone socket at the top. USB sits at the upper right; the wheel adapter and microSD are below the battery. At **115 × 60 × 12.9 mm**, the shell is **0.2 mm thinner than 13.1 mm**, with no footprint increase and no component substitution. A local LCD pocket and a lower wheel seat provide the gain; the original 1.7 mm battery rear allowance is preserved. The rejected 13.8 mm arrangement is no longer the current design.
 
-The [DAC orientation and compact-player research](revision_04/studies/dac_orientation/README.md) compares flipping, side ports and relocating the tall connectors beyond the display. The top jack remains the selected arrangement after comparison; its position is not a fixed requirement.
+The rear cap now has DAC mounting-hole locating posts and battery guides matched to the new position. Connector mouths use close-fitting exterior apertures with blind internal reliefs: 5 mm around the jack barrel, 9.4 × 3.7 mm for USB-C and 11.5 × 1.5 mm for the card. These are unsealed openings, not an IP-rated design. The [earlier orientation research](revision_04/studies/dac_orientation/README.md) is historical; [current fit notes](revision_04/README.md) describe this arrangement.
+
+The [offline 3D viewer](revision_04/preview.html) includes section cutting, component inspection/isolation, a rotating turntable, PNG export and a headphone-port view.
 
 ![Internal layout](revision_04/internal_layout.png)
 
@@ -106,7 +108,7 @@ python3 -m venv .venv
 
 | Measurement | Value |
 |---|---|
-| Overall | 115 × 60 × 13.1 mm |
+| Overall | 115 × 60 × 12.9 mm |
 | Wall thickness | 1.6 mm |
 | Skin thickness | 1.2 mm |
 | Corner radius | 6.0 mm |

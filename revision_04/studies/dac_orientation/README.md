@@ -1,5 +1,7 @@
 # mytunas: DAC orientation and compact packaging
 
+> Historical study of the preceding 13.1 mm top-socket layout. The later 13.8 mm bottom-DAC layout was rejected. See the [current 12.9 mm arrangement](../../README.md), which keeps the battery entirely below the LCD and flips the upper DAC. Results and STEP files below remain historical references, excluded from the current manufacturing package, not current validation.
+
 Research and CAD study, 2026-09-11. All selected modules, the original wheel and the 503040 battery are retained in the updated printable design. Moving the DAC or its jack opening is allowed. The top opening is a result of this comparison, not a fixed requirement.
 
 ## Implemented result

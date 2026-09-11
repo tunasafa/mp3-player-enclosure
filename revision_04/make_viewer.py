@@ -55,9 +55,9 @@ def main():
     dac, xiao = boards["dac"], boards["xiao"]
 
     def place_dac(v):
-        return np.column_stack((v[:, 1] + dac["center"][0] - 12.7,
+        return np.column_stack((-v[:, 1] + dac["center"][0] + 12.7,
                                 v[:, 0] + dac["center"][1] - dac["size"][1] / 2,
-                                dac["z"] + dac["size"][2] - v[:, 2]))
+                                dac["z"] + v[:, 2]))
 
     def place_xiao(v):
         # Vendor axes: USB along +X, PCB normal +Y, board width along Z.

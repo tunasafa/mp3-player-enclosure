@@ -20,10 +20,12 @@ def package(target=None):
     for name, digest in viewer['reference_sha256'].items():
         if hashlib.sha256((ROOT/name).read_bytes()).hexdigest() != digest:
             raise RuntimeError(f'Regenerate the current visual reference: {name}')
-    if report['envelope_collisions'] or report['routing_reserve_collisions']:
+    if report['envelope_collisions'] or report['conservative_component_collisions'] or report['routing_reserve_collisions']:
         raise RuntimeError('Resolve the recorded CAD collisions before packaging.')
     if report['vendor_xiao']['shell_component_and_route_collisions']:
         raise RuntimeError('Resolve XIAO manufacturer-model collisions before packaging.')
+    if report['vendor_dac']['shell_collisions']:
+        raise RuntimeError('Resolve DAC manufacturer-model collisions before packaging.')
     for entry in report['stls']:
         mesh = trimesh.load_mesh(ROOT/entry['file'], process=True)
         if not (mesh.is_watertight and mesh.is_winding_consistent and mesh.volume > 0 and mesh.body_count == 1):
@@ -36,14 +38,8 @@ def package(target=None):
              'vendor/viewer.bundle.js','vendor/LICENSE-viewer.txt','vendor/XIAO-ESP32S3 v2.step',
              'make_drawings.py','make_layout.py','verify_viewer.mjs','package_designs.py',
              'validation.json','viewer_validation.json','preview.html','design_overview.png','design_overview.pdf',
-             'internal_layout.png','study_dac_orientation.py','studies/dac_orientation/README.md',
-             'studies/dac_orientation/results.json','studies/dac_orientation/comparison.png',
-             'studies/dac_orientation/comparison.pdf','studies/dac_orientation/current_REFERENCE_ONLY.step',
-             'studies/dac_orientation/flipped_REFERENCE_ONLY.step']
-    study = json.loads((ROOT/'studies/dac_orientation/results.json').read_text())
-    for name, digest in study['source_sha256'].items():
-        if hashlib.sha256((ROOT/name).read_bytes()).hexdigest() != digest:
-            raise RuntimeError(f'Rerun the DAC orientation study after changing {name}.')
+             'internal_layout.png']
+    # The earlier top-DAC orientation study is historical, not a current fit input.
     files = [ROOT/name for name in names]
     files += sorted(p for p in (ROOT/'assets').rglob('*') if p.is_file() and not p.name.startswith('.'))
     files += sorted(p for p in (ROOT/'designs').rglob('*') if p.is_file() and not p.name.startswith('.'))

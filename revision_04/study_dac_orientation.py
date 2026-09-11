@@ -24,6 +24,8 @@ OUT = ROOT / 'studies' / 'dac_orientation'
 P = json.loads((ROOT / 'parameters.json').read_text())
 B = P['body']
 DAC = next(e for e in P['electronics'] if e['id'] == 'dac')
+if B['thickness'] != 13.1 or DAC['center'] != [0,38.55]:
+    raise SystemExit('Historical 13.1mm study: current placement differs. See README.md; do not overwrite archived results with this layout.')
 GAP = .3
 # A study criterion, not a qualified printing/material design rule.
 PORT_LIGAMENT = .8

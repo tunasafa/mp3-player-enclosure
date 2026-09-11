@@ -62,8 +62,7 @@ def main():
     validation=json.loads((ROOT/'validation.json').read_text())
     c=validation['nominal_clearances_mm']
     fig.text(.7,.31,f"Clickwheel adapter to wall: {c['fpc8_to_sidewall']:.2f} mm.\nBattery to rear skin: {c['battery_to_rear_skin']:.1f} mm.\nDAC to LCD / rear skin: {c['dac_to_display']:.1f} / {c['dac_to_rear_skin']:.1f} mm.\nThese gaps still need real-part verification.",fontsize=9.5,color=MUTED,linespacing=1.6)
-    reduction=validation['thickness_optimization']['external_volume_reduction_percent']
-    fig.text(.7,.19,f'{reduction:.1f}% less volume than the last compact P04.\nSame 600 mAh cell, rotated 90 degrees.\nCard module beside FPC; cell connector above USB.',fontsize=10,color=INK,linespacing=1.6)
+    fig.text(.7,.19,'115 x 60 x 12.9 mm; 0.2 mm thinner than 13.1 mm.\nBattery entirely below LCD; no footprint growth.\nFlipped upper DAC; 1.0 mm local LCD seat floor.',fontsize=10,color=INK,linespacing=1.6)
     fig.text(.06,.09,'CAD/mesh checks passed. The component envelopes and connector positions remain provisional.',fontsize=11,color=INK)
     fig.text(.06,.058,'Print an empty-shell fit set first. Exact wheel/LCD geometry, flex routes, audio mounting and battery sample fit are still required.',fontsize=10,color=MUTED)
     fig.savefig(ROOT/'design_overview.png',dpi=180,facecolor=BG)

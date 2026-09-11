@@ -93,12 +93,24 @@ def ports(a):
     for key, board in [('usb', 'xiao'), ('microsd', 'microsd')]:
         p = P['ports'][key]
         a = a.cut(x_port(p['width'], p['height'], W/2-4,
-                         boards[board]['center'][1], p['z']))
+                         boards[board]['center'][1], p['z'], r=.3 if key=='microsd' else 1.5))
+        e = boards[board]
+        # Blind inner relief seats the PCB/socket without widening the outside slit.
+        a = a.cut(block(3.5, e['size'][1]+.4, 4.4, W/2-2.65,
+                        e['center'][1], e['z']-.2))
     p = P['ports']['jack']
     dac = boards[p['board']]
     hole = cylinder(p['diameter']/2, 8).rotate((0,0,0), (1,0,0), -90)
-    return a.cut(hole.translate((dac['center'][0]+p['axis_offset_x'],
-                                L/2-4, dac['z']+p['axis_offset_z'])))
+    a = a.cut(hole.translate((dac['center'][0]+p['axis_offset_x'],
+                             L/2-4, dac['z']+p['axis_offset_z'])))
+    # Jack shoulder relief is internal; retain 0.7 mm of exterior wall.
+    return a.cut(block(8.8, 3.0, 6.5, dac['center'][0]-4.05,
+                       L/2-2.2, dac['z']+.2))
+
+def placed_dac():
+    e = next(e for e in P['electronics'] if e['id']=='dac')
+    return cq.importers.importStep(str(ROOT/'vendor/6309.step')).rotate(
+        (0,0,0), (0,0,1), 90).translate((e['center'][0]+12.7, e['center'][1]-16.85, e['z']))
 
 def front_shell():
     a = outer(FRONT).cut(cavity(SKIN, FRONT+1))
@@ -107,6 +119,9 @@ def front_shell():
         a = a.cut(cylinder(F['insert_pilot_diameter']/2, F['insert_depth']+.1,
                           x, y, FRONT-F['insert_depth']))
     d, q = P['display'], P['wheel']
+    # A 0.2 mm local pocket lowers the LCD without thinning the rest of the shell.
+    a = a.cut(rounded(d['size'][0]+.6, d['size'][1]+.6, FRONT, .2,
+                      *d['center'], z=d['seat_floor_z']))
     a = a.cut(rounded(*d['window'], FRONT+2, .5, y=d['window_y'], z=-1))
     a = a.cut(rounded(d['window'][0]+2.4, d['window'][1]+2.4, .9, .9,
                       y=d['window_y'], z=-.1))
@@ -114,7 +129,7 @@ def front_shell():
     # Local landing pads; 0.2 mm adhesive allowance to assumed component fronts.
     for sx in [-1, 1]:
         for sy in [-1, 1]:
-            a = a.union(block(3, 4, d['z']-.2-1.0, sx*23.5, d['center'][1]+sy*16, 1.0))
+            a = a.union(block(3, 4, d['z']-.2-.8, sx*23.5, d['center'][1]+sy*16, .8))
             a = a.union(block(3, 4, q['backing_z']-.2-1.0, sx*25, q['center'][1]+sy*25, 1.0))
     # Interrupted locating tongues leave the UI flex exits and ports clear.
     for sx in [-1, 1]:
@@ -171,6 +186,14 @@ def rear_shell(engraved=True):
     # Rear-mounted pads stop 0.2 mm short of board envelopes for insulating adhesive.
     for e in P['electronics']:
         x, y = e['center']; w, l, h = e['size']
+        if e['id']=='dac':
+            # Three actual vendor mounting holes, with a 0.2 mm insulating land gap.
+            for vx, vy in [(2.54,22.86), (29.21,2.54), (29.21,22.86)]:
+                px, py = x-vy+12.7, y-16.85+vx
+                land = e['z']+1.57+.2
+                a = a.union(cylinder(2.0, inner+.2-land, px, py, land))
+                a = a.union(cylinder(1.0, land-e['z']-.2, px, py, e['z']+.2))
+            continue
         z = e['z']+h+.2
         for sx in [-1, 1]:
             for sy in [-1, 1]:
@@ -188,7 +211,7 @@ def rear_shell(engraved=True):
     for sx in [-1, 1]:
         a = a.union(block(t, bl-8, h+.2, bx+sx*(bw/2+gap+t/2), by, inner-h))
     a = a.union(block(bw-8, t, h+.2, bx, by+bl/2+gap+t/2, inner-h))
-    # Fence on the DAC's inboard short edge opposes insertion at its top socket.
+    # Inboard end stop opposes insertion at the top socket.
     dac = next(e for e in P['electronics'] if e['id']=='dac')
     a = a.union(block(8, .8, inner+.2-5.4, dac['center'][0],
                       dac['center'][1]-dac['size'][1]/2-.6, 5.4))
@@ -199,7 +222,7 @@ def reference_components():
     d, q, b = P['display'], P['wheel'], P['battery']
     r = {'display_envelope': block(*d['size'], *d['center'], d['z']),
          'clickwheel_envelope': block(*q['backing'], *q['center'], q['backing_z']).union(
-             cylinder(q['face_diameter']/2, 1.4, *q['center'], .2)),
+             cylinder(q['face_diameter']/2, 1.4, *q['center'], q['backing_z']-1.4)),
          'battery_envelope': block(*b['size'], *b['center'], b['z']),
          'clear_lens_reference': rounded(d['window'][0]+2, d['window'][1]+2, .6, .8,
                                          y=d['window_y'], z=.1)}
@@ -213,9 +236,11 @@ def main():
     plain_rear = rear_shell(engraved=False)
     parts = {'front_bezel': front_shell(), 'rear_shell': engrave_rear(plain_rear)}
     components = reference_components()
+    physical = dict(components, dac=placed_dac())
     report = {'revision': P['revision'], 'units': 'mm', 'outer_length_width_thickness_mm': [L,W,T],
               'scope': 'CAD/mesh, assembly interference, and designated empty routing-volume checks; no physical fit, wiring, battery expansion or load validation.',
-              'stls': [], 'envelope_collisions': collisions(parts, components)}
+              'stls': [], 'envelope_collisions': collisions(parts, physical),
+              'conservative_component_collisions': collisions({}, components)}
     faces = branding_faces(T-P['branding']['depth'])
     expected_removed = sum(f.Area() for f in faces)*P['branding']['depth']
     removed = plain_rear.val().Volume()-parts['rear_shell'].val().Volume()
@@ -228,7 +253,7 @@ def main():
         'floor_z_mm': T-P['branding']['depth'], 'readable_from': 'rear exterior',
         'logo_width_mm': P['branding']['logo']['width'], 'wordmark_width_mm': P['branding']['wordmark']['width']}
     routes = {r['id']: block(*r['size'], *r['center'], r['z']) for r in P['routing_reserves']}
-    report['routing_reserve_collisions'] = [c for c in collisions(dict(parts, **components), routes)
+    report['routing_reserve_collisions'] = [c for c in collisions(dict(parts, **physical), routes)
                                           if (c['a'] in routes) != (c['b'] in routes)]
     # Routing volumes may intentionally join each other; they must clear solids.
     assembly = cq.Assembly(name='P04_compact')
@@ -249,7 +274,7 @@ def main():
     boards = {e['id']: e for e in P['electronics']}
     dac, fpc, bat = boards['dac'], boards['fpc8'], P['battery']
     fpc_wall = W/2-WALL+fpc['center'][0]-fpc['size'][0]/2
-    dac_display = dac['z']-(P['display']['z']+P['display']['size'][2])
+    dac_display = components['dac'].val().distance(components['display_envelope'].val())
     dac_rear = T-SKIN-(dac['z']+dac['size'][2])
     tip = F['head_seat_z']-F['screw_length']
     wheel_fastener = min(components['clickwheel_envelope'].val().distance(
@@ -265,21 +290,19 @@ def main():
         'wheel_to_fastener': round(wheel_fastener, 4),
         'battery_to_dac': components['battery_envelope'].val().distance(components['dac'].val()),
         'usb_to_card_board': components['xiao'].val().distance(components['microsd'].val()),
-        'wheel_to_battery': round(bat['z']-(P['wheel']['backing_z']+P['wheel']['backing'][2]),4),
+        'wheel_to_battery': components['battery_envelope'].val().distance(components['clickwheel_envelope'].val()),
+        'battery_to_display': components['battery_envelope'].val().distance(components['display_envelope'].val()),
+        'dac_to_wheel': components['dac'].val().distance(components['clickwheel_envelope'].val()),
         'battery_to_rear_skin': round(T-SKIN-(bat['z']+bat['size'][2]),4),
         'battery_to_side_guide': bat['guide_gap_xy'], 'board_support_adhesive': .2,
         'screw_tip_above_pilot_bottom': round(tip-(FRONT-F['insert_depth']),4),
         'screw_insert_engagement': round(FRONT-tip,4), 'tongue_to_rear_wall': .5,
-        'dac_top_edge_to_inner_wall': round(L/2-WALL-(dac['center'][1]+dac['size'][1]/2),4),
-        'dac_top_edge_to_outer_face': round(L/2-(dac['center'][1]+dac['size'][1]/2),4)}
+        'dac_top_envelope_to_outer_face': round(L/2-dac['center'][1]-dac['size'][1]/2,4)}
     report['minimum_clearance_checks'] = {key: report['nominal_clearances_mm'][key]>=limit-1e-6
                                           for key,limit in P['minimum_clearances'].items()}
     report['jack_axis_assembly_mm'] = [dac['center'][0]+P['ports']['jack']['axis_offset_x'],
         L/2, dac['z']+P['ports']['jack']['axis_offset_z']]
-    # Rotate vendor X toward enclosure top, Y toward right, components toward front.
-    vendor = cq.importers.importStep(str(ROOT/'vendor/6309.step'))
-    vendor = vendor.rotate((0,0,0), (1,1,0), 180).translate(
-        (dac['center'][0]-12.7, dac['center'][1]-16.85, dac['z']+dac['size'][2]))
+    vendor = physical['dac']
     vb = vendor.val().BoundingBox()
     eb = components['dac'].val().BoundingBox()
     contained = all(getattr(vb,k+'min') >= getattr(eb,k+'min')-1e-5 and
@@ -287,22 +310,23 @@ def main():
     if not contained:
         raise RuntimeError('Vendor DAC geometry exceeds conservative envelope')
     cq.exporters.export(vendor, str(OUT/'reference_only/adafruit_6309_placed_VENDOR.step'))
-    mouth = [16.75915274704965-12.7+dac['center'][0],
+    mouth = [-16.75915274704965+12.7+dac['center'][0],
              33.537009525569644+dac['center'][1]-16.85,
-             dac['z']+dac['size'][2]-3.87248295809683]
+             dac['z']+3.87248295809683]
     if abs(mouth[0]-report['jack_axis_assembly_mm'][0]) > .001 or abs(mouth[2]-report['jack_axis_assembly_mm'][2]) > .001:
         raise RuntimeError('Jack cutout does not follow vendor socket axis')
     report['vendor_dac'] = {'contained_in_planning_envelope': contained,
         'assembly_bounds_mm': [[getattr(vb,k+'min') for k in 'xyz'],[getattr(vb,k+'max') for k in 'xyz']],
         'socket_mouth_axis_mm': mouth, 'socket_mouth_recess_mm': L/2-mouth[1],
-        'orientation': 'PCB back toward rear; components toward display',
+        'orientation': 'Components toward rear; PCB back toward LCD; socket faces top; Y-flipped versus 13.1mm baseline',
+        'shell_collisions': collisions(parts, {'dac_vendor': vendor}),
         'note': 'Vendor STEP height 6.3725mm; reserved published product height 7.1mm. Physical sample unmeasured.'}
     xiao = boards['xiao']
     xiao_vendor = cq.importers.importStep(str(ROOT/'vendor/XIAO-ESP32S3 v2.step')).rotate(
         (0, 0, 0), (1, 0, 0), 90).translate(
         (xiao['center'][0]-1.80475, xiao['center'][1]-6.1114, xiao['z']+.25))
     xb = xiao_vendor.val().BoundingBox()
-    surrounding = {name: shape for name, shape in dict(parts, **components, **routes).items() if name != 'xiao'}
+    surrounding = {name: shape for name, shape in dict(parts, **physical, **routes).items() if name != 'xiao'}
     xiao_collisions = collisions(surrounding, {'xiao_vendor': xiao_vendor})
     xiao_collisions = [c for c in xiao_collisions if 'xiao_vendor' in (c['a'], c['b'])]
     report['vendor_xiao'] = {
@@ -337,12 +361,28 @@ def main():
         'external_volume_reduction_percent': round(100*(1-L*W*T/math.prod(previous_compact)), 2),
         'display_seat_shift_mm': round(P['display']['z']-thickness_baseline['display_z_mm'], 4),
         'published_dac_height_retained_mm': dac['size'][2],
-        'note': 'Lowered LCD seat and DAC together; no board flip or component substitution. Battery rear allowance falls from 2.0 to 1.7 mm, not a qualified expansion specification.'}
+        'note': 'Same footprint, battery rear allowance and full component heights. LCD pocket and lower wheel seat each save 0.2mm versus the 13.1mm baseline. Flipping alone does not lower the height of a module.'}
+    battery_display_overlap = all(abs(bat['center'][i]-P['display']['center'][i]) <
+        (bat['size'][i]+P['display']['size'][i])/2 for i in range(2))
+    report['requested_repack'] = {'previous_mm': [115,60,13.1], 'current_mm': [L,W,T],
+        'rejected_previous_mm': [115,60,13.8],
+        'thickness_change_mm': round(T-13.1,4), 'battery_behind_display': battery_display_overlap,
+        'dac_behind_wheel': False, 'jack_edge': P['ports']['jack']['edge'],
+        'apertures_mm': P['ports'], 'ingress_rating': 'None; unsealed connectors and enclosure seam'}
+    report['thin_layout_constraints'] = {
+        'battery_outside_display_projection': not battery_display_overlap,
+        'thinner_than_13p1': T < 13.1, 'footprint_not_increased': W <= 60 and L <= 115,
+        'lcd_pocket_remaining_skin_mm': P['display']['seat_floor_z'],
+        'lcd_dac_stack_lower_bound_mm': .7+.5+2.8+.3+7.1+.3+SKIN,
+        'wheel_battery_stack_lower_bound_mm': SKIN+.2+3.3+.3+5+1.7+SKIN,
+        'scope': 'Lower bounds for this layered assignment and retained allowances, not a global packing proof.'}
+    if battery_display_overlap or T >= 13.1 or P['display']['seat_floor_z'] < 1.0:
+        raise RuntimeError('Thin layout violates the agreed battery, thickness or local skin constraints')
     report['input_sha256'] = {name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
                               for name in ['build.py','parameters.json','layout_baseline.json','thickness_baseline.json',
                                            'vendor/6309.step','vendor/XIAO-ESP32S3 v2.step',P['branding']['artwork']]}
     (ROOT/'validation.json').write_text(json.dumps(report, indent=2)+'\n')
-    if report['envelope_collisions'] or report['routing_reserve_collisions'] or not all(report['minimum_clearance_checks'].values()):
+    if report['envelope_collisions'] or report['conservative_component_collisions'] or report['routing_reserve_collisions'] or not all(report['minimum_clearance_checks'].values()):
         raise RuntimeError(json.dumps(report, indent=2))
     print('P04: all 3 printable STLs valid, single-body, watertight; no modeled collisions; minimum clearances passed.', flush=True)
 

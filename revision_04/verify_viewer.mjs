@@ -46,6 +46,10 @@ try {
     assert(p.colors > 30, `${name}: materials or textures missing`);
     assert(p.minX > 0 && p.maxX < p.width - 1 && p.minY > 0 && p.maxY < p.height - 1, `${name}: model clipped ${JSON.stringify(p)}`);
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${name}: horizontal overflow`);
+    const canvasBox = await page.locator('#view').boundingBox();
+    const toolbarBox = await page.locator('.view-buttons').boundingBox();
+    const modelBottom = canvasBox.y + (p.height - p.minY) * canvasBox.height / p.height;
+    assert(modelBottom < toolbarBox.y, `${name}: view toolbar overlaps the model`);
     await page.screenshot({ path: join(root, name), fullPage });
     captures.push({ name, ...p });
   }
@@ -58,7 +62,19 @@ try {
   assert.equal(await page.locator('#dimensions').textContent(),
     [parameters.body.length, parameters.body.width, parameters.body.thickness].join(' x '));
   assert.deepEqual(detail.layout.electronics, parameters.electronics);
-  assert.equal(detail.layout.batteryRotation, Math.PI / 2);
+  assert.equal(detail.layout.batteryRotation, parameters.battery.rotation_degrees * Math.PI / 180);
+  assert.deepEqual(parameters.battery.size, [40, 30, 5]);
+  assert(parameters.body.thickness < 13.1);
+  assert(parameters.body.width <= 60 && parameters.body.length <= 115);
+  assert(parameters.battery.center[1] + parameters.battery.size[1] / 2 < parameters.display.center[1] - parameters.display.size[1] / 2);
+  assert(parameters.battery.z - parameters.wheel.backing_z - parameters.wheel.backing[2] >= .25);
+  assert(parameters.body.thickness - parameters.body.skin - parameters.battery.z - parameters.battery.size[2] >= 1.7 - 1e-6);
+  assert(Math.abs(detail.layout.wheelSeatOffset - (parameters.wheel.backing_z - 1.6)) < 1e-6);
+  const dacBoard = parameters.electronics.find(e => e.id === 'dac');
+  assert(dacBoard.z - parameters.display.z - parameters.display.size[2] >= .25);
+  assert(parameters.body.thickness - parameters.body.skin - dacBoard.z - dacBoard.size[2] >= .25);
+  assert.equal(parameters.ports.jack.edge, 'top');
+  assert(dacBoard.center[1] > 20);
   const pocket = parameters.routing_reserves.find(r => r.id === 'battery_connector_pocket');
   const pocketMin = [pocket.center[0] - pocket.size[0] / 2, pocket.center[1] - pocket.size[1] / 2, pocket.z];
   const pocketMax = pocketMin.map((v, i) => v + pocket.size[i]);
@@ -66,7 +82,7 @@ try {
     assert(detail.layout.connectorBounds.min[i] >= pocketMin[i]);
     assert(detail.layout.connectorBounds.max[i] <= pocketMax[i]);
   }
-  checks.push('Compact layout dimensions follow CAD parameters; battery rotates 90 degrees; connector stays in its reserved pocket');
+  checks.push('Sub-13.1mm case without footprint growth; battery outside LCD projection; original 1.7mm rear allowance preserved; lowered wheel follows its seat');
   assert.equal(detail.screen.parent, 'display_envelope');
   assert(Math.abs(detail.screen.localZ - (parameters.display.z - 0.012)) < 1e-4,
     'Screen must follow the LCD face');
@@ -87,6 +103,44 @@ try {
   await capture('preview_check.png');
   await page.click('[data-view=back]');
   await capture('preview_rear_check.png');
+  await page.click('[data-view=ports]');
+  assert.equal((await state()).view, 'ports');
+  await capture('preview_ports_check.png');
+  assert((await inspection()).layout.jackFacingCamera > .99, 'Port preset must face the headphone socket');
+  await page.click('[data-view=back]');
+  await settle();
+  const uncut = await pixels();
+  await page.locator('#section-cut').fill('60');
+  await settle();
+  assert.equal((await state()).section, 60);
+  assert.notEqual((await pixels()).checksum, uncut.checksum, 'Section cut must change geometry');
+  await capture('preview_section_check.png');
+  await page.selectOption('#inspect-part', 'dac');
+  assert.match(await page.locator('#part-info').textContent(), /25.4 x 33.7 x 7.1 mm/);
+  await page.click('#isolate'); await settle();
+  assert.equal((await state()).visible, 1);
+  assert.equal((await state()).section, 100);
+  assert.deepEqual((await inspection()).parts.filter(p => p.visible).map(p => p.id), ['dac']);
+  assert((await pixels()).count > 150);
+  const downloadPromise = page.waitForEvent('download');
+  await page.click('#export-png');
+  const download = await downloadPromise;
+  assert.equal(download.suggestedFilename(), 'mytunas-custom.png');
+  const png = await readFile(await download.path());
+  assert.equal(png.subarray(1, 4).toString(), 'PNG');
+  assert(png.length > 1000);
+  await page.click('#reset');
+  const beforeSpin = await pixels();
+  await page.click('#spin'); await page.waitForTimeout(500);
+  assert.equal((await state()).spinning, true);
+  assert.notEqual((await pixels()).checksum, beforeSpin.checksum);
+  await page.click('#spin');
+  assert.equal((await state()).spinning, false);
+  await page.click('#reset');
+  assert.equal((await state()).section, 100);
+  assert.equal((await state()).selected, '');
+  checks.push('Port view, section clipping, inspector dimensions, isolation, PNG download, turntable and reset');
+  await page.click('[data-view=back]');
   await page.click('[data-part=rear_shell]');
   assert.equal((await inspection()).branding.visible, false, 'Rear branding must hide with the cap');
   await page.click('[data-part=rear_shell]');

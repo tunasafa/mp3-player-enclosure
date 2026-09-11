@@ -5,28 +5,75 @@
 <title>mytunas / MP3 player enclosure</title>
 <!-- __VIEWER_LICENSES__ -->
 <style>
-:root{--paper:#f3f5f6;--ink:#293238;--muted:#707d84;--line:#d7dfe2;--green:#357565;--panel:#fff}
-*{box-sizing:border-box;letter-spacing:0}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}button,input{font:inherit}button{cursor:pointer;color:inherit}button:focus-visible,input:focus-visible,canvas:focus-visible{outline:2px solid var(--green);outline-offset:3px}.page{max-width:1600px;margin:0 auto;padding:24px 32px 16px}.masthead{display:flex;align-items:center;justify-content:space-between;padding-bottom:20px;border-bottom:1px solid var(--line);gap:20px}.wordmark{font-size:17px;font-weight:700}.wordmark span{font-size:12px;font-weight:400;color:var(--muted);margin-left:12px}.revision{font:10px monospace;color:var(--muted)}.layout{display:grid;grid-template-columns:minmax(0,1fr) 290px}.stage{position:relative;min-width:0;overflow:hidden;border-right:1px solid var(--line);background:#edf1f3}.viewport{display:block;width:100%;height:740px;position:relative;touch-action:none;cursor:grab}.viewport.dragging{cursor:grabbing}.stage-top{position:absolute;top:24px;left:24px;right:24px;display:flex;justify-content:space-between;z-index:2;gap:16px;pointer-events:none}.eyebrow{font:10px monospace;color:var(--muted);text-transform:uppercase}.viewname{font-size:19px;font-weight:400;margin-top:6px}.badge{height:max-content;padding:6px 8px;border:1px solid #c2b89a;background:#fbf9ef;color:#827249;font:9px monospace}.stage-bottom{position:absolute;bottom:22px;left:24px;right:24px;display:flex;align-items:center;justify-content:space-between;gap:12px;pointer-events:none}.dimension{font:11px monospace}.dimension small{display:block;font-size:9px;margin-top:6px;color:var(--muted)}.axis{position:absolute;left:23px;bottom:78px;width:65px;height:65px;pointer-events:none}.view-buttons{position:absolute;right:22px;bottom:82px;display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end;max-width:calc(100% - 106px)}.tiny{border:1px solid #cbd4d9;border-radius:3px;min-height:32px;padding:6px 9px;background:#fafcfd;font:10px monospace}.tiny:hover{background:#e0e9e8}.tiny[aria-pressed=true]{background:#dcebe5;border-color:#7aa597;color:#285b4e}.icon-button{width:32px;padding:6px;display:inline-grid;place-items:center}.icon-button svg{width:16px;height:16px}.side{padding:26px 22px;background:var(--panel)}.intro{font-size:21px;font-weight:500;margin:7px 0 12px}.subline{font:11px monospace;color:var(--muted);line-height:1.7}.section{border-top:1px solid var(--line);padding-top:19px;margin-top:22px}.label{display:flex;align-items:center;justify-content:space-between;font:10px monospace;color:var(--muted);margin-bottom:12px;gap:8px}.range{width:100%;accent-color:var(--green);margin:5px 0 2px;cursor:pointer}.range-labels{display:flex;justify-content:space-between;color:var(--muted);font:9px monospace;margin-top:4px}.checks{display:grid;gap:13px;font-size:12px}.check{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer}.check input{accent-color:var(--green);width:15px;height:15px;margin:0;flex:none}.legend{display:grid;gap:4px}.legend-row{display:flex;align-items:center;gap:9px;font-size:11px;line-height:1.5;cursor:pointer;background:none;border:0;text-align:left;padding:5px 0;min-width:0}.swatch{width:9px;height:9px;border-radius:2px;flex:none;border:1px solid #0002}.legend-row.off{opacity:.35}.footer{display:flex;justify-content:space-between;gap:24px;border-top:1px solid var(--line);padding-top:15px;color:var(--muted);font-size:10px;line-height:1.6}.footer p{margin:0;max-width:760px}.footer a{color:var(--green);text-underline-offset:3px}.footer .offline{white-space:nowrap;font:10px monospace}.error{position:absolute;inset:35% 10% auto;padding:24px;background:var(--panel);border:1px solid var(--line);line-height:1.7;display:none}.count{position:absolute;top:84px;left:24px;font:9px monospace;color:var(--muted);pointer-events:none}.no-select{user-select:none}
-@media(max-width:1000px){.page{padding:18px}.layout{grid-template-columns:minmax(0,1fr) 255px}.side{padding:24px 18px}.viewport{height:680px}.stage-top{left:18px;right:18px}.badge{max-width:100px}}
-@media(max-width:760px){.layout{grid-template-columns:1fr}.stage{border-right:0;border-bottom:1px solid var(--line)}.viewport{height:610px}.side{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:24px 18px}.side .section{margin:0}.intro-block{grid-column:1/-1}.intro{margin-bottom:5px}.revision{display:none}.badge{max-width:none}.footer .offline{display:none}.parts-section{grid-column:1/-1}.legend{grid-template-columns:1fr 1fr;column-gap:20px}}
-@media(max-width:480px){.page{padding:12px}.wordmark{font-size:15px}.wordmark span{font-size:10px}.viewport{height:570px}.stage-top{top:18px}.viewname{font-size:17px}.badge{font-size:8px;max-width:94px}.stage-bottom{left:18px;right:18px}.count{left:18px;top:76px;font-size:8px}.view-buttons{right:12px;bottom:76px}.axis{left:12px;bottom:73px;width:52px;height:52px}.side{padding:23px 6px;gap:23px 16px}.legend{column-gap:12px}.legend-row{font-size:10px}.footer{font-size:9px}.tiny{font-size:9px;padding:6px 7px}.icon-button{padding:6px}}
-@media(max-width:480px){.count{display:none}}
+:root{--paper:#fff;--ink:#1d1d1f;--muted:#77777d;--line:#e5e5e7;--green:#177d73;--panel:#fff}
+*{box-sizing:border-box;letter-spacing:0}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit}button{cursor:pointer;color:inherit}
+button:focus-visible,input:focus-visible,select:focus-visible,canvas:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+button:disabled{opacity:.3;cursor:default}
+.page{max-width:1720px;margin:auto;padding:0 36px}
+.masthead{display:flex;align-items:center;justify-content:space-between;min-height:84px;gap:20px}
+.wordmark{font-size:26px;font-weight:650}.wordmark span{font-size:12px;font-weight:400;color:var(--muted);margin-left:16px}
+.revision{font-size:11px;color:var(--muted)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 286px;border-top:1px solid var(--line)}
+.stage{position:relative;min-width:0;overflow:hidden;background:#f5f5f7}
+.viewport{display:block;width:100%;height:820px;position:relative;touch-action:none;cursor:grab}.viewport.dragging{cursor:grabbing}
+.stage-top{position:absolute;top:30px;left:32px;right:32px;display:flex;justify-content:space-between;z-index:2;gap:16px;pointer-events:none}
+.eyebrow{font-size:10px;font-weight:550;color:var(--muted);text-transform:uppercase}
+.viewname{font-size:25px;font-weight:550;margin-top:8px;line-height:1.2}
+.badge{height:max-content;padding-top:2px;color:var(--muted);font-size:10px;white-space:nowrap}
+.stage-bottom{position:absolute;bottom:25px;left:32px;right:26px;display:flex;align-items:center;justify-content:space-between;gap:12px;pointer-events:none}
+.dimension{font-size:12px;font-variant-numeric:tabular-nums;font-weight:550}
+.dimension small{display:block;font-size:10px;font-weight:400;margin-top:6px;color:var(--muted)}
+.axis{position:absolute;left:29px;bottom:90px;width:58px;height:58px;pointer-events:none}
+.view-buttons{position:absolute;right:26px;bottom:96px;display:flex;gap:2px;flex-wrap:wrap;justify-content:flex-end;max-width:calc(100% - 108px)}
+.tiny{border:0;border-radius:6px;min-height:34px;padding:7px 10px;background:transparent;font-size:11px;transition:background .15s}
+.tiny:hover{background:#e6e6e9}.tiny[aria-pressed=true]{background:#fff;box-shadow:0 1px 5px #00000012;color:#14695f}
+.icon-button{width:34px;height:34px;padding:8px;display:inline-grid;place-items:center;flex:none}.icon-button svg{width:17px;height:17px;stroke-width:1.6}
+.side{padding:28px 24px;background:var(--panel)}
+.intro{font-size:23px;font-weight:600;margin:8px 0 10px}
+.subline{font-size:11px;color:var(--muted);line-height:1.7}
+.section{border-top:1px solid var(--line);padding-top:16px;margin-top:20px}
+.label{display:flex;align-items:center;justify-content:space-between;font-size:10px;font-weight:550;color:var(--muted);margin-bottom:10px;gap:8px}
+.range{width:100%;accent-color:var(--green);margin:4px 0 0;cursor:pointer;height:14px}
+.range-labels{display:flex;justify-content:space-between;color:var(--muted);font-size:9px;margin-top:5px}
+.checks{display:grid;gap:12px;font-size:11px}.check{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer}
+.check input{accent-color:var(--green);width:14px;height:14px;margin:0;flex:none}
+.legend{display:grid;gap:0}.legend-row{display:flex;align-items:center;gap:9px;font-size:10px;line-height:1.5;cursor:pointer;background:none;border:0;text-align:left;padding:5px 0;min-width:0}
+.swatch{width:7px;height:7px;border-radius:50%;flex:none;border:1px solid #0002}.legend-row.off{opacity:.35}
+.inspector-row{display:flex;gap:6px;align-items:center;min-width:0}
+select{min-width:0;width:100%;height:34px;border:1px solid var(--line);border-radius:5px;background:#fff;color:var(--ink);font-size:11px;padding:0 7px}
+.part-info{min-height:49px;font-size:10px;line-height:1.6;color:var(--muted);padding-top:9px;overflow-wrap:anywhere}
+.part-info strong{display:block;color:var(--ink);font-weight:550;font-variant-numeric:tabular-nums}
+.part-info span{display:block;font-size:9px}
+.footer{display:flex;justify-content:space-between;gap:24px;border-top:1px solid var(--line);padding:19px 0;color:var(--muted);font-size:10px;line-height:1.6}
+.footer p{margin:0;max-width:760px}.footer a{color:var(--muted);text-underline-offset:3px}.footer .offline{white-space:nowrap;font-size:9px}
+.error{position:absolute;inset:35% 10% auto;padding:24px;background:var(--panel);border:1px solid var(--line);line-height:1.7;display:none}
+.count{position:absolute;top:100px;left:32px;font-size:9px;color:var(--muted);pointer-events:none;font-variant-numeric:tabular-nums}
+.no-select{user-select:none}.stage-tools{display:flex;gap:2px;pointer-events:auto}
+@media(max-width:1100px){.page{padding:0 20px}.layout{grid-template-columns:minmax(0,1fr) 258px}.side{padding:28px 18px}.stage-top{left:24px;right:24px}.viewname{font-size:22px}.badge{display:none}.count{left:24px}}
+@media(max-width:760px){.page{padding:0 16px}.masthead{min-height:72px}.layout{grid-template-columns:1fr}.viewport{height:610px}.side{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;padding:26px 4px}.side .section{margin:0}.intro-block{grid-column:1/-1}.intro{margin-bottom:5px}.revision{display:none}.footer .offline{display:none}.parts-section,.inspector-section{grid-column:1/-1}.legend{grid-template-columns:1fr 1fr;column-gap:20px}.inspector-row select{max-width:none}.part-info{min-height:42px}}
+@media(max-width:480px){.page{padding:0 12px}.wordmark{font-size:23px}.wordmark span{font-size:10px}.viewport{height:580px}.stage-top{top:23px;left:20px;right:20px}.viewname{font-size:22px}.stage-bottom{left:18px;right:12px;bottom:20px}.dimension{font-size:11px}.dimension small{max-width:145px;font-size:9px;line-height:1.5}.count{display:none}.view-buttons{right:12px;bottom:94px;max-width:calc(100% - 86px)}.axis{left:12px;bottom:94px;width:49px;height:49px}.side{gap:23px 16px}.legend{column-gap:12px}.legend-row{font-size:10px}.footer{font-size:9px}.tiny{font-size:10px;padding:6px 8px}.icon-button{padding:8px;width:30px;height:32px}}
+@media(prefers-reduced-motion:reduce){.tiny{transition:none}}
+@media(max-width:480px){.view-buttons{left:12px;right:12px;max-width:none;flex-wrap:nowrap;justify-content:center}.axis{bottom:142px}}
 </style>
 </head>
 <body><div class="page">
-<header class="masthead"><div class="wordmark">mytunas <span>/ MP3 PLAYER</span></div><div class="revision">P04 / MECHANICAL FIT STUDY / 2026</div></header>
+<header class="masthead"><div class="wordmark">mytunas <span>/ MP3 PLAYER</span></div><div class="revision">DESIGN STUDIO &nbsp; / &nbsp; P04</div></header>
 <main class="layout">
 <section class="stage no-select" aria-label="Interactive enclosure model">
 <canvas id="view" class="viewport" tabindex="0" aria-label="3D enclosure. Drag to orbit, scroll to zoom. Arrow keys rotate. Home resets."></canvas>
-<div class="stage-top"><div><div class="eyebrow">Assembly / millimetres</div><div id="viewname" class="viewname">Compact construction</div></div><div class="badge">P04 / Fit prototype</div></div>
+<div class="stage-top"><div><div class="eyebrow">mytunas / Personal audio</div><div id="viewname" class="viewname">Assembly</div></div><div class="badge">P04 / Fit prototype</div></div>
 <div class="count" id="meshcount"></div><canvas id="axis" class="axis" width="130" height="130" aria-hidden="true"></canvas>
-<div class="view-buttons" role="group" aria-label="View presets"><button class="tiny" data-view="front" aria-pressed="false">Front</button><button class="tiny" data-view="back" aria-pressed="false">Rear</button><button class="tiny" data-view="inside" aria-pressed="false">Inside</button><button class="tiny" data-view="iso" aria-pressed="true">3D</button><button class="tiny icon-button" id="reset" title="Reset view" aria-label="Reset view"></button></div>
-<div class="stage-bottom"><div class="dimension"><span id="dimensions"></span><small>Length x width x thickness / mm</small></div><div><button class="tiny icon-button" id="zoom-out" title="Zoom out" aria-label="Zoom out" style="pointer-events:auto"></button> <button class="tiny icon-button" id="zoom-in" title="Zoom in" aria-label="Zoom in" style="pointer-events:auto"></button></div></div>
+<div class="view-buttons" role="group" aria-label="View presets"><button class="tiny" data-view="front" aria-pressed="false">Front</button><button class="tiny" data-view="back" aria-pressed="false">Rear</button><button class="tiny" data-view="inside" aria-pressed="false">Inside</button><button class="tiny" data-view="ports" aria-pressed="false">Ports</button><button class="tiny" data-view="iso" aria-pressed="true">3D</button><button class="tiny icon-button" id="reset" title="Reset view" aria-label="Reset view"></button></div>
+<div class="stage-bottom"><div class="dimension"><span id="dimensions"></span><small>Length x width x thickness / mm</small></div><div class="stage-tools"><button class="tiny icon-button" id="spin" title="Rotate automatically" aria-label="Rotate automatically" aria-pressed="false"></button><button class="tiny icon-button" id="export-png" title="Export PNG" aria-label="Export PNG"></button><button class="tiny icon-button" id="zoom-out" title="Zoom out" aria-label="Zoom out" style="pointer-events:auto"></button> <button class="tiny icon-button" id="zoom-in" title="Zoom in" aria-label="Zoom in" style="pointer-events:auto"></button></div></div>
 <div class="error" id="error" role="alert">This preview requires WebGL. Open it in a browser with hardware acceleration enabled.</div>
 </section>
 <aside class="side">
 <div class="intro-block"><div class="eyebrow">P04 / Compact</div><h1 class="intro">mytunas</h1><div class="subline">MP3 player / Two printed shells<br>600 mAh / Stereo earphone output</div></div>
 <div class="section"><label class="label" for="explode"><span>EXPLODED ASSEMBLY</span><output id="explode-out">0%</output></label><input id="explode" class="range" type="range" min="0" max="100" value="0"><div class="range-labels"><span>ASSEMBLED</span><span>SEPARATED</span></div></div>
+<div class="section"><label class="label" for="section-cut"><span>SECTION / DEPTH</span><output id="section-out">Full</output></label><input id="section-cut" class="range" type="range" min="0" max="100" value="100" aria-label="Section depth"><div class="range-labels"><span>FRONT</span><span>REAR</span></div></div>
+<div class="section inspector-section"><label class="label" for="inspect-part">COMPONENT INSPECTOR</label><div class="inspector-row"><select id="inspect-part"><option value="">Assembly</option></select><button class="tiny icon-button" id="isolate" title="Isolate selected part" aria-label="Isolate selected part" disabled></button></div><div class="part-info" id="part-info" aria-live="polite">10 parts / P04 assembly</div></div>
 <div class="section"><div class="label">VISIBLE LAYERS</div><div class="checks"><label class="check">Printed shells<input type="checkbox" data-group="shell" checked></label><label class="check">Components<input type="checkbox" data-group="components" checked></label><label class="check">Technical outlines<input id="outlines" type="checkbox"></label></div></div>
 <div class="section parts-section"><div class="label">PARTS / 10</div><div class="legend" id="legend"></div></div>
 </aside></main>

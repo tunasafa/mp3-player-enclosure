@@ -1,10 +1,10 @@
 {
-  "revision": "P04 - compact repack, lowered LCD seat, unchanged components",
+  "revision": "P04 - 12.9mm thin repack, battery below LCD, flipped upper DAC",
   "units": "mm",
   "outer_length_width_thickness_mm": [
-    115.0,
-    60.0,
-    13.1
+    115,
+    60,
+    12.9
   ],
   "scope": "CAD/mesh, assembly interference, and designated empty routing-volume checks; no physical fit, wiring, battery expansion or load validation.",
   "stls": [
@@ -21,15 +21,15 @@
       "mesh_bodies": 1,
       "positive_volume": true,
       "cad_valid": true,
-      "volume_mm3": 7230.29849269368,
-      "faces": 10880
+      "volume_mm3": 7004.695284052315,
+      "faces": 11108
     },
     {
       "file": "designs/P04_compact/STL/rear_shell.stl",
       "bounds_mm": [
         60.0,
         114.9999999,
-        7.9000000953674325
+        8.399999618530273
       ],
       "watertight": true,
       "winding_consistent": true,
@@ -37,8 +37,8 @@
       "mesh_bodies": 1,
       "positive_volume": true,
       "cad_valid": true,
-      "volume_mm3": 12458.392051534698,
-      "faces": 15720
+      "volume_mm3": 12641.470048225869,
+      "faces": 18310
     },
     {
       "file": "designs/P04_compact/STL/insert_and_clearance_fit_coupon.stl",
@@ -58,6 +58,7 @@
     }
   ],
   "envelope_collisions": [],
+  "conservative_component_collisions": [],
   "rear_branding": {
     "name": "mytunas",
     "depth_mm": 0.3,
@@ -65,10 +66,10 @@
     "recess_count": 8,
     "removed_volume_mm3": 85.5748,
     "expected_removed_volume_mm3": 85.5748,
-    "floor_z_mm": 12.799999999999999,
+    "floor_z_mm": 12.6,
     "readable_from": "rear exterior",
-    "logo_width_mm": 24.0,
-    "wordmark_width_mm": 26.0
+    "logo_width_mm": 24,
+    "wordmark_width_mm": 26
   },
   "routing_reserve_collisions": [],
   "nominal_clearances_mm": {
@@ -76,22 +77,23 @@
     "fpc8_to_front_shell_cad_distance": 2.349999999999998,
     "dac_to_display": 0.3,
     "dac_to_rear_skin": 0.3,
-    "lens_to_display": 0.7,
-    "display_to_front_shell": 0.19999999999999973,
-    "jack_rear_aperture_ligament": 0.8725,
+    "lens_to_display": 0.5,
+    "display_to_front_shell": 0.19999999999999996,
+    "jack_rear_aperture_ligament": 2.2275,
     "display_to_wheel": 1.0,
     "wheel_to_fastener": 1.3,
-    "battery_to_dac": 4.699999999999996,
-    "usb_to_card_board": 26.6,
-    "wheel_to_battery": 0.3,
+    "battery_to_dac": 16.912990474429996,
+    "usb_to_card_board": 48.1,
+    "wheel_to_battery": 0.3000000000000007,
+    "battery_to_display": 3.1622776601683795,
+    "dac_to_wheel": 14.912990474429996,
     "battery_to_rear_skin": 1.7,
     "battery_to_side_guide": 0.8,
     "board_support_adhesive": 0.2,
     "screw_tip_above_pilot_bottom": 1.0,
     "screw_insert_engagement": 2.2,
     "tongue_to_rear_wall": 0.5,
-    "dac_top_edge_to_inner_wall": 0.5,
-    "dac_top_edge_to_outer_face": 2.1
+    "dac_top_envelope_to_outer_face": -0.113
   },
   "minimum_clearance_checks": {
     "fpc8_to_sidewall": true,
@@ -104,47 +106,50 @@
     "display_to_wheel": true,
     "wheel_to_fastener": true,
     "battery_to_dac": true,
-    "usb_to_card_board": true
+    "usb_to_card_board": true,
+    "wheel_to_battery": true,
+    "battery_to_display": true
   },
   "jack_axis_assembly_mm": [
-    4.05915274704965,
+    -13.35915274704965,
     57.5,
-    7.72751704190317
+    8.172482958096829
   ],
   "vendor_dac": {
     "contained_in_planning_envelope": true,
     "assembly_bounds_mm": [
       [
-        -12.700000000000006,
-        21.69999999999999,
-        5.227517041903167
+        -22.0,
+        23.912990474429996,
+        4.3
       ],
       [
-        12.700000000000006,
-        55.23700952556963,
-        11.600000000000001
+        3.4000000000000017,
+        57.44999999999964,
+        10.672482958096829
       ]
     ],
     "socket_mouth_axis_mm": [
-      4.059152747049652,
-      55.23700952556964,
-      7.72751704190317
+      -13.359152747049652,
+      57.44999999999964,
+      8.172482958096829
     ],
-    "socket_mouth_recess_mm": 2.26299047443036,
-    "orientation": "PCB back toward rear; components toward display",
+    "socket_mouth_recess_mm": 0.050000000000359535,
+    "orientation": "Components toward rear; PCB back toward LCD; socket faces top; Y-flipped versus 13.1mm baseline",
+    "shell_collisions": [],
     "note": "Vendor STEP height 6.3725mm; reserved published product height 7.1mm. Physical sample unmeasured."
   },
   "vendor_xiao": {
     "assembly_bounds_mm": [
       [
-        7.0219086855864195,
-        0.609999955412498,
-        5.200000014901159
+        7.518018885586422,
+        21.109999955412498,
+        4.300000014901158
       ],
       [
-        29.503889835740353,
-        18.38999995541252,
-        9.660000014901309
+        30.00000003574035,
+        38.88999995541252,
+        8.76000001490131
       ]
     ],
     "shell_component_and_route_collisions": [],
@@ -157,11 +162,11 @@
       13.4
     ],
     "current_length_width_thickness_mm": [
-      115.0,
-      60.0,
-      13.1
+      115,
+      60,
+      12.9
     ],
-    "external_volume_reduction_percent": 30.08,
+    "external_volume_reduction_percent": 31.15,
     "footprint_reduction_percent": 28.48,
     "component_envelopes_preserved": true,
     "battery_rotated_in_plane": true,
@@ -174,19 +179,70 @@
       13.4
     ],
     "current_length_width_thickness_mm": [
-      115.0,
-      60.0,
+      115,
+      60,
+      12.9
+    ],
+    "reduction_mm": 0.5,
+    "external_volume_reduction_percent": 13.73,
+    "display_seat_shift_mm": -0.5,
+    "published_dac_height_retained_mm": 7.1,
+    "note": "Same footprint, battery rear allowance and full component heights. LCD pocket and lower wheel seat each save 0.2mm versus the 13.1mm baseline. Flipping alone does not lower the height of a module."
+  },
+  "requested_repack": {
+    "previous_mm": [
+      115,
+      60,
       13.1
     ],
-    "reduction_mm": 0.3,
-    "external_volume_reduction_percent": 12.4,
-    "display_seat_shift_mm": -0.3,
-    "published_dac_height_retained_mm": 7.1,
-    "note": "Lowered LCD seat and DAC together; no board flip or component substitution. Battery rear allowance falls from 2.0 to 1.7 mm, not a qualified expansion specification."
+    "current_mm": [
+      115,
+      60,
+      12.9
+    ],
+    "rejected_previous_mm": [
+      115,
+      60,
+      13.8
+    ],
+    "thickness_change_mm": -0.2,
+    "battery_behind_display": false,
+    "dac_behind_wheel": false,
+    "jack_edge": "top",
+    "apertures_mm": {
+      "usb": {
+        "width": 9.4,
+        "height": 3.7,
+        "z": 7.155
+      },
+      "microsd": {
+        "width": 11.5,
+        "height": 1.5,
+        "z": 6.95
+      },
+      "jack": {
+        "diameter": 5,
+        "board": "dac",
+        "axis_offset_x": -4.05915274704965,
+        "axis_offset_z": 3.87248295809683,
+        "edge": "top",
+        "status": "5mm circular aperture around the vendor 4.6mm barrel, nominally 0.05mm recessed. Inner relief does not enlarge the exterior mouth. Not sealed or IP rated."
+      }
+    },
+    "ingress_rating": "None; unsealed connectors and enclosure seam"
+  },
+  "thin_layout_constraints": {
+    "battery_outside_display_projection": true,
+    "thinner_than_13p1": true,
+    "footprint_not_increased": true,
+    "lcd_pocket_remaining_skin_mm": 1,
+    "lcd_dac_stack_lower_bound_mm": 12.899999999999999,
+    "wheel_battery_stack_lower_bound_mm": 12.899999999999999,
+    "scope": "Lower bounds for this layered assignment and retained allowances, not a global packing proof."
   },
   "input_sha256": {
-    "build.py": "92ee66ebfe5a62d559f167fb72b4c68471ff4d152f89259dae32648172304121",
-    "parameters.json": "5c951018f8e41ea7c87919d21562bb0b9dd475bc300af961f757187f3a65ff8c",
+    "build.py": "972c901c4cbc918600f06e183cabdf81e6a52c2abede3ae468370150c96338ab",
+    "parameters.json": "67e315583e7d9219ca1e8c5b42ed91abbadce01afcfb4ceab9b3745042396179",
     "layout_baseline.json": "f2d910a3c5718a59529c13aef7f7ac0943931893ae607a4229b28c4d542c18e7",
     "thickness_baseline.json": "86f12c3e2bd95a3f6570e782e3cd138ac3cc1f25cf828bf6f374a853c51d8d89",
     "vendor/6309.step": "3eba386a14eb87e26fc5a287a6e5b4a30515306079798d11c45fc202c79b4627",
