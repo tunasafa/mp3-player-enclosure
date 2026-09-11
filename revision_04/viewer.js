@@ -310,6 +310,10 @@ for (const spec of data.parts) {
       ? new THREE.MeshPhysicalMaterial({ color: '#d7f0f5', metalness: 0, roughness: 0.1, transparent: true, opacity: 0.045, depthWrite: false, envMapIntensity: 0.35 })
       : material(spec.color, 0.05, 0.5);
     imported(group, spec.positions, mat);
+    if (spec.engraving_positions) {
+      const engraving = imported(group, spec.engraving_positions, material('#59686c', 0.08, 0.72));
+      engraving.name = 'rear-branding-recess';
+    }
   } else if (data.vendor[spec.id]) {
     for (const batch of data.vendor[spec.id]) {
       const color = new THREE.Color().setRGB(...batch.color, THREE.LinearSRGBColorSpace);
@@ -481,7 +485,12 @@ window.FORM01 = {
   getInspection: () => {
     scene.updateMatrixWorld(true);
     const lcd = assembly.getObjectByName('lcd-active-surface');
+    const branding = assembly.getObjectByName('rear-branding-recess');
     return {
+      branding: { name: parameters.branding.name, parent: branding.parent.name,
+        visible: branding.parent.visible, depth: parameters.branding.depth,
+        bounds: (() => { branding.geometry.computeBoundingBox(); const b = branding.geometry.boundingBox; return { min: b.min.toArray(), max: b.max.toArray() }; })(),
+        world: branding.getWorldPosition(new THREE.Vector3()).toArray() },
       screen: { parent: lcd.parent.name, localZ: lcd.position.z, width: lcd.userData.width, height: lcd.userData.height, world: lcd.getWorldPosition(new THREE.Vector3()).toArray(), depthTest: lcd.material.depthTest, visible: lcd.parent.visible },
       parts: [...parts.values()].map(p => ({ id: p.name, source: p.userData.source, visible: p.visible, meshes: (() => { let n = 0; p.traverse(o => { if (o.isMesh) n++; }); return n; })(), offset: p.position.z })),
       triangles: renderer.info.render.triangles,

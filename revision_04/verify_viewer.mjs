@@ -56,6 +56,11 @@ try {
   assert.equal(detail.screen.parent, 'display_envelope');
   assert(detail.screen.localZ > 1.5 && detail.screen.localZ < 2, 'LCD must be recessed behind lens');
   assert.equal(detail.screen.depthTest, true);
+  assert.equal(detail.branding.name, 'mytunas');
+  assert.equal(detail.branding.parent, 'rear_shell');
+  assert.equal(detail.branding.depth, 0.3);
+  assert(Math.abs(detail.branding.bounds.min[2] - 13.1) < 1e-4);
+  assert(Math.abs(detail.branding.bounds.max[2] - 13.1) < 1e-4, 'Engraving must be the recessed CAD floor');
   for (const part of detail.parts.filter(p => !['front_bezel', 'rear_shell', 'clear_lens_reference'].includes(p.id))) {
     assert(part.meshes >= 3, `${part.id} remains a single envelope`);
   }
@@ -63,6 +68,14 @@ try {
   await capture('preview_iso_check.png');
   await page.click('[data-view=front]');
   await capture('preview_check.png');
+  await page.click('[data-view=back]');
+  await capture('preview_rear_check.png');
+  await page.click('[data-part=rear_shell]');
+  assert.equal((await inspection()).branding.visible, false, 'Rear branding must hide with the cap');
+  await page.click('[data-part=rear_shell]');
+  assert.equal((await inspection()).branding.visible, true);
+  await page.click('[data-view=front]');
+  await settle();
   const beforeOrbit = await pixels();
   const bounds = await page.locator('#view').boundingBox();
   await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
@@ -96,9 +109,12 @@ try {
   const afterExplode = await inspection();
   assert.equal(afterExplode.screen.localZ, beforeExplode.screen.localZ);
   assert.notDeepEqual(afterExplode.screen.world, beforeExplode.screen.world);
+  assert.notDeepEqual(afterExplode.branding.world, beforeExplode.branding.world);
+  assert.deepEqual(afterExplode.branding.bounds, beforeExplode.branding.bounds);
   assert.equal(afterExplode.parts.find(p => p.id === 'display_envelope').offset, -0.82 * 65 * 0.43);
   await capture('preview_exploded_check.png');
   checks.push('LCD visibility follows display, not lens; LCD moves with display during explosion');
+  checks.push('mytunas CAD engraving at Z13.1; lettering/logo follow rear-cap visibility and explosion');
   await page.click('[data-group=components]');
   assert.equal((await state()).visible, 2);
   await page.click('#reset');
@@ -123,6 +139,8 @@ try {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.click('#reset');
   await capture('preview_mobile_check.png', { fullPage: true });
+  await page.click('[data-view=back]');
+  await capture('preview_mobile_rear_check.png', { fullPage: true });
   await page.click('[data-view=inside]');
   await capture('preview_mobile_inside_check.png', { fullPage: true });
   await page.click('#reset');
@@ -131,6 +149,8 @@ try {
   await page.setViewportSize({ width: 320, height: 740 });
   await page.click('#reset');
   await capture('preview_small_mobile_check.png', { fullPage: true });
+  await page.click('[data-view=back]');
+  await capture('preview_small_mobile_rear_check.png', { fullPage: true });
   checks.push('Desktop, 390px mobile and 320px mobile screenshots; nonblank canvas and unclipped geometry');
   assert.deepEqual(requests, [], 'Offline preview made network requests');
   assert.deepEqual(errors, []);

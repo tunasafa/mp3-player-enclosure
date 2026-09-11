@@ -40,7 +40,16 @@ def main():
         if name in ("front_bezel", "rear_shell", "clear_lens_reference"):
             path = ROOT / "designs/P04_compact/reference_only" / f"{name}.stl"
             mesh = trimesh.load(path, force="mesh", process=True)
-            part["positions"] = packed(mesh.vertices[mesh.faces].reshape(-1, 3))
+            if name == "rear_shell":
+                floor = PARAMETERS["body"]["thickness"] - PARAMETERS["branding"]["depth"]
+                engraved = np.all(np.isclose(mesh.triangles[:, :, 2], floor, atol=1e-4, rtol=0), axis=1)
+                engraved &= mesh.face_normals[:, 2] > 0.99
+                if not np.any(engraved):
+                    raise RuntimeError("Rebuild the rear cap CAD before generating the branded viewer")
+                part["engraving_positions"] = packed(mesh.triangles[engraved].reshape(-1, 3))
+                part["positions"] = packed(mesh.triangles[~engraved].reshape(-1, 3))
+            else:
+                part["positions"] = packed(mesh.vertices[mesh.faces].reshape(-1, 3))
         parts.append(part)
     boards = {b["id"]: b for b in PARAMETERS["electronics"]}
     dac, xiao = boards["dac"], boards["xiao"]

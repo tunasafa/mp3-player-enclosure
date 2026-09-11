@@ -1,4 +1,4 @@
-# P04 — direct earphone output
+# mytunas / P04 — direct earphone output
 
 **134 × 72 × 13.4 mm (length × width × thickness).** The audio board is now the [Adafruit TLV320DAC3100, product 6309](https://www.adafruit.com/product/6309), which includes a stereo headphone amplifier and 3.5 mm socket. Ordinary passive earphones plug into that socket. The PCM5102A and separate amplifier reservation are removed from this revision.
 
@@ -23,6 +23,10 @@ The 7.1 mm published height controls the shell. The manufacturer's STEP measures
 The socket axis derived from that STEP is X 4.059, Z 8.028 mm. Its mouth sits at Y 64.737, approximately 2.263 mm inside the top face. The Ø9 mm opening permits a slim plug body to reach the recessed socket; check a plug shoulder of at most about 8.5 mm against a physical fit print. Oversized, flared, or right-angle plug bodies may need a larger opening. Vendor CAD is nominal geometry, not a measurement of the purchased sample.
 
 ## Print and assembly
+
+The rear cap includes a centered **mytunas** wordmark beneath an original rounded waveform/m logo. Both are engraved **0.3 mm** into the exterior, leaving **0.9 mm** of the nominal 1.2 mm skin. The logo is 24 mm wide and the name is 26 mm wide. The actual recess is included in `rear_shell.step`, the printable `rear_shell.stl`, the assembly STEP and the preview. The viewer shades the recessed floor darker for legibility; a single-material print has the same plastic color throughout unless the recess is filled afterward.
+
+The [logo artwork and generation prompt](assets/README.md) include the original PNG, outlined SVG, and CAD contours. Placement and depth are in `parameters.json` under `branding`. After changing the original logo or wordmark, run `make_branding.py` before rebuilding the CAD. The **Rear** preset shows the engraving; it disappears with the removed rear cap in **Inside** view.
 
 Print `insert_and_clearance_fit_coupon.stl`, `front_bezel.stl`, and `rear_shell.stl` from `designs/P04_compact/STL/`, in millimetres at 100% scale. Exterior faces are already placed on the print bed at Z=0. Use STEP or `reference_only/` for assembly coordinates. Reference components are not printable hardware. Use this revision's matching front and rear shells because the socket opening changed.
 

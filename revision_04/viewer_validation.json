@@ -19,6 +19,7 @@
     "Pointer orbit changes canvas pixels",
     "Inside preset exposes components; front and rear internal views render",
     "LCD visibility follows display, not lens; LCD moves with display during explosion",
+    "mytunas CAD engraving at Z13.1; lettering/logo follow rear-cap visibility and explosion",
     "Part/layer visibility, outlines, zoom and reset",
     "Every internal component renders in isolation",
     "Desktop, 390px mobile and 320px mobile screenshots; nonblank canvas and unclipped geometry",
@@ -46,6 +47,18 @@
       "minY": 96,
       "maxY": 643,
       "checksum": 766763508,
+      "width": 1085,
+      "height": 740
+    },
+    {
+      "name": "preview_rear_check.png",
+      "count": 161152,
+      "colors": 59,
+      "minX": 395,
+      "maxX": 689,
+      "minY": 96,
+      "maxY": 643,
+      "checksum": 436950515,
       "width": 1085,
       "height": 740
     },
@@ -98,6 +111,18 @@
       "height": 570
     },
     {
+      "name": "preview_mobile_rear_check.png",
+      "count": 77479,
+      "colors": 52,
+      "minX": 81,
+      "maxX": 284,
+      "minY": 117,
+      "maxY": 497,
+      "checksum": 110643364,
+      "width": 366,
+      "height": 570
+    },
+    {
       "name": "preview_mobile_inside_check.png",
       "count": 76423,
       "colors": 633,
@@ -132,8 +157,20 @@
       "checksum": 63683397,
       "width": 296,
       "height": 570
+    },
+    {
+      "name": "preview_small_mobile_rear_check.png",
+      "count": 77479,
+      "colors": 52,
+      "minX": 46,
+      "maxX": 249,
+      "minY": 117,
+      "maxY": 497,
+      "checksum": 166052577,
+      "width": 296,
+      "height": 570
     }
   ],
   "runtimeErrors": 0,
-  "preview_sha256": "56e815c32c8938574e3ccc4afad8c8094277f05cbbbcf26a0bf1cd03fa61311e"
+  "preview_sha256": "7cc25b9e19c8e954a022ba69ad24212af4a24d6fa556f3db69a57da25b2934a4"
 }

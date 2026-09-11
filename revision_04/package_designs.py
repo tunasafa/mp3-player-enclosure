@@ -27,12 +27,13 @@ def package(target=None):
             raise RuntimeError('CAD validation failed.')
     names = ['BOM.csv','vendor/6309.step','vendor/README.md','vendor/LICENSE-Adafruit-CAD.txt','README.md','HARDWARE_NOTES.md','requirements.json',
              'parameters.json','requirements.txt','build.py',
-             'make_viewer.py','make_components.py','viewer.html','viewer.js','package.json','package-lock.json',
+             'make_viewer.py','make_components.py','make_branding.py','viewer.html','viewer.js','package.json','package-lock.json',
              'vendor/viewer.bundle.js','vendor/LICENSE-viewer.txt','vendor/XIAO-ESP32S3 v2.step',
              'make_drawings.py','make_layout.py','verify_viewer.mjs','package_designs.py',
              'validation.json','viewer_validation.json','preview.html','design_overview.png','design_overview.pdf',
              'internal_layout.png']
     files = [ROOT/name for name in names]
+    files += sorted(p for p in (ROOT/'assets').rglob('*') if p.is_file() and not p.name.startswith('.'))
     files += sorted(p for p in (ROOT/'designs').rglob('*') if p.is_file() and not p.name.startswith('.'))
     missing = [str(p) for p in files if not p.is_file()]
     if missing:

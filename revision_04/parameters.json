@@ -25,6 +25,21 @@
     "head_seat_z": 10.0,
     "screw_length": 7.0
   },
+  "branding": {
+    "name": "mytunas",
+    "surface": "rear exterior",
+    "depth": 0.3,
+    "minimum_remaining_skin": 0.9,
+    "artwork": "assets/mytunas-branding.json",
+    "logo": {
+      "width": 24.0,
+      "center": [0.0, 6.0]
+    },
+    "wordmark": {
+      "width": 26.0,
+      "center": [0.0, -9.0]
+    }
+  },
   "display": {
     "center": [
       0.0,

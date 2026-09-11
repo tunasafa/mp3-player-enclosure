@@ -1,4 +1,4 @@
-# FORM 04 — MP3 Player Enclosure
+# mytunas — MP3 Player Enclosure / FORM 04
 
 > *I got tired of renting my music.*
 
@@ -52,6 +52,7 @@ Not a phone app. Not a streaming box. A physical device — with a screen, a cli
 ## Enclosure
 
 - **Two printed shells** — front bezel + rear shell, no middle carrier plate
+- **Engraved rear cap** — centered waveform/m logo and lowercase mytunas name, 0.3 mm recess
 - **Four M2 × 7 mm** heat-set inserts and screws
 - **Clear lens** — 43 × 33 × 0.6 mm, laser-cut from clear sheet
 - **Top Ø9 mm** earphone opening directly above the onboard 3.5 mm socket

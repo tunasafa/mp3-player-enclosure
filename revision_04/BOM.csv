@@ -7,7 +7,7 @@ Wheel adapter,1,8-pin FPC breakout,Your Cee listing: obverse 0.5mm pitch; revers
 Storage,1,microSD module,Retained 22x18x4mm envelope
 Battery,1,Protected 503040 3.7V 600mAh,User selected advertised 5x30x40mm; finished dimensions and charge rating unverified
 Front shell,1,P04 front_bezel.stl,Print fit prototype
-Rear shell,1,P04 rear_shell.stl,Print fit prototype
+Rear shell,1,P04 rear_shell.stl,Print fit prototype; centered mytunas logo and name engraved 0.3mm into exterior
 Fit coupon,1,insert_and_clearance_fit_coupon.stl,Print before selecting inserts
 Lens,1,Clear sheet 43x33x0.6mm,Reference DXF; confirm actual display offsets
 Inserts,4,M2 heat-set inserts,Select for provisional 3.2mm diameter by 3.2mm deep pilots using coupon

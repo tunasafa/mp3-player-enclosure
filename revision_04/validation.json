@@ -37,8 +37,8 @@
       "mesh_bodies": 1,
       "positive_volume": true,
       "cad_valid": true,
-      "volume_mm3": 16966.89958637871,
-      "faces": 13442
+      "volume_mm3": 16881.324774898196,
+      "faces": 16062
     },
     {
       "file": "designs/P04_compact/STL/insert_and_clearance_fit_coupon.stl",
@@ -58,6 +58,18 @@
     }
   ],
   "envelope_collisions": [],
+  "rear_branding": {
+    "name": "mytunas",
+    "depth_mm": 0.3,
+    "minimum_remaining_skin_mm": 0.9,
+    "recess_count": 8,
+    "removed_volume_mm3": 85.5748,
+    "expected_removed_volume_mm3": 85.5748,
+    "floor_z_mm": 13.1,
+    "readable_from": "rear exterior",
+    "logo_width_mm": 24.0,
+    "wordmark_width_mm": 26.0
+  },
   "routing_reserve_collisions": [],
   "nominal_clearances_mm": {
     "fpc8_to_sidewall": 2.85,
@@ -108,8 +120,9 @@
     "note": "Vendor STEP height 6.3725mm; reserved published product height 7.1mm. Physical sample unmeasured."
   },
   "input_sha256": {
-    "build.py": "34a07afd2f5ed756bae5ef8ac6c17d8100c7ab21fcee17b5355513162b6b5e00",
-    "parameters.json": "7460393172d457a463ddc8e568a054bfb458a028b20cb0571e0439490054b25d",
-    "vendor/6309.step": "3eba386a14eb87e26fc5a287a6e5b4a30515306079798d11c45fc202c79b4627"
+    "build.py": "9a2683ac2801e275d79f25f88d8bd619e078b4b89be9e99ab92794117fa0fda7",
+    "parameters.json": "0d9fd9946c8060926a5eaa0c6b4f1662500e266e97159f460cdc1e3e37ccb189",
+    "vendor/6309.step": "3eba386a14eb87e26fc5a287a6e5b4a30515306079798d11c45fc202c79b4627",
+    "assets/mytunas-branding.json": "e0126f5f70fbdedc5157ae24d24881cd849a8849cac4337d5e95f05debc454f1"
   }
 }

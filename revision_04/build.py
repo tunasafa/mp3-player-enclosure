@@ -7,6 +7,7 @@ import math
 import itertools
 import hashlib
 import cadquery as cq
+from cadquery.occ_impl.shapes import sortWiresByBuildOrder
 import trimesh
 ROOT = Path(__file__).resolve().parent
 P = json.loads((ROOT / "parameters.json").read_text())
@@ -121,7 +122,43 @@ def front_shell():
         a = a.union(block(1.8, 24, .8, sx*(W/2-1.9), 32, FRONT-.8))
     return ports(a).clean()
 
-def rear_shell():
+def branding_faces(z=0):
+    branding = P['branding']
+    artwork = json.loads((ROOT/branding['artwork']).read_text())
+    if artwork['name'] != branding['name']:
+        raise ValueError('Regenerate branding contours after changing the device name')
+    faces = []
+    for key in ('logo', 'wordmark'):
+        spec = branding[key]
+        cx, cy = spec['center']
+        wires = []
+        for contour in artwork[key]:
+            # Rear-view X is opposite assembly X; mirror so the name reads outward.
+            points = [cq.Vector(-(x*spec['width']+cx), y*spec['width']+cy, z)
+                      for x, y in contour[:-1]]
+            wires.append(cq.Wire.makePolygon(points, close=True))
+        wires.sort(key=lambda w: cq.Face.makeFromWires(w).Area(), reverse=True)
+        for outer, *holes in sortWiresByBuildOrder(wires):
+            face = cq.Face.makeFromWires(outer, holes)
+            if not face.isValid():
+                raise ValueError(f'Invalid {key} engraving contour')
+            faces.append(face)
+    return faces
+
+def engrave_rear(shell):
+    branding = P['branding']
+    depth = branding['depth']
+    if depth <= 0 or SKIN-depth < branding['minimum_remaining_skin']-1e-6:
+        raise ValueError('Rear engraving exceeds the permitted skin depth')
+    faces = branding_faces(T-depth)
+    for face in faces:
+        bb = face.BoundingBox()
+        if max(abs(bb.xmin), abs(bb.xmax)) > W/2-WALL-4 or max(abs(bb.ymin), abs(bb.ymax)) > L/2-WALL-8:
+            raise ValueError('Rear branding must stay within the flat central cap area')
+    cutters = cq.Compound.makeCompound([cq.Solid.extrudeLinear(f, (0, 0, depth+.05)) for f in faces])
+    return shell.cut(cutters).clean()
+
+def rear_shell(engraved=True):
     start = FRONT+B['seam_gap']
     inner = T-SKIN
     a = outer(T-start, start, True).cut(cavity(start-1, inner-start+1))
@@ -153,7 +190,8 @@ def rear_shell():
     dac = next(e for e in P['electronics'] if e['id']=='dac')
     a = a.union(block(8, .8, inner+.2-5.4, dac['center'][0],
                       dac['center'][1]-dac['size'][1]/2-.6, 5.4))
-    return ports(a).clean()
+    a = ports(a).clean()
+    return engrave_rear(a) if engraved else a
 
 def reference_components():
     d, q, b = P['display'], P['wheel'], P['battery']
@@ -170,11 +208,23 @@ def reference_components():
 def main():
     for name in ['STL', 'reference_only']:
         (OUT/name).mkdir(parents=True, exist_ok=True)
-    parts = {'front_bezel': front_shell(), 'rear_shell': rear_shell()}
+    plain_rear = rear_shell(engraved=False)
+    parts = {'front_bezel': front_shell(), 'rear_shell': engrave_rear(plain_rear)}
     components = reference_components()
     report = {'revision': P['revision'], 'units': 'mm', 'outer_length_width_thickness_mm': [L,W,T],
               'scope': 'CAD/mesh, assembly interference, and designated empty routing-volume checks; no physical fit, wiring, battery expansion or load validation.',
               'stls': [], 'envelope_collisions': collisions(parts, components)}
+    faces = branding_faces(T-P['branding']['depth'])
+    expected_removed = sum(f.Area() for f in faces)*P['branding']['depth']
+    removed = plain_rear.val().Volume()-parts['rear_shell'].val().Volume()
+    if abs(removed-expected_removed) > .01:
+        raise RuntimeError('Branding recess does not match its intended depth/area')
+    report['rear_branding'] = {'name': P['branding']['name'], 'depth_mm': P['branding']['depth'],
+        'minimum_remaining_skin_mm': round(SKIN-P['branding']['depth'], 4),
+        'recess_count': len(faces), 'removed_volume_mm3': round(removed, 4),
+        'expected_removed_volume_mm3': round(expected_removed, 4),
+        'floor_z_mm': T-P['branding']['depth'], 'readable_from': 'rear exterior',
+        'logo_width_mm': P['branding']['logo']['width'], 'wordmark_width_mm': P['branding']['wordmark']['width']}
     routes = {r['id']: block(*r['size'], *r['center'], r['z']) for r in P['routing_reserves']}
     report['routing_reserve_collisions'] = [c for c in collisions(dict(parts, **components), routes)
                                           if (c['a'] in routes) != (c['b'] in routes)]
@@ -237,7 +287,7 @@ def main():
         'orientation': 'PCB back toward rear; components toward display',
         'note': 'Vendor STEP height 6.3725mm; reserved published product height 7.1mm. Physical sample unmeasured.'}
     report['input_sha256'] = {name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
-                              for name in ['build.py','parameters.json','vendor/6309.step']}
+                              for name in ['build.py','parameters.json','vendor/6309.step',P['branding']['artwork']]}
     (ROOT/'validation.json').write_text(json.dumps(report, indent=2)+'\n')
     if report['envelope_collisions'] or report['routing_reserve_collisions'] or not all(report['minimum_clearance_checks'].values()):
         raise RuntimeError(json.dumps(report, indent=2))
