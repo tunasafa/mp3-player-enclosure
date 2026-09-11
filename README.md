@@ -1,12 +1,30 @@
 # FORM 04 — MP3 Player Enclosure
 
-**134 × 72 × 13.4 mm** · 3D-printable two-shell enclosure for a custom MP3 player.
+> *I got tired of renting my music.*
 
-Built around the **XIAO ESP32-S3**, a landscape **ST7789 display**, an **iPod-style clickwheel**, an **Adafruit TLV320DAC3100** DAC/headphone board, and a **600 mAh lithium cell**. Ordinary passive earphones plug straight into the top 3.5 mm socket.
+---
 
-> **[🔍 Open the interactive 3D preview →](https://tunasafa.github.io/mp3-player-enclosure/revision_04/preview.html)**
->
-> Orbit, zoom, explode the assembly, and toggle individual parts — runs entirely in your browser, no install needed.
+## Why this exists
+
+Every month, another €10 disappears into a streaming service that decides what I can listen to, when, and on which devices. Skip limits, offline restrictions, algorithms picking songs for me, entire albums vanishing from catalogs overnight because some licensing deal fell through. And if I ever stop paying? Everything is gone. Years of playlists, gone. Not a single song left.
+
+I used to *own* music. I had files. I had albums. I could play them on whatever I wanted, wherever I wanted, forever. No subscription. No internet required. No corporation standing between me and a song.
+
+So I'm building my own player.
+
+Not a phone app. Not a streaming box. A physical device — with a screen, a clickwheel, a headphone jack, and a microSD card full of music that belongs to me. No accounts, no telemetry, no monthly fee. It plays MP3s. It fits in a pocket. I designed every millimetre of the case myself.
+
+**This is the enclosure for that device.** 134 × 72 × 13.4 mm of 3D-printed refusal to keep paying rent on my own music collection.
+
+---
+
+## Interactive 3D preview
+
+> GitHub can't run the viewer inline, but click the image below — it opens the **live interactive 3D model** directly in your browser. Orbit, zoom, explode the assembly, toggle parts on and off. No install, no signup, nothing to download.
+
+[![Interactive 3D preview of the MP3 player enclosure](revision_04/preview_check.png)](https://tunasafa.github.io/mp3-player-enclosure/revision_04/preview.html)
+
+**[🔍 Open the interactive 3D viewer →](https://tunasafa.github.io/mp3-player-enclosure/revision_04/preview.html)**
 
 ---
 
