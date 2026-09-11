@@ -47,7 +47,7 @@ Not a phone app. Not a streaming box. A physical device — with a screen, a cli
 | **iPod clickwheel** | Monochrome 4th-gen style, 8-pin FPC adapter |
 | **TLV320DAC3100** | Adafruit #6309 — integrated DAC + headphone amplifier |
 | **503040 battery** | 600 mAh, 3.7 V protected LiPo (40 × 30 × 5 mm) |
-| **microSD module** | Music storage, left-side card slot |
+| **microSD module** | Music storage, right-side card slot |
 
 ## Enclosure
 
@@ -55,7 +55,7 @@ Not a phone app. Not a streaming box. A physical device — with a screen, a cli
 - **Four M2 × 7 mm** heat-set inserts and screws
 - **Clear lens** — 43 × 33 × 0.6 mm, laser-cut from clear sheet
 - **Top Ø9 mm** earphone opening directly above the onboard 3.5 mm socket
-- **Side ports** — USB-C (right), microSD (left)
+- **Side ports** — USB-C and microSD (right)
 
 ## Repository structure
 

@@ -6,23 +6,134 @@
     "pitch": -0.14,
     "zoom": 1,
     "explode": 0,
+    "view": "iso",
     "groups": {
       "shell": true,
-      "carrier": true,
       "components": true
     },
-    "visible": 10
+    "visible": 10,
+    "hidden": []
   },
   "checks": [
-    "WebGL initialized",
-    "10 expected parts",
-    "600mAh battery label",
-    "explosion slider",
-    "component visibility",
-    "reset",
-    "front view",
-    "desktop and mobile rendering"
+    "10 parts, multi-material components, recessed depth-tested LCD parented to display",
+    "Pointer orbit changes canvas pixels",
+    "Inside preset exposes components; front and rear internal views render",
+    "LCD visibility follows display, not lens; LCD moves with display during explosion",
+    "Part/layer visibility, outlines, zoom and reset",
+    "Every internal component renders in isolation",
+    "Desktop, 390px mobile and 320px mobile screenshots; nonblank canvas and unclipped geometry",
+    "No external requests or runtime errors"
+  ],
+  "captures": [
+    {
+      "name": "preview_iso_check.png",
+      "count": 156136,
+      "colors": 294,
+      "minX": 400,
+      "maxX": 684,
+      "minY": 87,
+      "maxY": 652,
+      "checksum": 373031802,
+      "width": 1085,
+      "height": 740
+    },
+    {
+      "name": "preview_check.png",
+      "count": 161152,
+      "colors": 253,
+      "minX": 395,
+      "maxX": 689,
+      "minY": 96,
+      "maxY": 643,
+      "checksum": 766763508,
+      "width": 1085,
+      "height": 740
+    },
+    {
+      "name": "preview_inside_check.png",
+      "count": 157902,
+      "colors": 781,
+      "minX": 393,
+      "maxX": 683,
+      "minY": 91,
+      "maxY": 643,
+      "checksum": 352541013,
+      "width": 1085,
+      "height": 740
+    },
+    {
+      "name": "preview_internal_front_check.png",
+      "count": 95003,
+      "colors": 396,
+      "minX": 413,
+      "maxX": 687,
+      "minY": 145,
+      "maxY": 634,
+      "checksum": 717103327,
+      "width": 1085,
+      "height": 740
+    },
+    {
+      "name": "preview_exploded_check.png",
+      "count": 192582,
+      "colors": 572,
+      "minX": 355,
+      "maxX": 746,
+      "minY": 96,
+      "maxY": 639,
+      "checksum": 800784212,
+      "width": 1085,
+      "height": 740
+    },
+    {
+      "name": "preview_mobile_check.png",
+      "count": 75282,
+      "colors": 261,
+      "minX": 84,
+      "maxX": 281,
+      "minY": 111,
+      "maxY": 503,
+      "checksum": 967067167,
+      "width": 366,
+      "height": 570
+    },
+    {
+      "name": "preview_mobile_inside_check.png",
+      "count": 76423,
+      "colors": 633,
+      "minX": 79,
+      "maxX": 281,
+      "minY": 114,
+      "maxY": 497,
+      "checksum": 490539762,
+      "width": 366,
+      "height": 570
+    },
+    {
+      "name": "preview_mobile_exploded_check.png",
+      "count": 54971,
+      "colors": 448,
+      "minX": 74,
+      "maxX": 304,
+      "minY": 158,
+      "maxY": 437,
+      "checksum": 992104713,
+      "width": 366,
+      "height": 570
+    },
+    {
+      "name": "preview_small_mobile_check.png",
+      "count": 75282,
+      "colors": 261,
+      "minX": 49,
+      "maxX": 246,
+      "minY": 111,
+      "maxY": 503,
+      "checksum": 63683397,
+      "width": 296,
+      "height": 570
+    }
   ],
   "runtimeErrors": 0,
-  "preview_sha256": "9206ed327aab6c1fb002c4f9446cd76ced14c978c2dbd172dd97dd48be93c76f"
+  "preview_sha256": "56e815c32c8938574e3ccc4afad8c8094277f05cbbbcf26a0bf1cd03fa61311e"
 }

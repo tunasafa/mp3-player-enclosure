@@ -18,7 +18,7 @@ Open [the interactive preview](preview.html), [component layout](internal_layout
 | Adapter clearance | Retained 2.85 mm to left wall |
 | Chin | Separate amplifier reservation removed; space available for wiring |
 
-The 7.1 mm published height controls the shell. The manufacturer's STEP measures about 6.37 mm tall, so using that smaller height alone would under-allocate the published product size. The supplied STEP is also exported in assembly coordinates as `reference_only/adafruit_6309_placed_VENDOR.step`. The ordinary assembly and viewer show the conservative envelope. Vendor attribution and license are in [vendor/README.md](vendor/README.md).
+The 7.1 mm published height controls the shell. The manufacturer's STEP measures about 6.37 mm tall, so using that smaller height alone would under-allocate the published product size. The supplied STEP is also exported in assembly coordinates as `reference_only/adafruit_6309_placed_VENDOR.step`. The CAD assembly uses the conservative envelope; the viewer uses the detailed manufacturer model. Vendor attribution and model sources are in [vendor/README.md](vendor/README.md).
 
 The socket axis derived from that STEP is X 4.059, Z 8.028 mm. Its mouth sits at Y 64.737, approximately 2.263 mm inside the top face. The Ø9 mm opening permits a slim plug body to reach the recessed socket; check a plug shoulder of at most about 8.5 mm against a physical fit print. Oversized, flared, or right-angle plug bodies may need a larger opening. Vendor CAD is nominal geometry, not a measurement of the purchased sample.
 
@@ -42,6 +42,14 @@ The provisional clickwheel setup ties **CFG1 high for event-only mode**, with ex
 
 ## Rebuild and validation
 
+### Detailed preview
+
+The standalone [preview](preview.html) has an **Inside** preset, colored manufacturer CAD for the DAC and XIAO, and detailed visual references for the LCD, clickwheel, battery, card module and FPC adapter. The screen UI sits on the LCD underneath the clear lens and follows the display when the assembly is exploded. Each component can be hidden independently. Visual approximations and attribution are documented in [model sources](vendor/README.md).
+
+`make_components.py` imports manufacturer STEP assemblies with face/solid colors; `viewer.js` builds the remaining visual parts and renders them with Three.js. These do not overwrite the manufacturing STLs or change the fit-validation envelopes.
+
+Opening `preview.html` requires no server or network. To change the renderer or run browser checks, first install the pinned dependencies with `npm ci --prefix revision_04`. Rebuild the bundle with `npm run build --prefix revision_04`; `make_viewer.py` also rebuilds it automatically when `viewer.js` is newer. An unchanged bundled renderer needs no npm installation to regenerate the HTML.
+
 From the project root:
 
 ```sh
@@ -53,6 +61,6 @@ node revision_04/verify_viewer.mjs
 .venv/bin/python package_designs.py
 ```
 
-In the standalone package, create a Python environment, install `requirements.txt`, and run the scripts without the `revision_04/` prefix. The browser check needs Node 22+ and Brave, or a Chromium executable supplied through `P04_BROWSER_PATH`.
+In the standalone package, create a Python environment, install `requirements.txt`, and run the scripts without the `revision_04/` prefix. The Playwright browser check needs Node 22+, the npm dependencies above, and Brave, or a Chromium executable supplied through `P04_BROWSER_PATH`.
 
 `validation.json` reports shell validity, watertight single-body print meshes, assembly/routing collisions, depth/side clearances, vendor-model containment and socket alignment. `viewer_validation.json` records preview controls, labels and desktop/mobile rendering. Packaging rejects stale input/preview hashes and verifies mesh validity, ZIP CRCs and SHA-256 contents. These checks validate the digital prototype; they do not establish physical hardware fit.

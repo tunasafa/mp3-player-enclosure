@@ -1,100 +1,114 @@
+"""Read vendor STEP assemblies, retaining face colors and component placements.
+
+These meshes are visual references. Manufacturing envelopes stay in build.py.
+"""
+from collections import defaultdict
+from pathlib import Path
+import base64
+
 import cadquery as cq
-import json
-import os
-import trimesh
+import numpy as np
+from OCP.IFSelect import IFSelect_RetDone
+from OCP.Quantity import Quantity_ColorRGBA
+from OCP.STEPCAFControl import STEPCAFControl_Reader
+from OCP.TCollection import TCollection_ExtendedString
+from OCP.TDataStd import TDataStd_Name
+from OCP.TDF import TDF_Label, TDF_LabelSequence
+from OCP.TDocStd import TDocStd_Document
+from OCP.XCAFDoc import XCAFDoc_DocumentTool, XCAFDoc_ColorSurf, XCAFDoc_ColorGen
 
-# Load parameters
-with open('revision_04/parameters.json') as f:
-    params = json.load(f)
+ROOT = Path(__file__).resolve().parent
 
-out_dir = 'revision_04/designs/P04_compact/reference_only'
 
-def make_battery():
-    # 40x30x5 pouch cell with rounded edges
-    b = params['battery']
-    w, l, h = b['size'][0], b['size'][1], b['size'][2]
-    cx, cy, cz = b['center'][0], b['center'][1], b['z']
-    
-    # Main pouch
-    pouch = cq.Workplane("XY").box(w, l, h).edges("|Z").fillet(2.0).edges("|X or |Y").fillet(0.5)
-    
-    # Top flap (folded seal)
-    flap = cq.Workplane("XY").center(0, l/2).box(w - 6, 2, 0.5).translate((0, 1, h/2 - 0.25))
-    pouch = pouch.union(flap)
-    
-    # Wires (simple cylinders protruding from flap)
-    wire1 = cq.Workplane("XZ").center(-3, h/2).cylinder(10, 0.6).rotate((0,0,0), (1,0,0), 90).translate((0, l/2, 0))
-    wire2 = cq.Workplane("XZ").center(3, h/2).cylinder(10, 0.6).rotate((0,0,0), (1,0,0), 90).translate((0, l/2, 0))
-    
-    res = pouch.union(wire1).union(wire2).translate((cx, cy, cz))
-    
-    cq.exporters.export(res, os.path.join(out_dir, 'battery_envelope.stl'))
-    print("Exported battery_envelope.stl")
+def step_parts(path):
+    doc = TDocStd_Document(TCollection_ExtendedString("visual-model"))
+    reader = STEPCAFControl_Reader()
+    reader.SetColorMode(True)
+    reader.SetNameMode(True)
+    if reader.ReadFile(str(path)) != IFSelect_RetDone or not reader.Transfer(doc):
+        raise RuntimeError(f"Cannot read vendor model: {path}")
+    shapes = XCAFDoc_DocumentTool.ShapeTool_s(doc.Main())
+    colors = XCAFDoc_DocumentTool.ColorTool_s(doc.Main())
 
-def make_xiao():
-    # 21x17.8x4.2 envelope
-    e = next(e for e in params['electronics'] if e['id'] == 'xiao')
-    l, w, h = e['size'][0], e['size'][1], e['size'][2]
-    cx, cy, cz = e['center'][0], e['center'][1], e['z']
-    
-    pcb = cq.Workplane("XY").box(l, w, 1.2)
-    # Shield (ESP32-S3 module)
-    shield = cq.Workplane("XY").center(l/2 - 8, 0).box(15, 12, 2.0).translate((0, 0, 1.6))
-    # USB-C port
-    usbc = cq.Workplane("XY").center(-l/2 + 3.7, 0).box(7.4, 9, 3.2).translate((0, 0, 2.2))
-    # Boot/Reset buttons
-    btn1 = cq.Workplane("XY").center(-l/2 + 8, w/2 - 2).box(3, 2, 1).translate((0, 0, 1.1))
-    btn2 = cq.Workplane("XY").center(-l/2 + 8, -w/2 + 2).box(3, 2, 1).translate((0, 0, 1.1))
-    
-    res = pcb.union(shield).union(usbc).union(btn1).union(btn2).translate((cx, cy, cz))
-    cq.exporters.export(res, os.path.join(out_dir, 'xiao.stl'))
-    print("Exported xiao.stl")
+    def color(target, fallback):
+        value = Quantity_ColorRGBA()
+        for kind in (XCAFDoc_ColorSurf, XCAFDoc_ColorGen):
+            if colors.GetColor_s(target, kind, value):
+                rgb = value.GetRGB()
+                return rgb.Red(), rgb.Green(), rgb.Blue()
+        return fallback
 
-def make_microsd():
-    e = next(e for e in params['electronics'] if e['id'] == 'microsd')
-    l, w, h = e['size'][0], e['size'][1], e['size'][2]
-    cx, cy, cz = e['center'][0], e['center'][1], e['z']
-    
-    pcb = cq.Workplane("XY").box(l, w, 1.6)
-    # SD Card slot
-    slot = cq.Workplane("XY").center(l/2 - 7.5, 0).box(15, 14, 1.8).translate((0, 0, 1.7))
-    # Header pins
-    pins = cq.Workplane("XY").center(-l/2 + 1.5, 0).box(2.5, 15, 2.5).translate((0, 0, 2.05))
-    
-    res = pcb.union(slot).union(pins).translate((cx, cy, cz))
-    cq.exporters.export(res, os.path.join(out_dir, 'microsd.stl'))
-    print("Exported microsd.stl")
+    def walk(label, location, inherited=(0.35, 0.35, 0.35)):
+        location = location * cq.Location(shapes.GetLocation_s(label))
+        if shapes.IsReference_s(label):
+            referred = TDF_Label()
+            shapes.GetReferredShape_s(label, referred)
+            yield from walk(referred, location, color(label, inherited))
+            return
+        children = TDF_LabelSequence()
+        shapes.GetComponents_s(label, children)
+        if children.Length():
+            for child in children:
+                yield from walk(child, location, color(label, inherited))
+            return
+        raw = shapes.GetShape_s(label)
+        if raw.IsNull():
+            return
+        name = TDataStd_Name()
+        title = name.Get().ToExtString() if label.FindAttribute(TDataStd_Name.GetID_s(), name) else "part"
+        shape = cq.Shape.cast(raw)
+        default = color(label, inherited)
+        sublabels = TDF_LabelSequence()
+        shapes.GetSubShapes_s(label, sublabels)
+        inherited_faces = {}
+        for sublabel in sublabels:
+            subshape = cq.Shape.cast(shapes.GetShape_s(sublabel))
+            if subshape.ShapeType() != "Face":
+                for face in subshape.Faces():
+                    inherited_faces[face] = color(sublabel, default)
+        face_colors = []
+        for face in shape.Faces():
+            face_label = TDF_Label()
+            face_color = inherited_faces.get(face, default)
+            if shapes.FindSubShape(label, face.wrapped, face_label):
+                face_color = color(face_label, face_color)
+            face_colors.append((face, face_color))
+        yield title, shape, location, face_colors
 
-def make_fpc8():
-    e = next(e for e in params['electronics'] if e['id'] == 'fpc8')
-    l, w, h = e['size'][0], e['size'][1], e['size'][2]
-    cx, cy, cz = e['center'][0], e['center'][1], e['z']
-    
-    pcb = cq.Workplane("XY").box(l, w, 1.6)
-    # FPC Connector
-    conn = cq.Workplane("XY").center(0, w/2 - 3).box(8, 4, 2.0).translate((0, 0, 1.8))
-    # Header pins (assuming typical breakout)
-    pins = cq.Workplane("XY").center(0, -w/2 + 2).box(20, 2.5, 2.5).translate((0, 0, 2.05))
-    
-    res = pcb.union(conn).union(pins).translate((cx, cy, cz))
-    cq.exporters.export(res, os.path.join(out_dir, 'fpc8.stl'))
-    print("Exported fpc8.stl")
+    roots = TDF_LabelSequence()
+    shapes.GetFreeShapes(roots)
+    for root in roots:
+        yield from walk(root, cq.Location())
 
-def export_dac():
-    # The DAC step file is ALREADY correctly translated to its assembly position 
-    # (adafruit_6309_placed_VENDOR.step is the placed version generated by build.py).
-    step_path = os.path.join(out_dir, 'adafruit_6309_placed_VENDOR.step')
-    out_path = os.path.join(out_dir, 'dac.stl')
-    try:
-        shape = cq.importers.importStep(step_path)
-        cq.exporters.export(shape, out_path)
-        print("Exported dac.stl from placed STEP")
-    except Exception as e:
-        print(f"Failed to export DAC: {e}")
+
+def vendor_meshes(name, transform):
+    batches = defaultdict(list)
+    source = "6309.step" if name == "dac" else "XIAO-ESP32S3 v2.step"
+    for title, shape, location, faces in step_parts(ROOT / "vendor" / source):
+        for face, color in faces:
+            # Adafruit's mechanical STEP uses FR4 brown for the solder mask.
+            # Match the production black PCB while retaining the copper pads.
+            if name == "dac" and title == "Board" and max(color) < 0.3:
+                color = (0.008, 0.012, 0.015)
+            vertices, triangles = face.moved(location).tessellate(0.07, 0.18)
+            if not triangles:
+                continue
+            points = transform(np.array([v.toTuple() for v in vertices]))
+            positions = points[np.array(triangles)].reshape(-1, 3)
+            key = tuple(round(c, 4) for c in color)
+            batches[key].append(positions)
+    result = []
+    for color, chunks in batches.items():
+        positions = np.concatenate(chunks).astype("<f4")
+        result.append({"color": list(color), "positions": base64.b64encode(positions.tobytes()).decode("ascii")})
+    if not result:
+        raise RuntimeError(f"Vendor model {name} contains no triangles")
+    return result
+
 
 if __name__ == "__main__":
-    make_battery()
-    make_xiao()
-    make_microsd()
-    make_fpc8()
-    export_dac()
+    for source in ("6309.step", "XIAO-ESP32S3 v2.step"):
+        print(source)
+        for title, shape, location, _ in step_parts(ROOT / "vendor" / source):
+            b = shape.moved(location).BoundingBox()
+            print(title, tuple(round(v, 3) for v in (b.xmin, b.xmax, b.ymin, b.ymax, b.zmin, b.zmax)))

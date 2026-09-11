@@ -27,7 +27,9 @@ def package(target=None):
             raise RuntimeError('CAD validation failed.')
     names = ['BOM.csv','vendor/6309.step','vendor/README.md','vendor/LICENSE-Adafruit-CAD.txt','README.md','HARDWARE_NOTES.md','requirements.json',
              'parameters.json','requirements.txt','build.py',
-             'make_viewer.py','make_drawings.py','make_layout.py','verify_viewer.mjs','package_designs.py',
+             'make_viewer.py','make_components.py','viewer.html','viewer.js','package.json','package-lock.json',
+             'vendor/viewer.bundle.js','vendor/LICENSE-viewer.txt','vendor/XIAO-ESP32S3 v2.step',
+             'make_drawings.py','make_layout.py','verify_viewer.mjs','package_designs.py',
              'validation.json','viewer_validation.json','preview.html','design_overview.png','design_overview.pdf',
              'internal_layout.png']
     files = [ROOT/name for name in names]

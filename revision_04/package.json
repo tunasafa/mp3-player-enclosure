@@ -1,0 +1,17 @@
+{
+  "name": "form04-enclosure-viewer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild viewer.js --bundle --minify --format=iife --outfile=vendor/viewer.bundle.js",
+    "test": "node verify_viewer.mjs"
+  },
+  "dependencies": {
+    "lucide": "0.468.0",
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.9",
+    "playwright": "1.55.0"
+  }
+}
