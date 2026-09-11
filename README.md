@@ -38,7 +38,7 @@ The new layout keeps the **600 mAh battery entirely below the display**, behind 
 
 The rear cap now has DAC mounting-hole locating posts and battery guides matched to the new position. Connector mouths use close-fitting exterior apertures with blind internal reliefs: 5 mm around the jack barrel, 9.4 × 3.7 mm for USB-C and 11.5 × 1.5 mm for the card. These are unsealed openings, not an IP-rated design. The [earlier orientation research](revision_04/studies/dac_orientation/README.md) is historical; [current fit notes](revision_04/README.md) describe this arrangement.
 
-The [offline 3D viewer](revision_04/preview.html) includes section cutting, component inspection/isolation, a rotating turntable, PNG export and a headphone-port view.
+The [offline 3D viewer](revision_04/preview.html) retains its original layout: front, rear, inside and 3D views, an exploded-assembly slider, part visibility, outlines and zoom.
 
 ![Internal layout](revision_04/internal_layout.png)
 

@@ -70,7 +70,7 @@ The provisional clickwheel setup ties **CFG1 high for event-only mode**, with ex
 
 ### Detailed preview
 
-The standalone [preview](preview.html) has front/rear/inside/port presets, section-depth clipping, a component inspector with isolation and planning dimensions, a turntable, PNG export, colored manufacturer CAD for the DAC and XIAO, and detailed visual references for the LCD, clickwheel, battery, card module and FPC adapter. The screen UI sits on the LCD underneath the clear lens and follows the display when the assembly is exploded. Each component can be hidden independently. Visual approximations and attribution are documented in [model sources](vendor/README.md).
+The standalone [preview](preview.html) retains the original front/rear/inside/3D presets, orbit and zoom controls, exploded-assembly slider, part visibility and technical outlines. It displays colored manufacturer CAD for the DAC and XIAO, and detailed visual references for the LCD, clickwheel, battery, card module and FPC adapter. The screen UI sits on the LCD underneath the clear lens and follows the display when the assembly is exploded. Each component can be hidden independently. Visual approximations and attribution are documented in [model sources](vendor/README.md).
 
 `make_components.py` imports manufacturer STEP assemblies with face/solid colors; `viewer.js` builds the remaining visual parts and renders them with Three.js. These do not overwrite the manufacturing STLs or change the fit-validation envelopes.
 
@@ -90,7 +90,5 @@ node revision_04/verify_viewer.mjs
 ```
 
 In the standalone package, create a Python environment, install `requirements.txt`, and run the scripts without the `revision_04/` prefix. The Playwright browser check needs Node 22+, the npm dependencies above, and Brave, or a Chromium executable supplied through `P04_BROWSER_PATH`.
-
-Section cuts are uncapped visual clips, not manufactured cross-section faces; exploded parts may move through the assembly-fixed section plane. The inspector identifies approximate models and conservative planning dimensions. Reset restores all layers and tools.
 
 `validation.json` reports shell validity, watertight single-body print meshes, conservative component-to-component and physical shell/routing collisions, depth/side clearances, vendor-model containment and socket alignment. `viewer_validation.json` records preview controls, labels and desktop/mobile rendering. Packaging rejects stale input/preview hashes and verifies mesh validity, ZIP CRCs and SHA-256 contents. These checks validate the digital prototype; they do not establish physical hardware fit.
