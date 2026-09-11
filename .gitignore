@@ -3,3 +3,21 @@ __pycache__/
 *.pyc
 .DS_Store
 node_modules/
+
+# Only revision_04 is tracked — exclude old revisions and root-level P01 files
+revision_02/
+revision_03/
+designs/
+*.zip
+/build.py
+/make_drawings.py
+/make_viewer.py
+/package_designs.py
+/parameters.json
+/validation.json
+/requirements.txt
+/preview.html
+/design_overview.pdf
+/design_overview.png
+/internal_layout.png
+/HARDWARE_AND_MEASUREMENTS.md
