@@ -1,9 +1,9 @@
 {
-  "revision": "P04 - integrated TLV320DAC3100 DAC/headphone output",
+  "revision": "P04 - compact repack, unchanged components",
   "units": "mm",
   "outer_length_width_thickness_mm": [
-    134.0,
-    72.0,
+    110.0,
+    70.0,
     13.4
   ],
   "scope": "CAD/mesh, assembly interference, and designated empty routing-volume checks; no physical fit, wiring, battery expansion or load validation.",
@@ -11,8 +11,8 @@
     {
       "file": "designs/P04_compact/STL/front_bezel.stl",
       "bounds_mm": [
-        71.9999999,
-        134.0,
+        70.0,
+        110.0,
         6.400000095367432
       ],
       "watertight": true,
@@ -21,14 +21,14 @@
       "mesh_bodies": 1,
       "positive_volume": true,
       "cad_valid": true,
-      "volume_mm3": 11073.056567784222,
-      "faces": 11868
+      "volume_mm3": 8305.34534225353,
+      "faces": 11060
     },
     {
       "file": "designs/P04_compact/STL/rear_shell.stl",
       "bounds_mm": [
-        72.0,
-        134.0,
+        70.0,
+        110.0,
         8.199999709265143
       ],
       "watertight": true,
@@ -37,8 +37,8 @@
       "mesh_bodies": 1,
       "positive_volume": true,
       "cad_valid": true,
-      "volume_mm3": 16881.324774898196,
-      "faces": 16062
+      "volume_mm3": 13827.498329753396,
+      "faces": 15782
     },
     {
       "file": "designs/P04_compact/STL/insert_and_clearance_fit_coupon.stl",
@@ -72,10 +72,14 @@
   },
   "routing_reserve_collisions": [],
   "nominal_clearances_mm": {
-    "fpc8_to_sidewall": 2.85,
-    "fpc8_to_front_shell_cad_distance": 2.849999999999998,
+    "fpc8_to_sidewall": 6.35,
+    "fpc8_to_front_shell_cad_distance": 2.8336556083356315,
     "dac_to_display": 0.3,
     "dac_to_rear_skin": 0.3,
+    "display_to_wheel": 1.0,
+    "wheel_to_fastener": 0.7051,
+    "battery_to_dac": 2.1999999999999957,
+    "usb_to_card_board": 6.6,
     "wheel_to_battery": 0.3,
     "battery_to_rear_skin": 2.0,
     "battery_to_side_guide": 0.8,
@@ -89,11 +93,15 @@
   "minimum_clearance_checks": {
     "fpc8_to_sidewall": true,
     "dac_to_display": true,
-    "dac_to_rear_skin": true
+    "dac_to_rear_skin": true,
+    "display_to_wheel": true,
+    "wheel_to_fastener": true,
+    "battery_to_dac": true,
+    "usb_to_card_board": true
   },
   "jack_axis_assembly_mm": [
     4.05915274704965,
-    67.0,
+    55.0,
     8.02751704190317
   ],
   "vendor_dac": {
@@ -101,28 +109,63 @@
     "assembly_bounds_mm": [
       [
         -12.700000000000006,
-        31.19999999999999,
+        19.19999999999999,
         5.527517041903165
       ],
       [
         12.700000000000006,
-        64.73700952556963,
+        52.73700952556963,
         11.9
       ]
     ],
     "socket_mouth_axis_mm": [
       4.059152747049652,
-      64.73700952556965,
+      52.73700952556964,
       8.027517041903169
     ],
-    "socket_mouth_recess_mm": 2.262990474430353,
+    "socket_mouth_recess_mm": 2.26299047443036,
     "orientation": "PCB back toward rear; components toward display",
     "note": "Vendor STEP height 6.3725mm; reserved published product height 7.1mm. Physical sample unmeasured."
   },
+  "vendor_xiao": {
+    "assembly_bounds_mm": [
+      [
+        12.021908685586421,
+        -4.390000044587502,
+        5.200000014901159
+      ],
+      [
+        34.503889835740345,
+        13.38999995541252,
+        9.660000014901309
+      ]
+    ],
+    "shell_component_and_route_collisions": [],
+    "note": "Unscaled vendor USB body extends beyond the nominal board envelope; tested against shells, components and routes."
+  },
+  "layout_optimization": {
+    "previous_length_width_thickness_mm": [
+      134.0,
+      72.0,
+      13.4
+    ],
+    "current_length_width_thickness_mm": [
+      110.0,
+      70.0,
+      13.4
+    ],
+    "external_volume_reduction_percent": 20.19,
+    "footprint_reduction_percent": 20.19,
+    "component_envelopes_preserved": true,
+    "battery_rotated_in_plane": true,
+    "note": "External bounding-box comparison, not a claim of optimal packing or measured physical fit."
+  },
   "input_sha256": {
-    "build.py": "9a2683ac2801e275d79f25f88d8bd619e078b4b89be9e99ab92794117fa0fda7",
-    "parameters.json": "0d9fd9946c8060926a5eaa0c6b4f1662500e266e97159f460cdc1e3e37ccb189",
+    "build.py": "097107a24d7506e6c27f9f6a83cf4e59ac2ca1145b2001ecb060e21d7c602b0c",
+    "parameters.json": "745675c315326d3d315e660aa68a59b31893486bde21addacb083f82b20870e3",
+    "layout_baseline.json": "f2d910a3c5718a59529c13aef7f7ac0943931893ae607a4229b28c4d542c18e7",
     "vendor/6309.step": "3eba386a14eb87e26fc5a287a6e5b4a30515306079798d11c45fc202c79b4627",
+    "vendor/XIAO-ESP32S3 v2.step": "870ad45c7af5d92324cec4c6ae65fbf86e3b049d5a97ab9ffd9039ebd73455dd",
     "assets/mytunas-branding.json": "e0126f5f70fbdedc5157ae24d24881cd849a8849cac4337d5e95f05debc454f1"
   }
 }

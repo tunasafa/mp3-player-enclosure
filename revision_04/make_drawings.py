@@ -25,6 +25,10 @@ def projected_shell(ax, name, rear=False):
     ax.add_collection(PolyCollection(tri[:,:,:2], facecolors=colors, edgecolors='none'))
     # Sharp edges show supports, apertures and fastener wells without triangle noise.
     edges = mesh.face_adjacency_edges[mesh.face_adjacency_angles > .55]
+    if name == 'rear_shell' and not rear:
+        # The exterior engraving is hidden by the skin in this inside projection.
+        floor = P['body']['thickness']-P['branding']['depth']
+        edges = edges[~(mesh.vertices[edges][:,:,2] >= floor-1e-4).all(axis=1)]
     from matplotlib.collections import LineCollection
     ax.add_collection(LineCollection(mesh.vertices[edges][:,:,:2], colors='#60746e', linewidths=.45))
     ax.set(xlim=(-43,43), ylim=(-74,74), aspect='equal')
@@ -33,7 +37,8 @@ def projected_shell(ax, name, rear=False):
 def main():
     fig = plt.figure(figsize=(16.54,11.69), facecolor=BG)
     fig.text(.06,.94,'FORM 04 / COMPACT FIT PROTOTYPE',fontsize=23,color=INK,weight='bold')
-    fig.text(.06,.906,'134 × 72 × 13.4 mm  ·  landscape screen  ·  local mounts  ·  no middle carrier',fontsize=12,color=MUTED)
+    b=P['body']
+    fig.text(.06,.906,f"{b['length']:g} × {b['width']:g} × {b['thickness']:g} mm  ·  repacked with unchanged components  ·  no middle carrier",fontsize=12,color=MUTED)
     for left, title, part, rear in [(.045,'FRONT SHELL / INSIDE','front_bezel',True),(.35,'REAR SHELL / INSIDE','rear_shell',False)]:
         ax=fig.add_axes([left,.23,.29,.62]); projected_shell(ax,part,rear)
         ax.set_title(title,fontsize=12,pad=12,color=INK)
@@ -56,7 +61,7 @@ def main():
     ax.spines[['top','right']].set_visible(False);ax.grid(axis='y',alpha=.15)
     c=json.loads((ROOT/'validation.json').read_text())['nominal_clearances_mm']
     fig.text(.7,.31,f"Clickwheel adapter to wall: {c['fpc8_to_sidewall']:.2f} mm.\nBattery to rear skin: {c['battery_to_rear_skin']:.1f} mm.\nDAC to LCD / rear skin: {c['dac_to_display']:.1f} / {c['dac_to_rear_skin']:.1f} mm.\nThese gaps still need real-part verification.",fontsize=9.5,color=MUTED,linespacing=1.6)
-    fig.text(.7,.19,'600 mAh / 30% of P02 capacity.\n0.9 mm thicker; combined DAC/headphone board.\nSingle jack opening follows the DAC at the top.',fontsize=10,color=INK,linespacing=1.6)
+    fig.text(.7,.19,'20.2% less external volume than the earlier P04.\nSame 600 mAh cell, rotated 90 degrees.\nUSB/card boards share the lane beside the battery.',fontsize=10,color=INK,linespacing=1.6)
     fig.text(.06,.09,'CAD/mesh checks passed. The component envelopes and connector positions remain provisional.',fontsize=11,color=INK)
     fig.text(.06,.058,'Print an empty-shell fit set first. Exact wheel/LCD geometry, flex routes, audio mounting and battery sample fit are still required.',fontsize=10,color=MUTED)
     fig.savefig(ROOT/'design_overview.png',dpi=180,facecolor=BG)

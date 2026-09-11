@@ -1,10 +1,12 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { STLExporter } from 'three/addons/exporters/STLExporter.js';
 import { createElement, RotateCcw, ZoomIn, ZoomOut } from 'lucide';
 
 const data = JSON.parse(document.getElementById('model-data').textContent);
 const parameters = data.parameters;
+document.getElementById('dimensions').textContent = [parameters.body.length, parameters.body.width, parameters.body.thickness].join(' x ');
 const canvas = document.getElementById('view');
 const scene = new THREE.Scene();
 let renderer;
@@ -236,11 +238,19 @@ function wheel(group) {
   }
   chip(group, x + 10.5, y - 16, 3.45, 3.4, 4.6);
   label(group, ['CLICK WHEEL', '8P / 0.5'], 13, 5, [x - 6, y - 17, 3.45]);
-  ribbon(group, [[x - 15, y + 1, 3.42], [x - 19, y + 1, 4.3], [x - 18.5, y - 1, 5.4], [x - 18.5, y - 3, 6.9]], 4.4);
+  const fpc = parameters.electronics.find(b => b.id === 'fpc8');
+  const bend = parameters.routing_reserves.find(r => r.id === 'clickwheel_flex');
+  ribbon(group, [[x - 15, y + 1, 3.42], [fpc.center[0], bend.center[1] + 1.5, 4.5],
+    [fpc.center[0], bend.center[1], 5.5], [fpc.center[0], bend.center[1] - 1.05, fpc.z + 2.04],
+    [fpc.center[0], fpc.center[1] + 7.12, fpc.z + 2.04]], 4.4);
 }
 
-function battery(group) {
-  const b = parameters.battery, [x, y] = b.center, [w, h, d] = b.size, z = b.z;
+function battery(parent) {
+  const b = parameters.battery, [bx, by] = b.center, z = b.z;
+  // Rotate the complete pouch/label/PCM assembly, not just its bounding box.
+  const group = new THREE.Group(); group.name = 'battery-pouch';
+  group.position.set(bx, by, 0); group.rotation.z = Math.PI / 2; parent.add(group);
+  const x = 0, y = 0, [w, h, d] = [b.size[1], b.size[0], b.size[2]];
   const foil = new THREE.MeshStandardMaterial({ color: '#bdc4cb', metalness: 0.86, roughness: 0.38 });
   const bump = texture(256, 256, (ctx, width, height) => {
     ctx.fillStyle = '#aaa'; ctx.fillRect(0, 0, width, height);
@@ -254,12 +264,18 @@ function battery(group) {
   for (const dy of [-1, 1]) box(group, [w, 0.75, 0.24], [x, y + dy * (h / 2 - 0.4), z + d / 2], mats.silver, 0.1);
   box(group, [3.8, h - 0.7, d - 0.1], [x + w / 2 - 2, y, z + d / 2], mats.tape, 0.35);
   label(group, ['Li-ion Polymer', '503040   3.7 V', '600 mAh / 2.22 Wh', '+                 -'], 28, 16, [x - 2, y, z + d + 0.01], true, '#eef0ed', '#273139');
-  for (const [dy, mat] of [[1.1, mats.red], [-1.1, mats.black]]) {
-    path(group, [[x + 19, y + dy, z + 2.5], [x + 22, y + dy, z + 3.3], [x + 24, y + dy, z + 2.6]], 0.42, mat);
+  const pocket = parameters.routing_reserves.find(r => r.id === 'battery_connector_pocket');
+  const [cx, cy] = pocket.center;
+  for (const [dx, mat] of [[0.7, mats.red], [-0.7, mats.black]]) {
+    path(parent, [[bx + dx, by + w / 2 - 1, z + 2.5],
+      [bx + dx, by + w / 2 + 0.55, z + 2.5], [bx + 2, by + w / 2 + 0.55, z + 2.5],
+      [cx + dx - 1, by + w / 2 + 0.55, z + 2.5], [cx + dx, by + w / 2 - 0.5, z + 2.5],
+      [cx + dx, cy + 3.5, z + 2.6], [cx + dx, cy + 2.6, z + 2.6]], 0.32, mat);
   }
-  box(group, [4.2, 5.2, 2.9], [x + 26, y, z + 2.6], mats.white, 0.3);
-  box(group, [0.4, 3, 0.7], [x + 28.12, y, z + 3.3], mats.dark);
-  box(group, [1.8, 2.4, 0.4], [x + 25.8, y, z + 4.1], mats.white);
+  const connector = new THREE.Group(); connector.name = 'battery-connector'; parent.add(connector);
+  box(connector, [4.2, 5.2, 2.9], [cx, cy, z + 2.6], mats.white, 0.3);
+  box(connector, [3, 0.4, 0.7], [cx, cy - 2.62, z + 3.3], mats.dark);
+  box(connector, [2.4, 1.8, 0.4], [cx, cy + 0.2, z + 4.1], mats.white);
 }
 
 function microsd(group) {
@@ -329,9 +345,11 @@ for (const spec of data.parts) {
 // Silkscreen and shield printing are separate surfaces on the manufacturer CAD.
 const xiao = parts.get('xiao'), xb = parameters.electronics.find(b => b.id === 'xiao');
 label(xiao, ['Seeed Studio', 'XIAO ESP32-S3'], 9.2, 8.2, [xb.center[0] - 1.53, xb.center[1], xb.z + 3.265], true, '#c0c6cb', '#30373b');
-const dac = parts.get('dac');
-label(dac, ['Adafruit', 'TLV320DAC3100', 'I2S DAC + HPA'], 18, 10, [0, 44.5, 11.915]);
-label(dac, ['VIN GND BCK WSEL DIN'], 21, 3, [-0.2, 35.8, 10.315], false);
+const dac = parts.get('dac'), db = parameters.electronics.find(b => b.id === 'dac');
+label(dac, ['Adafruit', 'TLV320DAC3100', 'I2S DAC + HPA'], 18, 10,
+  [db.center[0], db.center[1] - 3.55, db.z + db.size[2] + 0.015]);
+label(dac, ['VIN GND BCK WSEL DIN'], 21, 3,
+  [db.center[0] - 0.2, db.center[1] - 12.25, db.z + 5.515], false);
 
 for (const group of parts.values()) {
   group.traverse(item => {
@@ -487,6 +505,18 @@ window.FORM01 = {
     const lcd = assembly.getObjectByName('lcd-active-surface');
     const branding = assembly.getObjectByName('rear-branding-recess');
     return {
+      layout: { body: parameters.body, battery: parameters.battery,
+        electronics: parameters.electronics, routing: parameters.routing_reserves,
+        batteryRotation: assembly.getObjectByName('battery-pouch').rotation.z,
+        connectorBounds: (() => {
+          const b = new THREE.Box3();
+          assembly.getObjectByName('battery-connector').traverse(o => {
+            if (!o.isMesh) return;
+            o.geometry.computeBoundingBox();
+            b.union(o.geometry.boundingBox.clone().translate(o.position));
+          });
+          return { min: b.min.toArray(), max: b.max.toArray() };
+        })() },
       branding: { name: parameters.branding.name, parent: branding.parent.name,
         visible: branding.parent.visible, depth: parameters.branding.depth,
         bounds: (() => { branding.geometry.computeBoundingBox(); const b = branding.geometry.boundingBox; return { min: b.min.toArray(), max: b.max.toArray() }; })(),
@@ -495,6 +525,20 @@ window.FORM01 = {
       parts: [...parts.values()].map(p => ({ id: p.name, source: p.userData.source, visible: p.visible, meshes: (() => { let n = 0; p.traverse(o => { if (o.isMesh) n++; }); return n; })(), offset: p.position.z })),
       triangles: renderer.info.render.triangles,
     };
+  },
+  exportReferenceSTL: id => {
+    const part = parts.get(id);
+    if (!part || part.userData.group !== 'components') throw new Error(`Not a component: ${id}`);
+    const copy = part.clone(true);
+    copy.position.set(0, 0, 0);
+    const excluded = [];
+    copy.traverse(o => { if (o.userData.surface || o.userData.outline) excluded.push(o); });
+    for (const o of excluded) o.removeFromParent();
+    copy.updateMatrixWorld(true);
+    const binary = new STLExporter().parse(copy, { binary: true });
+    const bytes = new Uint8Array(binary.buffer), chunks = [];
+    for (let i = 0; i < bytes.length; i += 32768) chunks.push(String.fromCharCode(...bytes.subarray(i, i + 32768)));
+    return btoa(chunks.join(''));
   },
   render: invalidate,
 };

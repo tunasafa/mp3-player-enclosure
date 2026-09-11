@@ -10,7 +10,7 @@ Source: https://raw.githubusercontent.com/adafruit/Adafruit_CAD_Parts/main/6309%
 
 Nominal imported bounds: X 0–33.5370095, Y 0–25.4, Z 0–6.372483 mm. PCB body: X 0–31.75, Y 0–25.4, Z 0–1.57 mm. Socket bore axis runs along X at Y 16.7591527, Z 3.872483 mm; socket mouth X 33.5370095 mm. These are extracted CAD values. The published product envelope is larger: 33.7 × 25.4 × 7.1 mm, and controls the enclosure allocation.
 
-P04 transforms vendor coordinates as Xcase = Yvendor − 12.7, Ycase = Xvendor + 31.2, Zcase = 11.9 − Zvendor. This turns the socket toward the top and the component face toward the LCD. No component is removed or flattened.
+The repacked P04 transforms vendor coordinates as Xcase = Yvendor − 12.7, Ycase = Xvendor + 19.2, Zcase = 11.9 − Zvendor. This turns the socket toward the top and the component face toward the LCD. No component is removed or flattened. Both renderer and CAD derive the translation from the DAC position in `parameters.json`.
 
 `6309.brd`, if present in the working folder, was downloaded separately from [Adafruit's PCB repository](https://github.com/adafruit/Adafruit-TLV320DAC3100-I2S-DAC-PCB) for inspection only. It is not used by the build or redistributed in the deliverable ZIP; that repository has its own license.
 
@@ -22,7 +22,7 @@ The viewer reads the original STEP assembly, including colors on faces and neste
 
 The viewer retains the board, castellations, USB-C shell and contacts, shield, buttons and U.FL socket. It adds illustrative shield text. It does not add the Sense camera board, fitted headers or an external antenna.
 
-The STEP's PCB bounds are X -8.67334 to 12.28284, Y -0.25 to 1.0, Z -15.0014 to 2.7786 mm. It is rotated with its USB opening toward the existing right-hand case port: Xcase = Xvendor - 1.80475 + Xboard, Ycase = -Zvendor - 6.1114 + Yboard, Zcase = Yvendor + 0.25 + Zboard. Dimensions are not scaled. The USB body extends beyond the PCB and the nominal 4.2 mm planning depth; the visual model does not replace the CAD fit report.
+The STEP's PCB bounds are X -8.67334 to 12.28284, Y -0.25 to 1.0, Z -15.0014 to 2.7786 mm. It is rotated with its USB opening toward the right-hand case port: Xcase = Xvendor - 1.80475 + Xboard, Ycase = -Zvendor - 6.1114 + Yboard, Zcase = Yvendor + 0.25 + Zboard. Dimensions are not scaled. The USB body extends beyond the PCB and the nominal 4.2 mm planning depth. The compact build additionally checks this unscaled vendor geometry against both shells, other component envelopes and routing reserves; `validation.json` records that check separately from nominal envelope checks.
 
 ## Modeled visual references
 
@@ -34,7 +34,7 @@ The STEP's PCB bounds are X -8.67334 to 12.28284, Y -0.25 to 1.0, Z -15.0014 to 
 | microSD module | Drilled PCB, gold pads, open metal cage, spring contacts and inserted card edge | Existing 22 x 18 mm envelope; slot faces the actual right-side CAD opening |
 | 8-pin FPC adapter | Drilled PCB, fan-out traces, 0.5 mm contacts, bottom-contact socket and locking latch | Existing 26.1 x 19.1 mm allocation and user-confirmed connector type; no upright headers |
 
-The short flex tails and battery leads show component construction, not a validated wiring harness. These details are viewer geometry only; `build.py` continues to own manufacturing solids and fit envelopes.
+The short flex tails and battery leads show component construction, not a validated wiring harness. The pouch, tape and label rotate together by 90 degrees in the compact layout. Browser verification exports the detailed models as assembly-coordinate STLs under `reference_only/`, omitting label/screen planes. These references are not printable hardware; `build.py` continues to own manufacturing solids and conservative fit envelopes.
 
 The LCD UI is a texture on the display's 40.8 x 30.6 mm active area, just ahead of its Z=1.7 mm face. The separate 0.6 mm lens remains clear at Z=0.1 mm. The texture is depth-tested, follows the display's explosion offset and is hidden with the display, independently of the lens and bezel.
 

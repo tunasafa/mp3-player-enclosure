@@ -53,6 +53,20 @@ try {
   assert.equal(initial.visible, 10);
   assert.equal(initial.variant, 'P04_compact');
   const detail = await inspection();
+  const parameters = JSON.parse(await readFile(join(root, 'parameters.json'), 'utf8'));
+  assert.deepEqual(detail.layout.body, parameters.body);
+  assert.equal(await page.locator('#dimensions').textContent(),
+    [parameters.body.length, parameters.body.width, parameters.body.thickness].join(' x '));
+  assert.deepEqual(detail.layout.electronics, parameters.electronics);
+  assert.equal(detail.layout.batteryRotation, Math.PI / 2);
+  const pocket = parameters.routing_reserves.find(r => r.id === 'battery_connector_pocket');
+  const pocketMin = [pocket.center[0] - pocket.size[0] / 2, pocket.center[1] - pocket.size[1] / 2, pocket.z];
+  const pocketMax = pocketMin.map((v, i) => v + pocket.size[i]);
+  for (let i = 0; i < 3; i++) {
+    assert(detail.layout.connectorBounds.min[i] >= pocketMin[i]);
+    assert(detail.layout.connectorBounds.max[i] <= pocketMax[i]);
+  }
+  checks.push('Compact layout dimensions follow CAD parameters; battery rotates 90 degrees; connector stays in its reserved pocket');
   assert.equal(detail.screen.parent, 'display_envelope');
   assert(detail.screen.localZ > 1.5 && detail.screen.localZ < 2, 'LCD must be recessed behind lens');
   assert.equal(detail.screen.depthTest, true);
@@ -155,7 +169,18 @@ try {
   assert.deepEqual(requests, [], 'Offline preview made network requests');
   assert.deepEqual(errors, []);
   checks.push('No external requests or runtime errors');
+  // Keep downloadable visual references in CAD coordinates after a layout change.
+  const referenceHashes = {};
+  for (const part of detail.parts.filter(p => !['front_bezel', 'rear_shell', 'clear_lens_reference'].includes(p.id))) {
+    const encoded = await page.evaluate(id => window.FORM01.exportReferenceSTL(id), part.id);
+    const bytes = Buffer.from(encoded, 'base64');
+    const filename = `designs/P04_compact/reference_only/${part.id}.stl`;
+    await writeFile(join(root, filename), bytes);
+    referenceHashes[filename] = createHash('sha256').update(bytes).digest('hex');
+  }
+  checks.push('Detailed component reference STLs regenerated from current geometry in assembly coordinates');
   const report = { status: 'passed', initial, checks, captures, runtimeErrors: errors.length,
+    reference_sha256: referenceHashes,
     preview_sha256: createHash('sha256').update(await readFile(join(root, 'preview.html'))).digest('hex') };
   await writeFile(join(root, 'viewer_validation.json'), JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify(report, null, 2));

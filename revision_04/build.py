@@ -250,10 +250,16 @@ def main():
     dac_display = dac['z']-(P['display']['z']+P['display']['size'][2])
     dac_rear = T-SKIN-(dac['z']+dac['size'][2])
     tip = F['head_seat_z']-F['screw_length']
+    wheel_fastener = min(components['clickwheel_envelope'].val().distance(
+        cylinder(F['boss_radius'], T, x, y).val()) for x, y in FASTENERS)
     report['nominal_clearances_mm'] = {
         'fpc8_to_sidewall': round(fpc_wall, 4),
         'fpc8_to_front_shell_cad_distance': components['fpc8'].val().distance(parts['front_bezel'].val()),
         'dac_to_display': round(dac_display, 4), 'dac_to_rear_skin': round(dac_rear, 4),
+        'display_to_wheel': components['display_envelope'].val().distance(components['clickwheel_envelope'].val()),
+        'wheel_to_fastener': round(wheel_fastener, 4),
+        'battery_to_dac': components['battery_envelope'].val().distance(components['dac'].val()),
+        'usb_to_card_board': components['xiao'].val().distance(components['microsd'].val()),
         'wheel_to_battery': round(bat['z']-(P['wheel']['backing_z']+P['wheel']['backing'][2]),4),
         'battery_to_rear_skin': round(T-SKIN-(bat['z']+bat['size'][2]),4),
         'battery_to_side_guide': bat['guide_gap_xy'], 'board_support_adhesive': .2,
@@ -286,8 +292,40 @@ def main():
         'socket_mouth_axis_mm': mouth, 'socket_mouth_recess_mm': L/2-mouth[1],
         'orientation': 'PCB back toward rear; components toward display',
         'note': 'Vendor STEP height 6.3725mm; reserved published product height 7.1mm. Physical sample unmeasured.'}
+    xiao = boards['xiao']
+    xiao_vendor = cq.importers.importStep(str(ROOT/'vendor/XIAO-ESP32S3 v2.step')).rotate(
+        (0, 0, 0), (1, 0, 0), 90).translate(
+        (xiao['center'][0]-1.80475, xiao['center'][1]-6.1114, xiao['z']+.25))
+    xb = xiao_vendor.val().BoundingBox()
+    surrounding = {name: shape for name, shape in dict(parts, **components, **routes).items() if name != 'xiao'}
+    xiao_collisions = collisions(surrounding, {'xiao_vendor': xiao_vendor})
+    xiao_collisions = [c for c in xiao_collisions if 'xiao_vendor' in (c['a'], c['b'])]
+    report['vendor_xiao'] = {
+        'assembly_bounds_mm': [[getattr(xb, k+'min') for k in 'xyz'], [getattr(xb, k+'max') for k in 'xyz']],
+        'shell_component_and_route_collisions': xiao_collisions,
+        'note': 'Unscaled vendor USB body extends beyond the nominal board envelope; tested against shells, components and routes.'}
+    if xiao_collisions:
+        raise RuntimeError(f'XIAO vendor geometry collides: {xiao_collisions}')
+    baseline = json.loads((ROOT/'layout_baseline.json').read_text())
+    current = dict(boards, display_envelope=P['display'], battery_envelope=bat,
+                   clickwheel_envelope={'size': P['wheel']['backing']})
+    unchanged = all(sorted(current[key]['size'][:2]) == sorted(value['size'][:2])
+                    and current[key]['size'][2] == value['size'][2]
+                    for key, value in baseline['components'].items())
+    if not unchanged:
+        raise RuntimeError('Compact layout must preserve the selected component envelopes')
+    previous = baseline['outer_length_width_thickness_mm']
+    report['layout_optimization'] = {
+        'previous_length_width_thickness_mm': previous,
+        'current_length_width_thickness_mm': [L, W, T],
+        'external_volume_reduction_percent': round(100*(1-L*W*T/math.prod(previous)), 2),
+        'footprint_reduction_percent': round(100*(1-L*W/(previous[0]*previous[1])), 2),
+        'component_envelopes_preserved': unchanged,
+        'battery_rotated_in_plane': True,
+        'note': 'External bounding-box comparison, not a claim of optimal packing or measured physical fit.'}
     report['input_sha256'] = {name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
-                              for name in ['build.py','parameters.json','vendor/6309.step',P['branding']['artwork']]}
+                              for name in ['build.py','parameters.json','layout_baseline.json',
+                                           'vendor/6309.step','vendor/XIAO-ESP32S3 v2.step',P['branding']['artwork']]}
     (ROOT/'validation.json').write_text(json.dumps(report, indent=2)+'\n')
     if report['envelope_collisions'] or report['routing_reserve_collisions'] or not all(report['minimum_clearance_checks'].values()):
         raise RuntimeError(json.dumps(report, indent=2))

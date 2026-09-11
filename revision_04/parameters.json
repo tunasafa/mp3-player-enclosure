@@ -1,9 +1,9 @@
 {
-  "revision": "P04 - integrated TLV320DAC3100 DAC/headphone output",
+  "revision": "P04 - compact repack, unchanged components",
   "units": "mm",
   "body": {
-    "width": 72.0,
-    "length": 134.0,
+    "width": 70.0,
+    "length": 110.0,
     "thickness": 13.4,
     "corner_radius": 6.0,
     "skin": 1.2,
@@ -12,10 +12,10 @@
     "seam_gap": 0.2
   },
   "fasteners": {
-    "x": 30.0,
+    "x": 30.5,
     "y": [
-      -62.0,
-      62.0
+      -50.5,
+      50.5
     ],
     "boss_radius": 3.2,
     "clearance_diameter": 2.3,
@@ -43,7 +43,7 @@
   "display": {
     "center": [
       0.0,
-      38.0
+      31.5
     ],
     "size": [
       52.0,
@@ -55,13 +55,13 @@
       41.0,
       31.0
     ],
-    "window_y": 38.0,
+    "window_y": 31.5,
     "status": "Retained P02 working envelope; supplied vendor range does not identify the exact board. This does not cover every 61.1mm board or an upright header."
   },
   "wheel": {
     "center": [
       0.0,
-      -15.0
+      -18.5
     ],
     "backing": [
       56.0,
@@ -75,12 +75,12 @@
   },
   "battery": {
     "center": [
-      0.0,
-      8.0
+      -11.5,
+      -3.0
     ],
     "size": [
-      40.0,
       30.0,
+      40.0,
       5.0
     ],
     "z": 5.2,
@@ -100,8 +100,8 @@
       "id": "fpc8",
       "label": "Clickwheel 8-pin breakout",
       "center": [
-        -18.5,
-        -24.0
+        -14.0,
+        -36.0
       ],
       "size": [
         26.1,
@@ -114,8 +114,8 @@
       "id": "xiao",
       "label": "XIAO ESP32-S3",
       "center": [
-        23.5,
-        -24.0
+        22.5,
+        4.5
       ],
       "size": [
         21.0,
@@ -129,7 +129,7 @@
       "label": "Adafruit TLV320DAC3100 #6309 / stereo headphone jack",
       "center": [
         0,
-        48.05
+        36.05
       ],
       "size": [
         25.4,
@@ -144,8 +144,8 @@
       "id": "microsd",
       "label": "microSD module",
       "center": [
-        23.0,
-        -46.0
+        22.0,
+        -20.0
       ],
       "size": [
         22.0,
@@ -184,13 +184,13 @@
     {
       "id": "central_harness",
       "size": [
-        9.0,
-        32.0,
+        4.0,
+        62.0,
         5.0
       ],
       "center": [
-        0.0,
-        -25.0
+        8.0,
+        -13.5
       ],
       "z": 5.4
     },
@@ -198,12 +198,12 @@
       "id": "right_flex_and_lead_lane",
       "size": [
         4.0,
-        45.0,
+        32.0,
         4.8
       ],
       "center": [
-        30.0,
-        29.0
+        22.0,
+        32.0
       ],
       "z": 5.5
     },
@@ -215,16 +215,32 @@
         5.0
       ],
       "center": [
-        26.0,
-        8.0
+        8.0,
+        -6.0
       ],
-      "z": 5.5
+      "z": 5.1
+    },
+    {
+      "id": "upper_harness_bridge",
+      "size": [18.0, 3.0, 5.0],
+      "center": [15.0, 16.0],
+      "z": 5.4
+    },
+    {
+      "id": "clickwheel_flex",
+      "size": [6.0, 3.4, 3.5],
+      "center": [-14.0, -24.75],
+      "z": 4.95
     }
   ],
   "minimum_clearances": {
     "fpc8_to_sidewall": 2.0,
     "dac_to_display": 0.25,
-    "dac_to_rear_skin": 0.25
+    "dac_to_rear_skin": 0.25,
+    "display_to_wheel": 1.0,
+    "wheel_to_fastener": 0.5,
+    "battery_to_dac": 2.0,
+    "usb_to_card_board": 6.0
   },
   "confirmed_exclusions": [
     "Both unrelated 15-pin boards",

@@ -24,8 +24,8 @@
   },
   "provisional": {
     "outer_length_width_thickness_mm": [
-      134,
-      72,
+      110,
+      70,
       13.4
     ],
     "dac_envelope_mm": [
@@ -40,7 +40,7 @@
     ],
     "headphone_amplifier_volume_retained": false,
     "headphone_amplifier_module": "Integrated TLV320DAC3100, Adafruit #6309",
-    "fpc8_to_left_wall_mm": 2.85,
+    "fpc8_to_left_wall_mm": 6.35,
     "wheel_interface": "User-described 8-contact FPC/ZIF with included locking bottom-contact socket. Wheel pitch is user-confirmed as 0.5mm, so use the adapter's 0.5mm 8P socket side. Verify assembled fit and flex route with pads facing the socket floor. 1.6mm PCB thickness does not replace the 4.2mm assembled planning height.",
     "wheel_mode": "CFG1 high to regulated 3.3V for event-only; SCK and MOSI inputs with external pull-ups; BTN1 wake candidate; MISO unused. Validate on monochrome sample.",
     "wheel_power_control": "Powered-wheel/controller sleep and GPIO wake candidate; no circuit for restarting a fully unpowered XIAO is included"

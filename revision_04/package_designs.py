@@ -17,8 +17,13 @@ def package(target=None):
     viewer = json.loads((ROOT/'viewer_validation.json').read_text())
     if viewer['status'] != 'passed' or viewer['preview_sha256'] != hashlib.sha256((ROOT/'preview.html').read_bytes()).hexdigest():
         raise RuntimeError('Verify the current preview before packaging.')
+    for name, digest in viewer['reference_sha256'].items():
+        if hashlib.sha256((ROOT/name).read_bytes()).hexdigest() != digest:
+            raise RuntimeError(f'Regenerate the current visual reference: {name}')
     if report['envelope_collisions'] or report['routing_reserve_collisions']:
         raise RuntimeError('Resolve the recorded CAD collisions before packaging.')
+    if report['vendor_xiao']['shell_component_and_route_collisions']:
+        raise RuntimeError('Resolve XIAO manufacturer-model collisions before packaging.')
     for entry in report['stls']:
         mesh = trimesh.load_mesh(ROOT/entry['file'], process=True)
         if not (mesh.is_watertight and mesh.is_winding_consistent and mesh.volume > 0 and mesh.body_count == 1):
@@ -26,7 +31,7 @@ def package(target=None):
         if not entry['cad_valid'] or entry['solid_count_cad'] != 1:
             raise RuntimeError('CAD validation failed.')
     names = ['BOM.csv','vendor/6309.step','vendor/README.md','vendor/LICENSE-Adafruit-CAD.txt','README.md','HARDWARE_NOTES.md','requirements.json',
-             'parameters.json','requirements.txt','build.py',
+             'parameters.json','layout_baseline.json','requirements.txt','build.py',
              'make_viewer.py','make_components.py','make_branding.py','viewer.html','viewer.js','package.json','package-lock.json',
              'vendor/viewer.bundle.js','vendor/LICENSE-viewer.txt','vendor/XIAO-ESP32S3 v2.step',
              'make_drawings.py','make_layout.py','verify_viewer.mjs','package_designs.py',

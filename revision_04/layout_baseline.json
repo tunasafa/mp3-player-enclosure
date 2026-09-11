@@ -1,0 +1,13 @@
+{
+  "description": "P04 layout before compact repacking; dimensions and component envelopes in mm",
+  "outer_length_width_thickness_mm": [134.0, 72.0, 13.4],
+  "components": {
+    "display_envelope": {"center": [0.0, 38.0], "size": [52.0, 40.0, 2.8], "z": 1.7},
+    "clickwheel_envelope": {"center": [0.0, -15.0], "size": [56.0, 58.0, 3.3], "z": 1.6},
+    "battery_envelope": {"center": [0.0, 8.0], "size": [40.0, 30.0, 5.0], "z": 5.2},
+    "fpc8": {"center": [-18.5, -24.0], "size": [26.1, 19.1, 4.2], "z": 5.2},
+    "xiao": {"center": [23.5, -24.0], "size": [21.0, 17.8, 4.2], "z": 5.2},
+    "dac": {"center": [0.0, 48.05], "size": [25.4, 33.7, 7.1], "z": 4.8},
+    "microsd": {"center": [23.0, -46.0], "size": [22.0, 18.0, 4.0], "z": 5.2}
+  }
+}
