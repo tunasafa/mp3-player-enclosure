@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "initial": {
+    "variant": "P04_compact",
+    "yaw": -0.5,
+    "pitch": -0.14,
+    "zoom": 1,
+    "explode": 0,
+    "groups": {
+      "shell": true,
+      "carrier": true,
+      "components": true
+    },
+    "visible": 10
+  },
+  "checks": [
+    "WebGL initialized",
+    "10 expected parts",
+    "600mAh battery label",
+    "explosion slider",
+    "component visibility",
+    "reset",
+    "front view",
+    "desktop and mobile rendering"
+  ],
+  "runtimeErrors": 0,
+  "preview_sha256": "9206ed327aab6c1fb002c4f9446cd76ced14c978c2dbd172dd97dd48be93c76f"
+}

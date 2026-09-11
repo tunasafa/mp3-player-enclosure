@@ -1,0 +1,54 @@
+{
+  "revision": "P04",
+  "status": "Fit prototype; combined headphone board selected and mechanically allocated. Physical samples, mounting, connector polarity and complete firmware/pin allocation need validation.",
+  "confirmed": {
+    "display_orientation": "landscape",
+    "wheel": "Actual iPod 4th-generation monochrome assembly",
+    "fpc_8_pin_adapter_quantity": 1,
+    "fpc_8_pin_adapter_purpose": "Clickwheel flex breakout",
+    "fpc_adapter_listing": "Your Cee universal FPC/FFC adapter; obverse 0.5mm pitch; reverse 1.0mm pitch; advertised board thickness 1.6mm; 8P among available variants",
+    "fpc_adapter_socket": "Included locking bottom-contact socket; confirmed by user",
+    "clickwheel_pitch_mm": 0.5,
+    "fpc_15_pin_adapter_quantity": 0,
+    "antenna_quantity": 0,
+    "physical_power_switch_quantity": 0,
+    "power_user_interface": "Clickwheel software controls; measured sleep/wake path still required",
+    "battery_capacity_mah": 600,
+    "battery": "Protected 3.7V 503040 selected by user, advertised 5x30x40 mm; seller lists 1-1.5A working/discharge current and 3A maximum discharge; likely PH 2.0 plug",
+    "previous_2000mah_target_superseded": true,
+    "dac": "Adafruit TLV320DAC3100 #6309 / stereo headphone jack",
+    "jack_opening_quantity": 1,
+    "headphones": "Ordinary passive headphones",
+    "audio_architecture": "XIAO I2S -> TLV320DAC3100 integrated DAC/headphone driver -> onboard 3.5mm socket",
+    "separate_headphone_amplifier_quantity": 0
+  },
+  "provisional": {
+    "outer_length_width_thickness_mm": [
+      134,
+      72,
+      13.4
+    ],
+    "dac_envelope_mm": [
+      25.4,
+      33.7,
+      7.1
+    ],
+    "lcd_envelope_mm": [
+      52.0,
+      40.0,
+      2.8
+    ],
+    "headphone_amplifier_volume_retained": false,
+    "headphone_amplifier_module": "Integrated TLV320DAC3100, Adafruit #6309",
+    "fpc8_to_left_wall_mm": 2.85,
+    "wheel_interface": "User-described 8-contact FPC/ZIF with included locking bottom-contact socket. Wheel pitch is user-confirmed as 0.5mm, so use the adapter's 0.5mm 8P socket side. Verify assembled fit and flex route with pads facing the socket floor. 1.6mm PCB thickness does not replace the 4.2mm assembled planning height.",
+    "wheel_mode": "CFG1 high to regulated 3.3V for event-only; SCK and MOSI inputs with external pull-ups; BTN1 wake candidate; MISO unused. Validate on monochrome sample.",
+    "wheel_power_control": "Powered-wheel/controller sleep and GPIO wake candidate; no circuit for restarting a fully unpowered XIAO is included"
+  },
+  "open_questions": [
+    "Verify exact LCD connector, bare audio-board mounting lands, plug shoulder fit and vendor-CAD jack axis against samples.",
+    "Verify 503040 battery connector polarity, actual finished-pack thickness around the protection board, and compatibility with the chosen charger on the physical sample.",
+    "Verify clickwheel tail thickness, insertion depth, latch clearance, pin-1 continuity and flex route into the confirmed 0.5mm bottom-contact socket.",
+    "Validate XIAO GPIO allocation, codec startup, total 3.3V current and wheel-controlled sleep/wake on hardware."
+  ]
+}

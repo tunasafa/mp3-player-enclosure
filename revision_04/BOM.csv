@@ -1,0 +1,15 @@
+item,quantity,part,status
+Audio board,1,Adafruit TLV320DAC3100 product 6309,Selected combined DAC/headphone amplifier with onboard 3.5mm jack; direct solder wires; no headers
+Controller,1,Seeed XIAO ESP32-S3,Retained assumed envelope; GPIO and power budget require bench validation
+Display,1,2 inch ST7789 IPS 240x320,Retained 52x40x2.8mm landscape assumption; exact module unverified
+Clickwheel,1,Original iPod 4th-generation monochrome wheel,Identity user confirmed; dimensions and flex geometry provisional
+Wheel adapter,1,8-pin FPC breakout,Your Cee listing: obverse 0.5mm pitch; reverse 1.0mm pitch; PCB thickness 1.6mm; locking bottom-contact socket included per user; clickwheel pitch confirmed 0.5mm so use 8P 0.5mm side; 26.1x19.1x4.2mm assembled planning envelope
+Storage,1,microSD module,Retained 22x18x4mm envelope
+Battery,1,Protected 503040 3.7V 600mAh,User selected advertised 5x30x40mm; finished dimensions and charge rating unverified
+Front shell,1,P04 front_bezel.stl,Print fit prototype
+Rear shell,1,P04 rear_shell.stl,Print fit prototype
+Fit coupon,1,insert_and_clearance_fit_coupon.stl,Print before selecting inserts
+Lens,1,Clear sheet 43x33x0.6mm,Reference DXF; confirm actual display offsets
+Inserts,4,M2 heat-set inserts,Select for provisional 3.2mm diameter by 3.2mm deep pilots using coupon
+Screws,4,M2x7,Heads must fit 4.5mm diameter recesses
+Wiring and insulation,as needed,Low-profile soldered harness and insulating adhesive,0.2mm nominal pad allowance; qualify actual materials and strain relief

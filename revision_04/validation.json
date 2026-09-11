@@ -1,0 +1,115 @@
+{
+  "revision": "P04 - integrated TLV320DAC3100 DAC/headphone output",
+  "units": "mm",
+  "outer_length_width_thickness_mm": [
+    134.0,
+    72.0,
+    13.4
+  ],
+  "scope": "CAD/mesh, assembly interference, and designated empty routing-volume checks; no physical fit, wiring, battery expansion or load validation.",
+  "stls": [
+    {
+      "file": "designs/P04_compact/STL/front_bezel.stl",
+      "bounds_mm": [
+        71.9999999,
+        134.0,
+        6.400000095367432
+      ],
+      "watertight": true,
+      "winding_consistent": true,
+      "solid_count_cad": 1,
+      "mesh_bodies": 1,
+      "positive_volume": true,
+      "cad_valid": true,
+      "volume_mm3": 11073.056567784222,
+      "faces": 11868
+    },
+    {
+      "file": "designs/P04_compact/STL/rear_shell.stl",
+      "bounds_mm": [
+        72.0,
+        134.0,
+        8.199999709265143
+      ],
+      "watertight": true,
+      "winding_consistent": true,
+      "solid_count_cad": 1,
+      "mesh_bodies": 1,
+      "positive_volume": true,
+      "cad_valid": true,
+      "volume_mm3": 16966.89958637871,
+      "faces": 13442
+    },
+    {
+      "file": "designs/P04_compact/STL/insert_and_clearance_fit_coupon.stl",
+      "bounds_mm": [
+        58.0,
+        28.0,
+        5.199999809265137
+      ],
+      "watertight": true,
+      "winding_consistent": true,
+      "solid_count_cad": 1,
+      "mesh_bodies": 1,
+      "positive_volume": true,
+      "cad_valid": true,
+      "volume_mm3": 8192.832113145882,
+      "faces": 4240
+    }
+  ],
+  "envelope_collisions": [],
+  "routing_reserve_collisions": [],
+  "nominal_clearances_mm": {
+    "fpc8_to_sidewall": 2.85,
+    "fpc8_to_front_shell_cad_distance": 2.849999999999998,
+    "dac_to_display": 0.3,
+    "dac_to_rear_skin": 0.3,
+    "wheel_to_battery": 0.3,
+    "battery_to_rear_skin": 2.0,
+    "battery_to_side_guide": 0.8,
+    "board_support_adhesive": 0.2,
+    "screw_tip_above_pilot_bottom": 1.0,
+    "screw_insert_engagement": 2.2,
+    "tongue_to_rear_wall": 0.5,
+    "dac_top_edge_to_inner_wall": 0.5,
+    "dac_top_edge_to_outer_face": 2.1
+  },
+  "minimum_clearance_checks": {
+    "fpc8_to_sidewall": true,
+    "dac_to_display": true,
+    "dac_to_rear_skin": true
+  },
+  "jack_axis_assembly_mm": [
+    4.05915274704965,
+    67.0,
+    8.02751704190317
+  ],
+  "vendor_dac": {
+    "contained_in_planning_envelope": true,
+    "assembly_bounds_mm": [
+      [
+        -12.700000000000006,
+        31.19999999999999,
+        5.527517041903165
+      ],
+      [
+        12.700000000000006,
+        64.73700952556963,
+        11.9
+      ]
+    ],
+    "socket_mouth_axis_mm": [
+      4.059152747049652,
+      64.73700952556965,
+      8.027517041903169
+    ],
+    "socket_mouth_recess_mm": 2.262990474430353,
+    "orientation": "PCB back toward rear; components toward display",
+    "note": "Vendor STEP height 6.3725mm; reserved published product height 7.1mm. Physical sample unmeasured."
+  },
+  "input_sha256": {
+    "build.py": "34a07afd2f5ed756bae5ef8ac6c17d8100c7ab21fcee17b5355513162b6b5e00",
+    "parameters.json": "7460393172d457a463ddc8e568a054bfb458a028b20cb0571e0439490054b25d",
+    "vendor/6309.step": "3eba386a14eb87e26fc5a287a6e5b4a30515306079798d11c45fc202c79b4627"
+  }
+}

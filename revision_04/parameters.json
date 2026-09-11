@@ -1,0 +1,230 @@
+{
+  "revision": "P04 - integrated TLV320DAC3100 DAC/headphone output",
+  "units": "mm",
+  "body": {
+    "width": 72.0,
+    "length": 134.0,
+    "thickness": 13.4,
+    "corner_radius": 6.0,
+    "skin": 1.2,
+    "wall": 1.6,
+    "front_height": 5.2,
+    "seam_gap": 0.2
+  },
+  "fasteners": {
+    "x": 30.0,
+    "y": [
+      -62.0,
+      62.0
+    ],
+    "boss_radius": 3.2,
+    "clearance_diameter": 2.3,
+    "insert_pilot_diameter": 3.2,
+    "insert_depth": 3.2,
+    "head_recess_diameter": 4.5,
+    "head_seat_z": 10.0,
+    "screw_length": 7.0
+  },
+  "display": {
+    "center": [
+      0.0,
+      38.0
+    ],
+    "size": [
+      52.0,
+      40.0,
+      2.8
+    ],
+    "z": 1.7,
+    "window": [
+      41.0,
+      31.0
+    ],
+    "window_y": 38.0,
+    "status": "Retained P02 working envelope; supplied vendor range does not identify the exact board. This does not cover every 61.1mm board or an upright header."
+  },
+  "wheel": {
+    "center": [
+      0.0,
+      -15.0
+    ],
+    "backing": [
+      56.0,
+      58.0,
+      3.3
+    ],
+    "backing_z": 1.6,
+    "face_diameter": 44.0,
+    "aperture_diameter": 44.6,
+    "status": "Actual 4th-generation monochrome assembly confirmed; envelope and flex bend geometry remain provisional."
+  },
+  "battery": {
+    "center": [
+      0.0,
+      8.0
+    ],
+    "size": [
+      40.0,
+      30.0,
+      5.0
+    ],
+    "z": 5.2,
+    "capacity_mah": 600,
+    "nominal_voltage": 3.7,
+    "candidate": "User-selected protected 503040, advertised 5 x 30 x 40mm",
+    "guide_gap_xy": 0.8,
+    "guide_thickness": 1.2,
+    "guide_height": 2.0,
+    "working_discharge_current_a": "1-1.5 (seller listing)",
+    "maximum_discharge_current_a": "3 (seller listing)",
+    "connector": "Likely JST-PH / PH 2.0 plug; verify polarity on the actual pack before connecting",
+    "status": "Seller listing confirms protected 503040, 3.7V, 600mAh, 5 x 30 x 40mm size, 1-1.5A working/discharge range and up to 3A maximum discharge. Connector is likely PH 2.0; polarity and finished-pack/protection-board details still require sample verification."
+  },
+  "electronics": [
+    {
+      "id": "fpc8",
+      "label": "Clickwheel 8-pin breakout",
+      "center": [
+        -18.5,
+        -24.0
+      ],
+      "size": [
+        26.1,
+        19.1,
+        4.2
+      ],
+      "z": 5.2
+    },
+    {
+      "id": "xiao",
+      "label": "XIAO ESP32-S3",
+      "center": [
+        23.5,
+        -24.0
+      ],
+      "size": [
+        21.0,
+        17.8,
+        4.2
+      ],
+      "z": 5.2
+    },
+    {
+      "id": "dac",
+      "label": "Adafruit TLV320DAC3100 #6309 / stereo headphone jack",
+      "center": [
+        0,
+        48.05
+      ],
+      "size": [
+        25.4,
+        33.7,
+        7.1
+      ],
+      "z": 4.8,
+      "status": "Published maximum planning envelope; components face front, bare PCB back at Z11.9. Direct solder wiring, no fitted headers. Vendor CAD establishes nominal socket axis; sample fit still required.",
+      "product_url": "https://www.adafruit.com/product/6309"
+    },
+    {
+      "id": "microsd",
+      "label": "microSD module",
+      "center": [
+        23.0,
+        -46.0
+      ],
+      "size": [
+        22.0,
+        18.0,
+        4.0
+      ],
+      "z": 5.2
+    }
+  ],
+  "variants": {
+    "P04_compact": {
+      "construction": "Two printed shells, local supports, one top stereo headphone jack opening"
+    }
+  },
+  "ports": {
+    "usb": {
+      "width": 10.4,
+      "height": 4.8,
+      "z": 7.5
+    },
+    "microsd": {
+      "width": 15.0,
+      "height": 3.2,
+      "z": 7.2
+    },
+    "jack": {
+      "diameter": 9.0,
+      "board": "dac",
+      "axis_offset_x": 4.05915274704965,
+      "axis_offset_z": 3.22751704190317,
+      "edge": "top",
+      "status": "9mm plug-body access opening to recessed jack; axis derived from vendor STEP with component face toward front. Verify actual plug shoulder and board dimensions."
+    }
+  },
+  "routing_reserves": [
+    {
+      "id": "central_harness",
+      "size": [
+        9.0,
+        32.0,
+        5.0
+      ],
+      "center": [
+        0.0,
+        -25.0
+      ],
+      "z": 5.4
+    },
+    {
+      "id": "right_flex_and_lead_lane",
+      "size": [
+        4.0,
+        45.0,
+        4.8
+      ],
+      "center": [
+        30.0,
+        29.0
+      ],
+      "z": 5.5
+    },
+    {
+      "id": "battery_connector_pocket",
+      "size": [
+        8.0,
+        10.0,
+        5.0
+      ],
+      "center": [
+        26.0,
+        8.0
+      ],
+      "z": 5.5
+    }
+  ],
+  "minimum_clearances": {
+    "fpc8_to_sidewall": 2.0,
+    "dac_to_display": 0.25,
+    "dac_to_rear_skin": 0.25
+  },
+  "confirmed_exclusions": [
+    "Both unrelated 15-pin boards",
+    "antenna",
+    "physical power switch",
+    "separate middle carrier",
+    "second jack opening"
+  ],
+  "audio_output": {
+    "headphones": "ordinary passive earphones, direct 3.5mm connection",
+    "required_path": "XIAO I2S -> TLV320DAC3100 integrated DAC/headphone driver -> onboard 3.5mm socket",
+    "amplifier_module": "Integrated on Adafruit #6309; no separate amplifier",
+    "supply": "Regulated 3.3V, headphone-only operation; verify total XIAO rail current",
+    "control": "I2C configuration and hardware reset required; BCLK-derived PLL, no external MCLK",
+    "speaker_output": "Disabled and unconnected"
+  },
+  "status": "Fit prototype; combined headphone board selected and mechanically allocated. Physical samples, mounting, connector polarity and complete firmware/pin allocation need validation."
+}
