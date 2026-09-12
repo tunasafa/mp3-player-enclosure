@@ -6,7 +6,7 @@
     {
       "name": "preview_iso.png",
       "pixels": {
-        "count": 95108,
+        "count": 95210,
         "minX": 425,
         "maxX": 659,
         "minY": 160,
@@ -18,10 +18,10 @@
     {
       "name": "preview_front.png",
       "pixels": {
-        "count": 95438,
+        "count": 95575,
         "minX": 424,
         "maxX": 660,
-        "minY": 167,
+        "minY": 159,
         "maxY": 572,
         "w": 1085,
         "h": 740
@@ -30,10 +30,10 @@
     {
       "name": "preview_back.png",
       "pixels": {
-        "count": 95438,
+        "count": 95575,
         "minX": 424,
         "maxX": 660,
-        "minY": 167,
+        "minY": 158,
         "maxY": 572,
         "w": 1085,
         "h": 740
@@ -42,7 +42,7 @@
     {
       "name": "preview_inside.png",
       "pixels": {
-        "count": 94840,
+        "count": 94914,
         "minX": 420,
         "maxX": 658,
         "minY": 162,
@@ -54,7 +54,7 @@
     {
       "name": "preview_exploded.png",
       "pixels": {
-        "count": 125903,
+        "count": 126037,
         "minX": 371,
         "maxX": 719,
         "minY": 163,
@@ -66,7 +66,7 @@
     {
       "name": "preview_mobile.png",
       "pixels": {
-        "count": 44041,
+        "count": 44088,
         "minX": 103,
         "maxX": 262,
         "minY": 169,
@@ -78,10 +78,10 @@
     {
       "name": "preview_mobile_inside.png",
       "pixels": {
-        "count": 43836,
+        "count": 43874,
         "minX": 100,
         "maxX": 261,
-        "minY": 171,
+        "minY": 170,
         "maxY": 449,
         "w": 366,
         "h": 570

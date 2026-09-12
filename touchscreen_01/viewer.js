@@ -82,6 +82,36 @@ function path(group, points, radius, mat) {
   const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)), false, 'centripetal');
   return mesh(group, new THREE.TubeGeometry(curve, 32, radius, 7, false), mat);
 }
+function ribbon(group, points, width) {
+  const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)));
+  const vertices = [], indices = [];
+  for (let i = 0; i <= 32; i++) {
+    const p = curve.getPoint(i / 32);
+    vertices.push(p.x - width / 2, p.y, p.z, p.x + width / 2, p.y, p.z);
+    if (i < 32) { const n = i * 2; indices.push(n, n + 1, n + 2, n + 1, n + 3, n + 2); }
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+  geometry.setIndex(indices); geometry.computeVertexNormals();
+  const mat = mats.flex.clone(); mat.side = THREE.DoubleSide;
+  mesh(group, geometry, mat);
+  for (let i = 0; i < Math.min(8, Math.max(2, Math.round(width))); i++) {
+    path(group, curve.getPoints(16).map(p => [p.x + (i - 3.5) * width / 8, p.y, p.z + .045]), .035, mats.copper);
+  }
+}
+function board(group,width,height,thickness,position,mat,holes=[]) {
+  box(group,[width,height,thickness],position,mat,.7);
+  for (const [hx,hy,r] of holes) { ring(group,r+.45,r,[position[0]+hx,position[1]+hy,position[2]+thickness+.02],mats.gold); }
+}
+function passive(group,x,y,z,width=1.4,length=.75,mat=mats.ceramic) {
+  box(group,[width,length,.45],[x,y,z+.225],mat,.08);
+  for (const dx of [-width*.4,width*.4]) box(group,[width*.22,length+.05,.48],[x+dx,y,z+.24],mats.solder);
+}
+function chip(group,x,y,z,width,height) {
+  box(group,[width,height,.65],[x,y,z+.325],mats.black,.12);
+  for (let i=0;i<5;i++) for (const side of [-1,1]) box(group,[.7,.25,.18],[x+side*(width/2+.2),y+(i-2)*height/5,z+.1],mats.solder);
+  cylinder(group,.16,.02,[x-width/2+.45,y+height/2-.45,z+.66],mats.dark,12);
+}
 function texture(width, height, draw) {
   const c = document.createElement('canvas');
   c.width = width; c.height = height;
@@ -155,6 +185,49 @@ for(const id of ['battery','audio','interface_pcb','microsd','display_zif','touc
   label(parts.get(id),text,Math.min(e.size[0]-.6,28),Math.min(e.size[1]-.4,15),[...e.center,e.z+e.size[2]+.014],true,null,id==='battery'?'#273c3b':'#eff4dc');
 }
 const hint=label(parts.get('front_bezel'),['mytunas'],21,6,[0,-28,-.015],false,null,'#446057');
+
+// Detailed visual assembly. These meshes sit inside the validated envelopes and
+// are presentation geometry; the parametric CAD remains the fit authority.
+function detailedDisplay(group) {
+  const [x,y]=d.center,z=d.glass_z;
+  box(group,[d.glass_size[0],d.glass_size[1],d.glass_size[2]],[x,y,z+d.glass_size[2]/2],mats.silver,2.5);
+  box(group,[d.glass_size[0]-.8,d.glass_size[1]-.8,.08],[x,y,z+d.glass_size[2]+.05],mats.black,2.3);
+  box(group,[d.glass_size[0]-1.4,d.glass_size[1]-1.4,d.sensor_thickness],[x,y,z+d.glass_size[2]+d.sensor_thickness/2+.07],mats.wheel,2.3);
+  const ui=surface(group,aw,ah,[x,y,z+d.glass_size[2]+d.sensor_thickness+.08],screen,false,false);ui.name='touch-ui';
+  const lcdz=d.lcd_z; box(group,[d.lcd_size[0],d.lcd_size[1],d.lcd_size[2]],[x,y,lcdz+d.lcd_size[2]/2],mats.silver,1.6);
+  box(group,[d.lcd_size[0]-1.4,d.lcd_size[1]-1.4,.3],[x,y,lcdz+d.lcd_size[2]+.05],mats.black,1.2);
+  ribbon(group,[[x-5,y-d.glass_size[1]/2,z+1.2],[x-5,y-d.glass_size[1]/2-3,z+1.1],[x-6,y-d.glass_size[1]/2-7,z+.8]],4.5);
+  ribbon(group,[[x+8,y-d.glass_size[1]/2,z+1.2],[x+9,y-d.glass_size[1]/2-3,z+1.1],[x+9,y-d.glass_size[1]/2-7,z+.8]],3.2);
+}
+function detailedBattery(group) {
+  const b=parameters.battery,[x,y]=b.center,z=b.z;
+  box(group,[b.size[0],b.size[1],b.size[2]],[x,y,z+b.size[2]/2],mats.white,1.8);
+  box(group,[b.size[0]-.8,b.size[1]-.8,.12],[x,y,z+b.size[2]-.08],mats.tape,1.5);
+  label(group,['LiPo 1S','34 × 30 × 3.4','CAPACITY TBD'],22,11,[x,y,z+b.size[2]+.03],true,'#263d3b','#e6f1dc');
+  ribbon(group,[[x,y+b.size[1]/2,z+b.size[2]/2],[x+2,y+b.size[1]/2+2,z+b.size[2]/2],[x+6,y+b.size[1]/2+3,z+b.size[2]/2]],1.2);
+  box(group,[1,1.2,.8],[x+5,y+b.size[1]/2+3,z+b.size[2]/2],mats.red,.15);box(group,[1,1.2,.8],[x+6.2,y+b.size[1]/2+3,z+b.size[2]/2],mats.black,.15);
+}
+function detailedAudio(group) {
+  const e=parameters.electronics.find(e=>e.id==='audio'),[x,y]=e.center,z=e.z;
+  board(group,e.size[0],e.size[1],1,[x,y,z],mats.pcb,[[e.size[0]/2-2,e.size[1]/2-2,1]]);chip(group,x,y+2,z+1,7,5);chip(group,x-5,y-5,z+1,3,2);for(let i=0;i<5;i++)passive(group,x-5+i*2,y+7,z+1);label(group,['AUDIO','DAC + HP'],13,6,[x,y,z+1.7],true,null,'#dcebe2');
+  cylinder(group,2.3,4,[x,y-e.size[1]/2-1.5,z+2.6],mats.silver,32);cylinder(group,1.5,4.1,[x,y-e.size[1]/2-1.5,z+2.6],mats.black,32);
+}
+function detailedInterface(group) {
+  const e=parameters.electronics.find(e=>e.id==='interface_pcb'),[x,y]=e.center,z=e.z;
+  board(group,e.size[0],e.size[1],e.size[2],[x,y,z],mats.pcb,[[e.size[0]/2-2,e.size[1]/2-2,1]]);chip(group,x-8,y,z+.8,5,3);chip(group,x+2,y+3,z+.8,4,2.5);for(let i=0;i<10;i++)passive(group,x-12+(i%5)*5,y-5+Math.floor(i/5)*8,z+.8,.9,.6);label(group,['CUSTOM I/O','SPI + I2C'],12,5,[x,y,z+1.1],true,null,'#dcebe2');
+}
+function detailedMicroSD(group) {
+  const e=parameters.electronics.find(e=>e.id==='microsd'),[x,y]=e.center,z=e.z;
+  board(group,e.size[0],e.size[1],.8,[x,y,z],mats.blue);box(group,[14,10,1.7],[x,y,z+1.25],mats.silver,.8);box(group,[12,8,.25],[x,y-1,z+2.12],mats.black,.5);box(group,[10,6,.35],[x,y+1,z+2.3],mats.blue,.3);for(let i=0;i<8;i++)box(group,[.55,4,.06],[x-3.5+i,y-1,z+2.5],mats.gold,.05);
+}
+function detailedZif(group,id) {
+  const e=parameters.electronics.find(e=>e.id===id),[x,y]=e.center,z=e.z,contacts=id==='touch_zif'?6:15;
+  box(group,[e.size[0],e.size[1],1],[x,y,z+.5],mats.black,.35);box(group,[e.size[0]-.7,e.size[1]-.8,.3],[x,y,z+1.05],mats.silver,.15);
+  for(let i=0;i<contacts;i++)box(group,[.18,.9,.08],[x+(i-(contacts-1)/2)*(.5),y,z+1.23],mats.gold,.03);
+  ribbon(group,[[x,y+e.size[1]/2,z+1.2],[x,y+e.size[1]/2+3,z+1.2],[x+1,y+e.size[1]/2+5,z+1]],id==='touch_zif'?3:4.5);
+}
+function detailedControl(group) { const e=parameters.electronics.find(e=>e.id==='control'),[x,y]=e.center,z=e.z;board(group,e.size[0],e.size[1],.7,[x,y,z],mats.pcb);chip(group,x,y,z+.7,5,2.2); }
+detailedDisplay(parts.get('touch_glass'));detailedBattery(parts.get('battery'));detailedAudio(parts.get('audio'));detailedInterface(parts.get('interface_pcb'));detailedMicroSD(parts.get('microsd'));detailedZif(parts.get('display_zif'),'display_zif');detailedZif(parts.get('touch_zif'),'touch_zif');detailedControl(parts.get('control'));
 for (const group of parts.values()) {
   group.traverse(item => {
     if (!item.isMesh || item.userData.surface || item.material.transparent) return;
