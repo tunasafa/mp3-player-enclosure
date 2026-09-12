@@ -11,7 +11,7 @@ for(const [path,hash] of Object.entries(expected.source_sha256))assert.equal(awa
 assert.equal(await sha(join(root,'parameters.json')),expected.parameter_sha256);
 for(const [path,hash] of Object.entries(expected.dependency_sha256))assert.equal(await sha(join(root,'..',path)),hash);
 const browser=await chromium.launch({executablePath:process.env.T01_BROWSER_PATH||'/Applications/Brave Browser.app/Contents/MacOS/Brave Browser',headless:true,args:['--enable-unsafe-swiftshader','--disable-background-networking']});
-const errors=[],requests=[],checks=[];
+const errors=[],requests=[],checks=[],cameraChecks=[];
 try {
  const page=await browser.newPage({viewport:{width:1200,height:950}});
  page.on('pageerror',e=>errors.push(e.message));
@@ -54,6 +54,45 @@ try {
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`Overflow ${name}`);
   await page.screenshot({path:join(root,name),fullPage:true});checks.push({name,pixels});
  }
+ const cameraState=()=>page.evaluate(()=>PACKING.cameraState());
+ function sameCamera(before,after,label){
+  for(const key of Object.keys(before)){
+   const a=Array.isArray(before[key])?before[key]:[before[key]],b=Array.isArray(after[key])?after[key]:[after[key]];
+   a.forEach((n,i)=>assert(Math.abs(n-b[i])<1e-6,`${label} changed camera ${key}`));
+  }
+ }
+ async function settleOrbit(){
+  await page.evaluate(async()=>{
+   let previous,stable=0;
+   for(let i=0;i<600;i++){
+    await new Promise(requestAnimationFrame);
+    const state=Object.values(PACKING.cameraState()).flat();
+    stable=previous&&state.every((n,j)=>Math.abs(n-previous[j])<1e-8)?stable+1:0;
+    if(stable>=3)return;
+    previous=state;
+   }
+   throw new Error('Orbit damping did not settle');
+  });
+ }
+ async function persistentCamera(label){
+  const initial=await cameraState(),box=await page.locator('#view').boundingBox();
+  const x=box.x+box.width*.5,y=box.y+box.height*.45;
+  // Real pointer orbit, wheel zoom and right-button pan reproduce the bug.
+  await page.mouse.move(x,y);await page.mouse.down();await page.mouse.move(x+50,y+30,{steps:8});await page.mouse.up();
+  await page.mouse.wheel(0,-100);
+  await page.mouse.down({button:'right'});await page.mouse.move(x+70,y+40,{steps:4});await page.mouse.up({button:'right'});
+  await settleOrbit();const before=await cameraState();assert.notDeepEqual(before,initial,'Gesture did not move camera');
+  for(const value of ['25','70','35','0']){
+   await page.locator('#explode').fill(value);await settleOrbit();sameCamera(before,await cameraState(),`${label}: explode ${value}`);
+   const dac=(await page.evaluate(()=>PACKING.inspect())).find(p=>p.id==='audio');
+   assert(Math.abs(dac.bounds[0][2]-dac.expected[0][2]-16*Number(value)/100)<.09,'Slider must still move parts');
+  }
+  for(const selector of ['#covers','#reserves','[data-part="front_bezel"]']){
+   const control=page.locator(selector),original=await control.isChecked();
+   for(const checked of [!original,original]){await control.setChecked(checked);await settleOrbit();sameCamera(before,await cameraState(),`${label}: ${selector}`);}
+  }
+  cameraChecks.push({label,orbit_pan_zoom_preserved:true,slider_moves_parts:true});
+ }
  await capture('preview_iso.png');
  for(const view of ['front','rear','inside','side','bottom']){await page.locator(`[data-view="${view}"]`).click();await capture(`preview_${view}.png`);}
  await page.locator('#covers').uncheck();await capture('preview_ports_open.png');
@@ -69,8 +108,14 @@ try {
   await page.locator('#covers').uncheck();
  }
  await page.locator('[data-view="iso"]').click();
- await page.locator('#reserves').check();await page.locator('#explode').fill('100');await capture('preview_exploded.png');
- await page.setViewportSize({width:390,height:844});await capture('preview_mobile.png');
+ await persistentCamera('desktop');
+ await page.locator('#reserves').check();await page.locator('#explode').fill('100');
+ // An explicit preset frames the requested assembly for the reference image.
+ await page.locator('[data-view="iso"]').click();await capture('preview_exploded.png');
+ const beforeResize=await cameraState();
+ await page.setViewportSize({width:390,height:844});await settleOrbit();sameCamera(beforeResize,await cameraState(),'Viewport resize');
+ await page.locator('[data-view="iso"]').click();await capture('preview_mobile.png');
+ await persistentCamera('mobile');
  await page.locator('[data-part="touch_glass"]').uncheck();
  assert.equal((await page.evaluate(()=>PACKING.inspect())).find(p=>p.id==='touch_glass').visible,false);
  await page.locator('#reset').click();await page.locator('[data-view="inside"]').click();await capture('preview_mobile_inside.png');
@@ -80,6 +125,6 @@ try {
  assert(page.url().endsWith('/touchscreen_02/preview.html'));
  assert.equal(await page.evaluate(()=>PACKING.report.jack_edge),'bottom');
  assert.deepEqual(errors,[]);assert.deepEqual(requests,[]);
- await writeFile(join(root,'viewer_validation.json'),JSON.stringify({passed:true,model:report.model,parameter_sha256:report.parameter_sha256,geometry:parts,jack_mouth_mm:report.jack_mouth_mm,legacy_T02_redirect:true,errors,externalRequests:requests,checks},null,2)+'\n');
- console.log('PASS: Model 02 bottom jack, two battery envelopes, unchanged exterior, CAD mesh agreement, desktop/mobile views and legacy redirect');
+ await writeFile(join(root,'viewer_validation.json'),JSON.stringify({passed:true,model:report.model,parameter_sha256:report.parameter_sha256,geometry:parts,jack_mouth_mm:report.jack_mouth_mm,legacy_T02_redirect:true,cameraChecks,viewport_preserves_camera:true,errors,externalRequests:requests,checks},null,2)+'\n');
+ console.log('PASS: CAD mesh agreement, desktop/mobile views, persistent orbit/pan/zoom across slider/options/resize and legacy redirect');
 } finally {await browser.close();}

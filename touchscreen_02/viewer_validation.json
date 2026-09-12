@@ -2707,6 +2707,19 @@
     4.42248296
   ],
   "legacy_T02_redirect": true,
+  "cameraChecks": [
+    {
+      "label": "desktop",
+      "orbit_pan_zoom_preserved": true,
+      "slider_moves_parts": true
+    },
+    {
+      "label": "mobile",
+      "orbit_pan_zoom_preserved": true,
+      "slider_moves_parts": true
+    }
+  ],
+  "viewport_preserves_camera": true,
   "errors": [],
   "externalRequests": [],
   "checks": [
