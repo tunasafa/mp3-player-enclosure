@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "parameter_sha256": "4940640a72e283566d42f79ab1e558b230f2c49e9aaa283939ea09d6bb4bc88f",
+  "deliberate_battery_DAC_collision": [
+    {
+      "a": "bad_battery",
+      "b": "actual_DAC",
+      "volume_mm3": 146.633821
+    }
+  ],
+  "deliberate_port_blockers": [
+    {
+      "port": "usb",
+      "detected_mm3": 27.0
+    },
+    {
+      "port": "jack",
+      "detected_mm3": 27.0
+    },
+    {
+      "port": "microsd",
+      "detected_mm3": 13.5
+    }
+  ],
+  "expansion_violation_detected_mm3": 471.47530964914876,
+  "floating_board_gap_detected_mm": 0.20000000000000018,
+  "source_scope": "Fault injection into physical CAD and independent vendor-rim check"
+}

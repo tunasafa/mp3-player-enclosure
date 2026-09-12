@@ -1,68 +1,83 @@
-# Model 02 — selected touchscreen layout
+# Model 02 — complete mechanical fit prototype
 
-**Selected layout: 64 × 128 × 8.3 mm, 2.4-inch landscape touchscreen, two battery envelopes and the intact Adafruit DAC facing the bottom.** This replaces the rejected 52 × 132 × 10.4 mm T02 as the current touchscreen model. The nominal component and reserved-space checks pass. This is a component packing study, not a finished enclosure: retention, fasteners, real display tails, battery wiring and seals are not validated.
+**64 × 128 × 8.3 mm**, with the 2.4-inch landscape touchscreen, two battery allocations and the intact Adafruit DAC's original headphone jack at the bottom. M02-02 replaces the earlier packing-only preview with a complete nominal enclosure assembly.
 
-[Interactive viewer on GitHub Pages after deployment](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_02/preview.html) · [Offline viewer](preview.html) · [Reference STEP](packing_REFERENCE_ONLY.step) · [Packing report](validation.json)
+[Interactive viewer after GitHub Pages deployment](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_02/preview.html) · [Local/offline viewer](preview.html) · [Dimensioned drawing set](drawings.pdf) · [Assembly STEP](designs/M02_02/assembly_NOMINAL.step) · [Every part's measurements](measurements.csv) · [Validation](validation.json)
 
-Open the downloaded/local HTML directly in a browser. A GitHub source-file page will not run the viewer. The viewer bundles its dependencies and displays the same CAD meshes that were checked. Manufacturer boards have their original face colors; dimension envelopes are explicitly named. The blue box is an exterior limit, not a manufactured case.
+The mechanical prototype includes steel front and rear faces, a continuous polymer frame, battery guide rails, insulating retention pads, removable board insertion stops, DAC locating spacers through its real holes, a removable display carrier with bonded stiffening ribs, SD and display-interface mounting lands, fasteners, gaskets, dielectric layers and flush removable port-cover prototypes. The viewer uses the same physical geometry as the CAD checks and STEP export.
 
-## Procurement gate: Startek is provisional
+**This is not a production release.** The display drawing/flex and final battery pack have not been qualified; the interface PCB is not routed. Physical tolerances, retention, plate deflection, charging and ingress still require testing. The [release checklist](RELEASE_CHECKLIST.md) makes these remaining steps explicit. Detailed geometry is not evidence that these tests have passed.
 
-Research date: 2026-09-12. Startek [lists KD024QVFMA020-C003A](https://www.startek-lcd.com/product/474-KD024QVFMA020-C003A-2.4-inch-240x320-ST7789V-IPS-LCD-module-with-build-in-capacitive-touch-panel.html): 240 × 320 IPS, ST7789V, FT6336G capacitive touch, SPI/MCU/RGB, complete nominal outline 42.92 × 60.26 × 3.75 mm. Landscape active area is 48.96 × 36.72 mm.
+## Files to use
 
-Its [company site](https://www.startek-lcd.com/?no=1) advertises one-piece orders and stocked samples. That is a general sales policy, not confirmation of this exact part's current inventory, price or lead time. No order or supplier message was sent. The user's condition “use it if sure it is for sale” is therefore not yet met for final component selection. A [ready-to-send inquiry](SUPPLIER_INQUIRY.md) records the missing information.
-
-The chosen layout keeps both battery placements and the exterior unchanged from the accepted side-jack study. Only the complete DAC has been rotated and repositioned in its lower-right bay. The jack is offset toward the right side of the bottom edge; it is not a detached connector.
-
-The model uses a square-corner maximum outline, not an invented detailed Startek model. Real flex, touch-controller protrusions, connector and adhesive tolerances are outstanding. The 60.26 mm landscape width leaves just 0.27 mm nominal clearance per side against the current 1.6 mm wall. Tolerance, insertion clearance and corner geometry must be confirmed before cutting metal.
-
-## Placement
-
-Coordinates are millimetres; XY is the face plane, Z runs from front to rear.
-
-| Part | Placement / envelope | Evidence and limitation |
-|---|---|---|
-| Startek | 60.26 × 42.92 × 3.75; centre (0,35); Z 0.55 | Manufacturer nominal outline; procurement and detailed drawing pending |
-| Adafruit #6309 | Whole original vendor STEP rotated −90° about Z, jack toward bottom; mouth (18.85915,-63.6,4.42248) | No separate or relocated jack; full 7.1 mm published height also reserved |
-| XIAO ESP32-S3 | Same unscaled board; centre Y -10; USB right | Solder, RF performance within metal case and final wiring unverified |
-| Battery A allowance | 37 × 25.5 × 5.2; centre (-10.5,-6); Z 0.7 | Finished-pack dimension reference, not selected 1S2P subassembly |
-| Battery B allowance | 25.5 × 37 × 5.2; centre (-15.75,-40.5); Z 0.7 | Identical capacity class, rotated in plane |
-| SD assembly | Existing nominal assembly moved behind display; centre Y 29; Z 4.5 | Specific module still unselected; card slot would move with it |
-| Interface allowance | 12 × 24 × 1.9; centre (21,38); Z 4.5 | Includes nominal underside parts; no routed PCB |
-
-Each battery retains 1.93 mm to the rear liner, including a separate 1.7 mm expansion volume. The DAC retains 0.18 mm to that liner. Screen-to-electronics clearance is 0.20 mm. The existing T03 screw towers and retainers cannot simply be reused; this study does not count them as fitted.
-
-The reference STEP includes the named reservation solids so they cannot silently disappear from downstream planning. They are not physical components. Browser controls hide/show them explicitly.
-
-## Battery choice
-
-The DTP502535 drawing supplied with [SparkFun PRT-13851](https://www.sparkfun.com/lithium-ion-battery-400mah.html) gives a 400 mAh pack maximum of **37 × 25.5 × 5.2 mm**, rather than assuming the bare-cell code means a complete 35 × 25 × 5 mm pack. [Manufacturer specification mirrored by DigiKey](https://www.digikey.com/htmldatasheets/production/2065026/0/0/1/prt-13851.pdf).
-
-Two 400 mAh cells in a supplier-designed **1S2P** pack would target 800 mAh nominal at single-cell voltage, versus the current 600 mAh. This is a capacity target, not a selected pack, demonstrated runtime or authorization to parallel two SparkFun retail batteries. The protected retail-pack dimensions are only a conservative starting reference for the cells' allocation; a final combined pack drawing may differ.
-
-Prefer a pack assembler to provide matched cells, the intended parallel interconnect, appropriate fault protection, insulation, lead strain relief and temperature sensing. Review the XIAO charging circuit, charging current, termination and operation while charging against that pack. Do not use a series connection on the XIAO's single-cell battery input. Jauch describes both [parallel capacity expansion and custom LiPo formats](https://www.jauch.com/downloadfile/5c5050fa5b6510e9a8ad76299baae4e53/white_paper_introduction_to_lipo_battery_technology_11-2018_en.pdf).
-
-| Option | Assessment |
+| Deliverable | Purpose |
 |---|---|
-| One rectangular battery in the upper bay | Simplest wiring; the 37 × 25.5 mm allocation does not establish an improvement over the current 600 mAh pack. No larger fitting stocked pack has been verified. |
-| Matched two-cell L arrangement | Uses the space beside the bottom-facing DAC; 800 mAh is a plausible target subject to the assembler's final outline and protection design. |
-| One custom L-shaped cell | Potentially uses the corner space continuously; tooling, minimum order, capacity and finished outline require quotation. No purchasable exact part has been identified. |
+| `designs/M02_02/assembly_NOMINAL.step` | Current assembly, physical parts only |
+| `designs/M02_02/reserved_spaces_REFERENCE.step` | Unoccupied expansion and routing allocations; never manufacture these solids |
+| `designs/M02_02/*.step` | Individual case, support and cover geometry |
+| `designs/M02_02/STL/*PA12_FIT_PROTOTYPE.stl` | Polymer fit-test parts, positioned on Z0 |
+| `designs/M02_02/STL/*METAL_REFERENCE.stl` | Metal shape references; not thin plastic print instructions |
+| `designs/M02_02/STL/*SILICONE_REFERENCE.stl` | Installed/compressed cover references; retention/mold design unqualified |
+| `designs/M02_02/profiles/*.dxf` | Millimetre profiles for specifically named flat layers; rear profile is before countersinking |
+| `drawings.pdf`, `measurements.csv`, `BOM.csv` | Dimensions, coordinates, materials and part status |
+| `ASSEMBLY.md` | Installation order, including the board insertion paths |
 
-## Port protection
+`packing_REFERENCE_ONLY.step` remains a compatibility alias for the current complete assembly. The GitHub source-file view will not run an HTML viewer; open the Pages link or the downloaded HTML in a browser.
 
-The [independently implemented T03 USB fix](../touchscreen_metal/README.md) takes the real Seeed shell rim and offsets it by 0.15 mm. Result: 9.24 × 3.51 mm overall opening with the real curved profile. CAD checks verify the shell fits; this eliminates the old excess corner gaps. It does not establish a watertight interface.
+## Dimensions and retention
 
-For a sealed device, the intended construction needs both a seal between receptacle and enclosure and protection against leakage through the receptacle itself. Keep a removable silicone cover for USB and SD when unused. A flush cover would require a recess, a continuous sealing land and controlled compression, then plug-access and leak tests; no such cap has been represented as finished hardware in this study. The jack and other seams need equivalent consideration. A close metal opening alone cannot meet the requested no-dust/no-water objective.
+| Feature | Current allocation |
+|---|---|
+| Exterior | 64.00 × 128.00 × 8.30 mm; R6 corners |
+| Front and rear metal | 0.40 mm stainless each |
+| Perimeter frame | Z0.55–7.75; raised rear compression stops to Z7.90; 1.60 mm walls |
+| Display carrier | 59 × 50 × 0.20 mm steel; four M1.4 × 3 nominal screws |
+| Main fasteners | Seven M1.6 × 5 nominal countersunk screws |
+| Battery A | 37 × 25.5 × 5.2 mm; centre X−10.5, Y−6; underside Z0.70 |
+| Battery B | 25.5 × 37 × 5.2 mm; centre X−15.75, Y−40.5; underside Z0.70 |
+| Battery rear allowance | 1.93 mm to liner; 1.70 mm reserved for expansion |
+| DAC | Original manufacturer STEP rotated −90° around Z; full published 7.1 mm height retained |
+| DAC rear clearance | 0.18 mm to dielectric liner |
+| USB-C mouth | X31.6000, Y−9.9927, Z3.6050; exact Seeed rim plus 0.15 mm radial allowance |
+| Jack mouth | X18.8592, Y−63.6000, Z4.4225; 5.00 mm case aperture |
+| SD mouth | X−31.6000, Y29.0000, Z6.4000; 11.50 × 1.50 mm slot |
 
-If protection must continue while USB is exposed, use a connector designed with environmental sealing on a dedicated board. For example, [GCT USB4745](https://gct.co/news/usb4745) incorporates a sealing gasket and carries a connector-level IP68 specification. It is not a drop-in replacement for the XIAO connector, is not selected here, and does not give the assembled player an IP rating. Moving USB off the XIAO would require an electrical and mechanical redesign.
+There are no straps across the pouches. Separate insulating adhesive pads retain the batteries in Z, and frame rails provide lateral clearance. Remove the boards' insertion stops while installing them; a fixed backstop would obstruct the required slide into the port. Rear DAC spacers locate through the original holes and seat on the PCB annuli. Adhesive strengths, screw pilots, clamp loads and repeated plug insertion remain physical qualification tasks.
 
-## Rebuild
+## Display and electronics evidence
 
-From the repository root:
+Startek lists [KD024QVFMA020-C003A](https://www.startek-lcd.com/product/474-KD024QVFMA020-C003A-2.4-inch-240x320-ST7789V-IPS-LCD-module-with-build-in-capacitive-touch-panel.html) as a 240 × 320 IPS panel with ST7789V, FT6336G touch, a 42.92 × 60.26 × 3.75 mm total outline, a 45-pin 0.5 mm LCD flex, 3.3 V module input and an 80 mA backlight. Its touch specification lists a 42.62 × 59.96 × 1.25 mm G+F assembly. The model uses that touch outline and the remaining 2.50 mm for the LCD. Adhesive split, active-area offset, maximum tolerances and actual folded tails still require the supplier drawing. The product-page drawing link returned 404 during this work; the available stock-policy image is not a mechanical drawing.
+
+The 45-pin interface replaces the inappropriate 15-pin watch connector allocation. A larger 15 × 32 mm interface board is allocated behind the screen, with a 45-pin ZIF envelope. Its schematic and PCB layout are not complete. The SD board/socket also remain conservative custom-board allocations. These electronic assemblies must be completed before ordering the enclosure as production tooling.
+
+Startek's [general sales policy](https://www.startek-lcd.com/?no=1) allows small orders; this is not confirmation of current stock for the exact suffix. The [supplier inquiry](SUPPLIER_INQUIRY.md) remains unsent.
+
+## Battery and power
+
+The cell allocations use the published maximum finished-pack dimensions for DTP502535, referenced by [SparkFun PRT-13851](https://www.sparkfun.com/lithium-ion-battery-400mah.html) and its [manufacturer drawing](https://www.digikey.com/htmldatasheets/production/2065026/0/0/1/prt-13851.pdf). Two 400 mAh-class cells suggest an **800 mAh target**. A supplier-designed matched **1S2P** pack, its protection and its final lead layout are still required. The model is not an instruction to connect two retail protected packs together.
+
+Confirm the chosen pack against the XIAO charger, temperature limits, charge termination and operation while charging. The XIAO's supported battery input is a single rechargeable 3.7 V lithium cell/parallel group; do not use a two-cell series pack. [Seeed battery documentation](https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/).
+
+The metal enclosure has no qualified RF path. Wi-Fi/Bluetooth antenna placement and performance are outside this mechanical release; the default design is a local SD-based player. Touch wake, power-off behavior and battery measurement also need firmware/electrical verification.
+
+## Ports and sealing
+
+All three case apertures are physically cut and aligned to their corresponding component mouths. Blind internal pockets accommodate the connector bodies while preserving an exterior lip. Flush silicone-cover prototypes close the ports without extending the exterior dimensions. The viewer can remove the covers to inspect the actual holes.
+
+The covers are modeled in their installed/compressed shape, with separate recessed sealing lands. Their thin flanges, retention, free-state dimensions, material hardness and mold process have not been validated. They are prototype references, not proven waterproof plugs. The XIAO USB socket and Adafruit headphone jack are not established as sealed receptacles. **No IP or water-resistance rating is claimed**, especially with any cover removed.
+
+## Verification and rebuild
+
+The build checks all modeled physical-part intersections, all reservation collisions, exterior containment, unobstructed case ports with covers removed, rear loading of the display and batteries, sampled recessed/lowered/sliding board insertion, screwdriver access, nominal support contact, and valid single-body watertight structural/cover meshes. Deliberate collision and blocked-port probes test failure detection. Browser tests check the same CAD mesh bounds and physical mesh counts, inside/outside views, exploded assembly, covers, mobile rendering and the old viewer redirect.
+
+From the repository root, using the existing CadQuery environment and `revision_04` npm dependencies:
 
 ```sh
 .venv/bin/python touchscreen_02/build.py
+.venv/bin/python touchscreen_02/verify_fit.py
+.venv/bin/python touchscreen_02/make_drawings.py
 node touchscreen_02/verify_viewer.mjs
+.venv/bin/python touchscreen_02/package_design.py
 ```
 
-The build rejects component overlaps, reserve overlaps, full published DAC-envelope conflicts and parts outside the target exterior. These checks do not cover omitted mounting hardware, actual flex geometry, water protection, tolerance accumulation or a final battery assembly.
+A failed build writes its report and refuses new CAD/viewer exports. Manufacturing release depends on the checklist, not just `validation.json` reporting a nominal fit.

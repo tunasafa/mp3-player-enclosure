@@ -7,7 +7,7 @@ import { createHash } from 'node:crypto';
 const root=dirname(fileURLToPath(import.meta.url));
 const expected=JSON.parse(await readFile(join(root,'validation.json'),'utf8'));
 const sha=async path=>createHash('sha256').update(await readFile(path)).digest('hex');
-assert.equal(await sha(join(root,'build.py')),expected.source_sha256);
+for(const [path,hash] of Object.entries(expected.source_sha256))assert.equal(await sha(join(root,path)),hash);
 assert.equal(await sha(join(root,'parameters.json')),expected.parameter_sha256);
 for(const [path,hash] of Object.entries(expected.dependency_sha256))assert.equal(await sha(join(root,'..',path)),hash);
 const browser=await chromium.launch({executablePath:process.env.T01_BROWSER_PATH||'/Applications/Brave Browser.app/Contents/MacOS/Brave Browser',headless:true,args:['--enable-unsafe-swiftshader','--disable-background-networking']});
@@ -20,7 +20,7 @@ try {
  await page.waitForFunction(()=>window.PACKING);
  const report=await page.evaluate(()=>PACKING.report);
  assert.deepEqual(report,expected);
- assert(report.nominal_packing_passed);
+ assert(report.passed);
  assert.equal(report.qualified_for_fabrication,false);
  assert.equal(report.screen_stock_confirmed,false);
  assert.deepEqual(report.exterior_mm,[64,128,8.3]);
@@ -28,10 +28,13 @@ try {
  assert.equal(report.vendor_dac_rotation_z_degrees,-90);
  assert(Math.abs(report.jack_mouth_mm[1]+63.6)<1e-6);
  assert(report.jack_mouth_mm[0]>0 && report.jack_mouth_mm[0]<32);
- for(const name of ['physical_collisions','reserve_collisions','published_dac_envelope_collisions','outside_exterior'])assert.deepEqual(report[name],[]);
+ for(const name of ['physical_collisions','reserve_collisions','port_wall_obstructions','outside_exterior'])assert.deepEqual(report[name],[]);
+ assert(report.mesh_checks.every(c=>c.watertight&&c.winding_consistent&&c.bodies===1));
+ assert(report.nominal_support_contacts.every(c=>c.gap_mm<=.005));
  const parts=await page.evaluate(()=>PACKING.inspect());
  assert.equal(parts.filter(p=>/^cell_[AB]_envelope$/.test(p.id)).length,2);
  for(const part of parts){
+  assert.equal(part.physicalMeshes,part.expectedMeshes,`Duplicated or missing physical geometry: ${part.id}`);
   for(let side=0;side<2;side++)for(let axis=0;axis<3;axis++)assert(Math.abs(part.bounds[side][axis]-part.expected[side][axis])<.09,`Mesh differs from CAD: ${part.id}`);
  }
  async function capture(name){
@@ -49,12 +52,15 @@ try {
   await page.screenshot({path:join(root,name),fullPage:true});checks.push({name,pixels});
  }
  await capture('preview_iso.png');
- for(const view of ['front','rear','side','bottom']){await page.locator(`[data-view="${view}"]`).click();await capture(`preview_${view}.png`);}
+ for(const view of ['front','rear','inside','side','bottom']){await page.locator(`[data-view="${view}"]`).click();await capture(`preview_${view}.png`);}
+ await page.locator('#covers').uncheck();await capture('preview_ports_open.png');
+ assert((await page.evaluate(()=>PACKING.inspect())).filter(p=>p.kind==='cover').every(p=>!p.visible));
  await page.locator('[data-view="iso"]').click();
  await page.locator('#reserves').check();await page.locator('#explode').fill('100');await capture('preview_exploded.png');
  await page.setViewportSize({width:390,height:844});await capture('preview_mobile.png');
- await page.locator('[data-part="startek_envelope"]').uncheck();
- assert.equal((await page.evaluate(()=>PACKING.inspect())).find(p=>p.id==='startek_envelope').visible,false);
+ await page.locator('[data-part="touch_glass"]').uncheck();
+ assert.equal((await page.evaluate(()=>PACKING.inspect())).find(p=>p.id==='touch_glass').visible,false);
+ await page.locator('#reset').click();await page.locator('[data-view="inside"]').click();await capture('preview_mobile_inside.png');
  // The old Model 02 entry must serve the selected layout instead of T02.
  await page.goto(pathToFileURL(join(root,'../touchscreen_01/preview.html')).href);
  await page.waitForFunction(()=>window.PACKING?.report?.model==='Model 02 / selected touchscreen layout');

@@ -5,16 +5,18 @@
 **Current Model 02: [mytunas touchscreen](touchscreen_02/README.md)** —
 **64 × 128 × 8.3 mm**, a 2.4-inch landscape Startek screen, two battery envelopes
 in an L arrangement, and the intact Adafruit board with its original jack facing
-the bottom. This is the selected touchscreen layout. Nominal packing checks pass;
-screen procurement, the finished battery pack, mounting hardware and seals remain
-unverified.
+the bottom. M02-02 now includes a complete nominal mechanical assembly: steel faces,
+internal frame and supports, insulation, fasteners and removable port covers.
+CAD fit and assembly-access checks pass; component samples, electronics and
+physical production qualification remain outstanding.
 
 **[Open the current Model 02 interactive 3D viewer](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_02/preview.html)**
 
 [![Current Model 02 touchscreen layout](touchscreen_02/preview_iso.png)](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_02/preview.html)
 
-[Layout notes](touchscreen_02/README.md) · [Packing validation](touchscreen_02/validation.json) ·
-[Reference STEP](touchscreen_02/packing_REFERENCE_ONLY.step).
+[Layout notes](touchscreen_02/README.md) · [Assembly validation](touchscreen_02/validation.json) ·
+[Assembly STEP](touchscreen_02/designs/M02_02/assembly_NOMINAL.step) ·
+[Dimensioned drawings](touchscreen_02/drawings.pdf).
 The Pages link serves this revision after deployment. Open `touchscreen_02/preview.html`
 locally for immediate offline use. GitHub's code view cannot run the HTML viewer.
 

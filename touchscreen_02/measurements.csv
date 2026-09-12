@@ -1,0 +1,66 @@
+part,label,width_mm,length_mm,height_mm,xmin_mm,ymin_mm,zmin_mm,source
+midframe,PA12 frame / guides and pillars,64.00508,128.00508,7.35811,-32.00254,-64.00254,0.54622,Designed nominal geometry
+front_bezel,Front steel / 0.40 mm,64.00508,128.00508,0.40508,-32.00254,-64.00254,-0.00254,Designed nominal geometry
+rear_shell,Rear steel / 0.40 mm,64.00508,128.00508,0.4093,-32.00254,-64.00254,7.89535,Designed nominal geometry
+front_bond,front bond / 0.15 mm,64.00506,128.00506,0.15506,-32.00253,-64.00253,0.39747,Designed nominal geometry
+rear_gasket,rear gasket / 0.15 mm,64.00506,128.00506,0.15506,-32.00253,-64.00253,7.74747,Designed nominal geometry
+touch_glass,Startek capacitive glass / nominal 1.25 mm,59.96,42.62,1.25,-29.98,13.69,0.55,Startek listing; sample drawing required
+lcd,Startek LCD + backlight / nominal 2.50 mm,60.26,42.92,2.5,-30.13,13.54,1.8,Startek outline; layer split pending supplier drawing
+display_adhesive,Continuous display bond / 0.15 mm,59.6603,42.3203,0.1503,-29.83015,13.83985,0.39985,Designed nominal geometry
+display_carrier,Display retainer / 0.20 mm stainless,59.00135,50.00191,0.20197,-29.50093,9.99907,4.34902,Designed nominal geometry
+display_cushion,LCD perimeter cushion / 0.05 mm,58.00034,41.00034,0.05034,-29.00017,14.49983,4.29983,Designed nominal geometry
+carrier_rib_15,Bonded retainer stiffening rib,44.0,1.2,1.15,-24.0,14.4,4.6,Designed nominal geometry
+carrier_rib_15_bond,Retainer rib bond / 0.05 mm,44.0,1.2,0.05,-24.0,14.4,4.55,Designed nominal geometry
+carrier_rib_56,Bonded retainer stiffening rib,44.0,1.2,1.15,-24.0,55.4,4.6,Designed nominal geometry
+carrier_rib_56_bond,Retainer rib bond / 0.05 mm,44.0,1.2,0.05,-24.0,55.4,4.55,Designed nominal geometry
+audio,Adafruit 6309 / original bottom jack,25.4,33.53701,6.37248,2.1,-63.6,0.55,Unscaled manufacturer STEP
+xiao,Seeed XIAO ESP32-S3 / USB right,22.48198,17.78,4.46,9.11802,-18.89,0.75,Unscaled manufacturer STEP
+audio_insulator,DAC insulating adhesive / 0.15 mm,25.4,31.75,0.15,2.1,-61.81299,0.4,Designed nominal geometry
+xiao_insulator,XIAO insulating adhesive / 0.35 mm,20.9,17.7,0.35,9.14611,-18.85,0.4,Designed nominal geometry
+xiao_insertion_stop,Removable XIAO insertion stop,0.5,15.4,1.7,8.4,-16.45,0.55,Designed nominal geometry
+xiao_stop_adhesive,XIAO stop bonding pad,0.5,15.4,0.15,8.4,-16.45,0.4,Designed nominal geometry
+dac_insertion_stop,Removable DAC insertion stop,25.0,0.6,1.7,2.3,-29.8,0.55,Designed nominal geometry
+dac_stop_adhesive,DAC stop bonding pad,25.0,0.6,0.15,2.3,-29.8,0.4,Designed nominal geometry
+dac_retainer_1,DAC locating spacer 1,3.70083,3.70124,7.25121,23.11,-34.45361,0.54962,Designed nominal geometry
+dac_retainer_bond_1,DAC spacer rear bond / 0.10 mm,3.70083,3.70124,0.10166,23.11,-34.45361,7.79917,Designed nominal geometry
+dac_retainer_2,DAC locating spacer 2,3.70083,3.70124,7.25121,2.79,-61.12361,0.54962,Designed nominal geometry
+dac_retainer_bond_2,DAC spacer rear bond / 0.10 mm,3.70083,3.70124,0.10166,2.79,-61.12361,7.79917,Designed nominal geometry
+dac_retainer_3,DAC locating spacer 3,3.70083,3.70124,7.25121,23.11,-61.12361,0.54962,Designed nominal geometry
+dac_retainer_bond_3,DAC spacer rear bond / 0.10 mm,3.70083,3.70124,0.10166,23.11,-61.12361,7.79917,Designed nominal geometry
+rear_liner,Rear dielectric liner / 0.07 mm,60.40356,124.40267,0.07356,-30.20178,-62.20178,7.82822,Designed nominal geometry
+cell_A_envelope,Battery A / finished pack allocation,37.00068,25.50068,5.20068,-29.00034,-18.75034,0.69966,DTP502535 max pack dimensions; combined pack unselected
+cell_A_envelope_adhesive,Battery insulating retention pad / 0.30 mm,35.00051,23.50051,0.30051,-28.00025,-17.75025,0.39975,Designed nominal geometry
+cell_B_envelope,Battery B / finished pack allocation,25.50068,37.00068,5.20068,-28.50034,-59.00034,0.69966,DTP502535 max pack dimensions; combined pack unselected
+cell_B_envelope_adhesive,Battery insulating retention pad / 0.30 mm,23.50051,35.00051,0.30051,-27.50025,-58.00025,0.39975,Designed nominal geometry
+microsd_pcb,microSD adapter PCB / nominal 22 × 18,22.00042,18.00042,0.80042,-29.90021,19.99979,4.84979,Designed nominal geometry
+microsd_socket,microSD socket / conservative envelope,15.7,14.2,1.8,-30.85,21.9,5.65,Designed nominal geometry
+microsd_card,microSD card,15.0,11.0,1.0,-31.6,23.5,5.9,Designed nominal geometry
+sd_mount_pad,SD insulating adhesive / 0.30 mm,20.0,16.0,0.3,-28.9,21.0,4.55,Designed nominal geometry
+sd_stop_19_5,SD edge stop,20.0,0.5,0.95,-28.0,19.25,4.6,Designed nominal geometry
+sd_stop_19_5_bond,SD stop bond / 0.05 mm,20.0,0.5,0.05,-28.0,19.25,4.55,Designed nominal geometry
+sd_stop_38_5,SD edge stop,20.0,0.5,0.95,-28.0,38.25,4.6,Designed nominal geometry
+sd_stop_38_5_bond,SD stop bond / 0.05 mm,20.0,0.5,0.05,-28.0,38.25,4.55,Designed nominal geometry
+sd_insertion_stop,SD insertion load stop,0.6,17.0,0.95,-7.6,20.5,4.6,Designed nominal geometry
+sd_insertion_stop_bond,SD insertion stop bond / 0.05 mm,0.6,17.0,0.05,-7.6,20.5,4.55,Designed nominal geometry
+interface_pcb,45P display / touch interface PCB allocation,15.00034,32.00034,0.80034,13.49983,22.99983,4.84983,Designed nominal geometry
+interface_pad_24,Interface insulating mounting land,7.0,1.4,0.3,14.5,23.3,4.55,Designed nominal geometry
+interface_pad_54,Interface insulating mounting land,7.0,1.4,0.3,14.5,53.3,4.55,Designed nominal geometry
+display_zif,LCD ZIF / 45P 0.5 mm allocation,5.0,26.5,1.1,22.3,25.75,5.65,Designed nominal geometry
+touch_zif,Touch ZIF / supplier pinout pending,3.5,5.0,1.1,15.25,24.5,5.65,Designed nominal geometry
+interface_control,I/O + backlight control allocation,6.0,12.0,1.1,14.0,35.0,5.65,Designed nominal geometry
+pack_protection,1S2P pack protection allocation,24.0,3.0,1.4,-22.0,8.5,0.7,Designed nominal geometry
+pack_protection_pad,Pack protection adhesive pad,23.0,2.5,0.3,-21.5,8.75,0.4,Designed nominal geometry
+case_screw_1,M1.6 × 5 case screw 1,3.21198,3.21234,5.00663,-26.60563,60.09383,3.29972,Designed nominal geometry
+case_screw_2,M1.6 × 5 case screw 2,3.21198,3.21234,5.00663,23.39437,60.09383,3.29972,Designed nominal geometry
+case_screw_3,M1.6 × 5 case screw 3,3.21198,3.21234,5.00663,-30.60563,8.39383,3.29972,Designed nominal geometry
+case_screw_4,M1.6 × 5 case screw 4,3.21198,3.21234,5.00663,27.39437,2.39383,3.29972,Designed nominal geometry
+case_screw_5,M1.6 × 5 case screw 5,3.21198,3.21234,5.00663,27.39437,-27.60617,3.29972,Designed nominal geometry
+case_screw_6,M1.6 × 5 case screw 6,3.21198,3.21234,5.00663,-1.60563,-62.60617,3.29972,Designed nominal geometry
+case_screw_7,M1.6 × 5 case screw 7,3.21198,3.21234,5.00663,-25.60563,-63.00617,3.29972,Designed nominal geometry
+carrier_screw_1,M1.4 × 3 retainer screw 1,2.20049,2.20074,3.60072,-26.1,10.39963,1.54978,Designed nominal geometry
+carrier_screw_2,M1.4 × 3 retainer screw 2,2.20049,2.20074,3.60072,23.9,10.39963,1.54978,Designed nominal geometry
+carrier_screw_3,M1.4 × 3 retainer screw 3,2.20049,2.20074,3.60072,-26.1,57.39963,1.54978,Designed nominal geometry
+carrier_screw_4,M1.4 × 3 retainer screw 4,2.20049,2.20074,3.60072,23.9,57.39963,1.54978,Designed nominal geometry
+usb_cover,Flush USB-C silicone cover / prototype,0.45118,12.60118,6.00118,31.54941,-16.29327,0.60441,Designed nominal geometry
+sd_cover,Flush SD silicone cover / prototype,0.45051,13.20051,2.60051,-32.00025,22.39975,5.09975,Designed nominal geometry
+jack_cover,Flush jack silicone cover / prototype,6.50145,0.45291,6.50218,15.60915,-64.00145,1.17139,Designed nominal geometry
