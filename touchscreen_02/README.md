@@ -1,6 +1,6 @@
 # Model 02 — serviceable metal chassis prototype
 
-**64 × 128 × 8.3 mm**, with the 2.4-inch landscape touchscreen, two battery allocations and the intact Adafruit DAC's original headphone jack at the bottom. M02-03 adds satin polished metal, original bluefin engravings and mechanically removable supports to the nominal enclosure assembly.
+**64 × 128 × 8.3 mm**, with the 2.4-inch landscape touchscreen, two battery allocations and the intact Adafruit DAC's original headphone jack at the bottom. M02-03 uses the T03 metal finish, original bluefin engravings and mechanically removable supports in the nominal enclosure assembly.
 
 [Interactive viewer after GitHub Pages deployment](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_02/preview.html) · [Local/offline viewer](preview.html) · [Dimensioned drawing set](drawings.pdf) · [Assembly STEP](designs/M02_03/assembly_NOMINAL.step) · [Every part's measurements](measurements.csv) · [Validation](validation.json)
 
@@ -28,6 +28,8 @@ The mechanical prototype includes engraved steel faces, a continuous polymer fra
 `packing_REFERENCE_ONLY.step` remains a compatibility alias for the current complete assembly. The GitHub source-file view will not run an HTML viewer; open the Pages link or the downloaded HTML in a browser.
 
 The explosion slider, part toggles, covers and routing allowances preserve your current rotation, pan and zoom. Resizing the window also preserves the camera position. Choose a view preset or Reset when you want to reframe the assembly.
+
+The current preview uses T03's darker metal palette and surface response, with the M02-03 engravings retained. This appearance setting is defined in `viewer.js`; it does not change the validated geometry.
 
 ## Dimensions and retention
 

@@ -2726,11 +2726,11 @@
     {
       "name": "preview_iso.png",
       "pixels": {
-        "count": 158576,
-        "minX": 278,
-        "maxX": 593,
-        "minY": 101,
-        "maxY": 726,
+        "count": 184692,
+        "minX": 300,
+        "maxX": 603,
+        "minY": 64,
+        "maxY": 724,
         "w": 890,
         "h": 790
       }
@@ -2846,11 +2846,11 @@
     {
       "name": "preview_exploded.png",
       "pixels": {
-        "count": 197333,
-        "minX": 248,
-        "maxX": 677,
-        "minY": 65,
-        "maxY": 694,
+        "count": 213482,
+        "minX": 226,
+        "maxX": 623,
+        "minY": 116,
+        "maxY": 720,
         "w": 890,
         "h": 790
       }
@@ -2858,11 +2858,11 @@
     {
       "name": "preview_mobile.png",
       "pixels": {
-        "count": 95587,
-        "minX": 58,
-        "maxX": 356,
-        "minY": 50,
-        "maxY": 488,
+        "count": 107457,
+        "minX": 40,
+        "maxX": 321,
+        "minY": 82,
+        "maxY": 510,
         "w": 390,
         "h": 560
       }
