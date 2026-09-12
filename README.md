@@ -2,6 +2,14 @@
 
 > *I got tired of renting my music.*
 
+**Model 02 is now in development:** [mytunas touch / T01](touchscreen_01/README.md)
+is an **82 × 48 × 11.3 mm conditional touchscreen concept**, with no clickwheel.
+Open its [offline 3D preview](touchscreen_01/preview.html),
+[dimensioned layout](touchscreen_01/design_overview.pdf) or
+[hardware audit and corrected pin allocation](touchscreen_01/HARDWARE_AUDIT.md).
+Panel, battery and audio-board measurements remain provisional. The P04
+clickwheel model below remains available separately.
+
 ---
 
 ## Why this exists

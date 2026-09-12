@@ -1,0 +1,17 @@
+Item,Quantity,Allocation,Status
+Front bezel,1,T01 front_bezel STEP/STL,Fit concept; test print
+Rear shell,1,T01 rear_shell STEP/STL,Fit concept; test print
+Battery tray,1,39.5 x 31 x 0.6 mm perimeter frame,Fit concept; removable after adhesive release
+XIAO ESP32-S3,1,Headerless; exact Seeed STEP referenced,Selected controller family; inspect board revision
+T800 U2 donor display and touch,1,36 x 43 x 3.3 mm combined allowance,User-confirmed outer glass; layer estimate plus 0.2 mm tape; electrical pinout unverified
+Protected LiPo,1,34 x 30 x 3.4 mm finished pack,Unselected; capacity and ratings unknown
+Audio/headphone board,1,18 x 22 x 5.2 mm plus mouth,Unselected/custom; ES9219 or CS43131 IC candidates
+Interface PCB,1,36 x 16 x 0.8 mm,Custom schematic/layout required
+Display ZIF,1,12 x 4 x 1.4 mm,User specifies 15 contacts/0.3 mm; verify housing and contacts
+Touch ZIF,1,8 x 4 x 1.4 mm,User specifies 6 contacts/0.5 mm; housing and contact side unverified
+microSD socket,1,18 x 14 x 1.8 mm including seated card,Low-profile candidate required
+microSD card,1,Included in socket envelope,Capacity unspecified
+I2C GPIO expander,1,Control area on interface PCB,PCA9555-class allocation; not a purchased breakout
+Backlight driver and support parts,1 set,Custom interface/audio board allocation,Select after LED identification; PCB feasibility open
+M1.6 x 5 pan-head screw,4,3.2 mm head recess; tapped polymer pilot,Confirm actual head height and thread fit
+Insulating adhesive,As needed,0.2 mm lands and tray rails,Select for material compatibility; preserve battery rear reserve

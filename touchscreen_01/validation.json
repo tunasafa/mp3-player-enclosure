@@ -1,0 +1,74 @@
+{
+  "status": "NOT electrically verified or released for final fabrication. Unknown parts are maximum design allowances, not measured hardware.",
+  "units": "mm",
+  "dimensions_L_W_T": [
+    82,
+    48,
+    11.3
+  ],
+  "collisions": [],
+  "reserve_collisions": [],
+  "stls": [
+    {
+      "file": "designs/T01_concept/STL/front_bezel_FIT_CONCEPT.stl",
+      "cad_valid": true,
+      "solid_count": 1,
+      "watertight": true,
+      "winding_consistent": true,
+      "mesh_bodies": 1,
+      "volume_mm3": 4898.41846298462,
+      "print_min_z": 0.0
+    },
+    {
+      "file": "designs/T01_concept/STL/rear_shell_FIT_CONCEPT.stl",
+      "cad_valid": true,
+      "solid_count": 1,
+      "watertight": true,
+      "winding_consistent": true,
+      "mesh_bodies": 1,
+      "volume_mm3": 6504.847539032675,
+      "print_min_z": 0.0
+    },
+    {
+      "file": "designs/T01_concept/STL/battery_tray_FIT_CONCEPT.stl",
+      "cad_valid": true,
+      "solid_count": 1,
+      "watertight": true,
+      "winding_consistent": true,
+      "mesh_bodies": 1,
+      "volume_mm3": 216.29998980246395,
+      "print_min_z": 0.0
+    }
+  ],
+  "display_rear_loading_sweep_intersection_mm3": 0.0,
+  "outside_case": [],
+  "derived": {
+    "active_area_mm": [
+      32.15390918523693,
+      39.65648799512554
+    ],
+    "footprint_reduction_percent": 42.95652173913044,
+    "volume_reduction_percent": 50.03168183350185,
+    "thickness_reduction_percent": 12.4031007751938,
+    "battery_rear_gap": 2.0000000000000013,
+    "lcd_to_battery_shelf_gap": 0.20000000000000062,
+    "screw_tip_z": 4.6,
+    "screw_engagement": 2.5
+  },
+  "nearest_shell_clearance_mm": {
+    "touch_glass": 0.4,
+    "touch_sensor": 0.4,
+    "touch_lcd_tape": 0.15,
+    "lcd": 0.2,
+    "battery": 0.2,
+    "xiao": 0.2,
+    "audio": 0.2,
+    "interface_pcb": 0.2,
+    "microsd": 0.2825,
+    "display_zif": 1.1662,
+    "touch_zif": 1.4142,
+    "control": 3.0676
+  },
+  "scope": "Checks nominal geometry, exact unscaled XIAO, component envelopes, empty routing volumes, shell containment and exported mesh validity. Does not establish electrical function, manufacturability of custom PCBs, flex bends, print tolerances, physical fit or runtime.",
+  "passed": true
+}

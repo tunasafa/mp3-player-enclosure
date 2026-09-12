@@ -1,0 +1,140 @@
+{
+  "source": "revision_04/designs/P04_compact/reference_only/Scaniverse_2026_09_12_145606.obj",
+  "source_units": "meter (explicit OBJ header)",
+  "scale_to_mm": 1000,
+  "vertices": 60440,
+  "faces": 115278,
+  "raw_bounds_mm": [
+    [
+      -107.83,
+      -5.34,
+      -97.61
+    ],
+    [
+      126.81,
+      10.55,
+      95.72
+    ]
+  ],
+  "missing_referenced_material": "Scaniverse_2026_09_12_145606.mtl",
+  "material_found": false,
+  "support_plane_y_ax_bz_c": [
+    0.004495869897319025,
+    -0.010446041933022981,
+    1.4364568319744035
+  ],
+  "support_residual_95_percent_mm": 0.5423930915585532,
+  "horizontal_alignment_degrees": 31.5,
+  "alignment_translation_mm": [
+    2.7,
+    5.2
+  ],
+  "scope": "Uncalibrated surface inspection. Includes support surface and scan artifacts. No hidden front-face thickness or connector pitch measurement.",
+  "body_threshold_sensitivity": [
+    {
+      "height_threshold_mm": 0.7,
+      "points": 4692,
+      "percentile_bounds_mm": [
+        [
+          -17.954412853643003,
+          -22.83413589982772,
+          0.7943686385056874
+        ],
+        [
+          18.905458048980332,
+          21.771181744491514,
+          3.986663733979931
+        ]
+      ],
+      "percentile_extents_mm": [
+        36.859870902623335,
+        44.605317644319236,
+        3.1922950954742437
+      ]
+    },
+    {
+      "height_threshold_mm": 1.2,
+      "points": 4474,
+      "percentile_bounds_mm": [
+        [
+          -17.58705835058839,
+          -22.83513737147846,
+          1.2925132006410207
+        ],
+        [
+          18.749843871753324,
+          21.50049600638027,
+          3.987999381529604
+        ]
+      ],
+      "percentile_extents_mm": [
+        36.33690222234171,
+        44.33563337785873,
+        2.6954861808885835
+      ]
+    },
+    {
+      "height_threshold_mm": 1.8,
+      "points": 4164,
+      "percentile_bounds_mm": [
+        [
+          -17.109210502888327,
+          -22.84122610279649,
+          1.8536159952877034
+        ],
+        [
+          18.259676157442257,
+          21.35779458083861,
+          3.988151867779793
+        ]
+      ],
+      "percentile_extents_mm": [
+        35.36888666033059,
+        44.1990206836351,
+        2.1345358724920898
+      ]
+    },
+    {
+      "height_threshold_mm": 2.4,
+      "points": 3831,
+      "percentile_bounds_mm": [
+        [
+          -16.829866280589325,
+          -22.843365066535377,
+          2.460685883105185
+        ],
+        [
+          17.85215884084068,
+          21.19065966016632,
+          3.988244416175197
+        ]
+      ],
+      "percentile_extents_mm": [
+        34.68202512143,
+        44.0340247267017,
+        1.5275585330700117
+      ]
+    },
+    {
+      "height_threshold_mm": 3.0,
+      "points": 3094,
+      "percentile_bounds_mm": [
+        [
+          -16.62946379370692,
+          -22.73978761788068,
+          3.01917617440387
+        ],
+        [
+          17.310762586734036,
+          20.720180666897562,
+          3.991672870771983
+        ]
+      ],
+      "percentile_extents_mm": [
+        33.940226380440954,
+        43.45996828477824,
+        0.972496696368113
+      ]
+    }
+  ]
+}

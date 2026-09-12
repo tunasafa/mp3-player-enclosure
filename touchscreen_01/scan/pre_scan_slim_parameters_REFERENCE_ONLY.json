@@ -1,0 +1,295 @@
+{
+  "revision": "T01 touchscreen / conditional packaging concept",
+  "units": "mm",
+  "status": "NOT electrically verified or released for final fabrication. Unknown parts are maximum design allowances, not measured hardware.",
+  "body": {
+    "width": 48,
+    "length": 82,
+    "thickness": 10.4,
+    "corner_radius": 6,
+    "wall": 1.6,
+    "skin": 1.2,
+    "front_height": 4,
+    "seam_gap": 0.2
+  },
+  "fasteners": {
+    "x": 21.1,
+    "y": [
+      -18,
+      33.5
+    ],
+    "boss_radius": 2,
+    "mating_z": 6.2,
+    "pilot_diameter": 1.3,
+    "pilot_bottom_z": 3.3,
+    "clearance_diameter": 1.8,
+    "head_diameter": 3.2,
+    "head_seat_z": 8.7,
+    "screw_length": 5
+  },
+  "display": {
+    "center": [
+      0,
+      14
+    ],
+    "glass_size": [
+      38,
+      46,
+      0.8
+    ],
+    "glass_z": 0.4,
+    "lcd_size": [
+      36,
+      44,
+      1.6
+    ],
+    "lcd_z": 1.2,
+    "glass_corner_radius": 3,
+    "opening": [
+      36.8,
+      44.8
+    ],
+    "pocket_clearance": 0.3,
+    "lip_z": 0.2,
+    "active_diagonal_in": 2.01,
+    "pixels": [
+      240,
+      296
+    ],
+    "status": "Outer glass, LCD body, corner radius and split thickness ASSUMED. Active area derived from user diagonal/resolution assuming square pixels.",
+    "provenance": "User identifies donor as T800 U2, LJ737 board; sibling LJ736/JQ7011 association. SPI / 0.3 mm is leading hypothesis, not verified pinout.",
+    "connector_pitch_hypothesis_mm": 0.3
+  },
+  "battery": {
+    "center": [
+      0,
+      15
+    ],
+    "size": [
+      34,
+      30,
+      3.4
+    ],
+    "z": 3.8,
+    "capacity_mah": null,
+    "rear_reserve_min": 1.7,
+    "status": "UNSELECTED finished protected pack including pouch seams and protection; no capacity/runtime claim. 3.4 mm thickness is user target."
+  },
+  "electronics": [
+    {
+      "id": "xiao",
+      "label": "XIAO ESP32-S3 / vendor geometry",
+      "center": [
+        -10.2,
+        -27.9961102
+      ],
+      "size": [
+        17.8,
+        21,
+        4.5
+      ],
+      "z": 3.4,
+      "status": "Seeed STEP, unscaled, headerless; USB faces bottom. Nominal envelope supplements exact STEP."
+    },
+    {
+      "id": "audio",
+      "label": "Audio + headphone board / allowance",
+      "center": [
+        9.9,
+        -28
+      ],
+      "size": [
+        18,
+        22,
+        5.2
+      ],
+      "z": 3.4,
+      "status": "UNSELECTED custom board allowance includes regulators, clock, level translation and headphone driver; ES9219 / CS43131 are IC candidates, not module dimensions."
+    },
+    {
+      "id": "interface_pcb",
+      "label": "Custom interface PCB / allowance",
+      "center": [
+        0,
+        -9
+      ],
+      "size": [
+        36,
+        16,
+        0.8
+      ],
+      "z": 3.4,
+      "status": "CUSTOM PCB required; generic tall 15-pin breakouts not qualified."
+    },
+    {
+      "id": "microsd",
+      "label": "Bare microSD socket + card / allowance",
+      "center": [
+        11,
+        -9
+      ],
+      "size": [
+        18,
+        14,
+        1.8
+      ],
+      "z": 4.2,
+      "status": "UNSELECTED low-profile socket on custom interface PCB; card exits right."
+    },
+    {
+      "id": "display_zif",
+      "label": "15-pin display ZIF / allowance",
+      "center": [
+        -10,
+        -3.5
+      ],
+      "size": [
+        12,
+        4,
+        1.4
+      ],
+      "z": 4.2,
+      "status": "Pitch, contact side, latch and tail exit UNVERIFIED."
+    },
+    {
+      "id": "touch_zif",
+      "label": "15-pin touch ZIF / allowance",
+      "center": [
+        -10,
+        -13.5
+      ],
+      "size": [
+        12,
+        4,
+        1.4
+      ],
+      "z": 4.2,
+      "status": "Pin count, pitch, contact side and latch UNVERIFIED."
+    },
+    {
+      "id": "control",
+      "label": "GPIO expander + power control / allowance",
+      "center": [
+        -10,
+        -8.5
+      ],
+      "size": [
+        12,
+        5,
+        1.4
+      ],
+      "z": 4.2,
+      "status": "Custom placement allowance for expander and support parts; schematic/PCB routing not designed."
+    }
+  ],
+  "ports": {
+    "usb": {
+      "x": -10.2,
+      "z": 6.355,
+      "width": 11,
+      "height": 4.2
+    },
+    "jack": {
+      "x": 9.9,
+      "z": 6.1,
+      "diameter": 5.2
+    },
+    "microsd": {
+      "y": -9,
+      "z": 5.1,
+      "width": 12,
+      "height": 2
+    }
+  },
+  "routing_reserves": [
+    {
+      "id": "battery_expansion",
+      "label": "Battery rear allowance",
+      "center": [
+        0,
+        15
+      ],
+      "size": [
+        34,
+        30,
+        1.7
+      ],
+      "z": 7.2
+    },
+    {
+      "id": "flex_service",
+      "label": "Flex folds + ZIF latch service",
+      "center": [
+        -10,
+        -9
+      ],
+      "size": [
+        15,
+        16,
+        1.4
+      ],
+      "z": 6.1
+    },
+    {
+      "id": "battery_termination",
+      "label": "Battery protection/lead termination",
+      "center": [
+        0,
+        33.5
+      ],
+      "size": [
+        9,
+        5,
+        3.8
+      ],
+      "z": 3.8
+    },
+    {
+      "id": "left_harness",
+      "label": "Battery harness lane",
+      "center": [
+        -19.4,
+        13
+      ],
+      "size": [
+        1.5,
+        30,
+        2.8
+      ],
+      "z": 4.1
+    },
+    {
+      "id": "audio_harness",
+      "label": "I2S/I2C harness between lower boards",
+      "center": [
+        0,
+        -27.5
+      ],
+      "size": [
+        1.5,
+        18,
+        2.8
+      ],
+      "z": 4.1
+    }
+  ],
+  "branding": {
+    "name": "mytunas",
+    "depth": 0.25,
+    "logo_width": 18,
+    "wordmark_width": 22
+  },
+  "baseline": {
+    "length": 115,
+    "width": 60,
+    "thickness": 12.9
+  },
+  "excluded": [
+    "clickwheel",
+    "8-pin wheel adapter",
+    "extra protective lens",
+    "physical power switch",
+    "external antenna",
+    "Olimex board (requires separate larger layout)"
+  ]
+}

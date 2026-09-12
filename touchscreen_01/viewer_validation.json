@@ -1,0 +1,91 @@
+{
+  "passed": true,
+  "errors": [],
+  "externalRequests": [],
+  "checks": [
+    {
+      "name": "preview_iso.png",
+      "pixels": {
+        "count": 95108,
+        "minX": 425,
+        "maxX": 659,
+        "minY": 160,
+        "maxY": 579,
+        "w": 1085,
+        "h": 740
+      }
+    },
+    {
+      "name": "preview_front.png",
+      "pixels": {
+        "count": 95438,
+        "minX": 424,
+        "maxX": 660,
+        "minY": 167,
+        "maxY": 572,
+        "w": 1085,
+        "h": 740
+      }
+    },
+    {
+      "name": "preview_back.png",
+      "pixels": {
+        "count": 95438,
+        "minX": 424,
+        "maxX": 660,
+        "minY": 167,
+        "maxY": 572,
+        "w": 1085,
+        "h": 740
+      }
+    },
+    {
+      "name": "preview_inside.png",
+      "pixels": {
+        "count": 94840,
+        "minX": 420,
+        "maxX": 658,
+        "minY": 162,
+        "maxY": 572,
+        "w": 1085,
+        "h": 740
+      }
+    },
+    {
+      "name": "preview_exploded.png",
+      "pixels": {
+        "count": 125903,
+        "minX": 371,
+        "maxX": 719,
+        "minY": 163,
+        "maxY": 575,
+        "w": 1085,
+        "h": 740
+      }
+    },
+    {
+      "name": "preview_mobile.png",
+      "pixels": {
+        "count": 44041,
+        "minX": 103,
+        "maxX": 262,
+        "minY": 169,
+        "maxY": 454,
+        "w": 366,
+        "h": 570
+      }
+    },
+    {
+      "name": "preview_mobile_inside.png",
+      "pixels": {
+        "count": 43836,
+        "minX": 100,
+        "maxX": 261,
+        "minY": 171,
+        "maxY": 449,
+        "w": 366,
+        "h": 570
+      }
+    }
+  ]
+}
