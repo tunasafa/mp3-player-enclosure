@@ -4,7 +4,14 @@
 
 **Model 02 is now in development:** [mytunas touch / T01](touchscreen_01/README.md)
 is an **82 × 48 × 11.3 mm conditional touchscreen concept**, with no clickwheel.
-Open its [offline 3D preview](touchscreen_01/preview.html),
+[Open the T01 interactive 3D viewer](touchscreen_01/preview.html) or click its preview image:
+
+[![Interactive T01 touchscreen model](touchscreen_01/preview_iso.png)](touchscreen_01/preview.html)
+
+When the repository is viewed through GitHub Pages, use the hosted URL:
+`https://tunasafa.github.io/mp3-player-enclosure/touchscreen_01/preview.html`
+
+Open its
 [dimensioned layout](touchscreen_01/design_overview.pdf) or
 [hardware audit and corrected pin allocation](touchscreen_01/HARDWARE_AUDIT.md).
 Panel, battery and audio-board measurements remain provisional. The P04
