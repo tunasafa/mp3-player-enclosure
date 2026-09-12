@@ -1,6 +1,10 @@
 # mytunas touch — T02 bottom-jack prototype
 
-[Open the interactive 3D assembly](preview.html) · [Dimensioned drawing](design_overview.pdf) · [Fit report](validation.json)
+[Open the interactive 3D assembly](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_01/preview.html) · [Dimensioned drawing](design_overview.pdf) · [Fit report](validation.json)
+
+The interactive link opens GitHub Pages. Opening `preview.html` in GitHub's code
+view shows the source-file page, which cannot run the viewer and may report that
+the file is too large. For offline viewing, download the HTML and open it in a browser.
 
 **52 × 132 × 10.4 mm target.** The latest user instruction controls this layout: landscape touchscreen at the top; microSD on the left and USB-C on the right beneath it; 503040 battery below them; intact Adafruit DAC at the bottom, with its original headphone jack facing down. There is no clickwheel and no added jack.
 

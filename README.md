@@ -4,12 +4,13 @@
 
 **Model 02 is now in development:** [mytunas touch / T02](touchscreen_01/README.md)
  is a **52 × 132 × 10.4 mm touchscreen prototype with a bottom headphone jack**, with no clickwheel.
-[Open the T02 interactive 3D viewer](touchscreen_01/preview.html) or click its preview image:
+[Open the T02 interactive 3D viewer](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_01/preview.html) or click its preview image:
 
-[![Interactive T02 touchscreen model](touchscreen_01/preview_iso.png)](touchscreen_01/preview.html)
+[![Interactive T02 touchscreen model](touchscreen_01/preview_iso.png)](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_01/preview.html)
 
-When the repository is viewed through GitHub Pages, use the hosted URL:
-`https://tunasafa.github.io/mp3-player-enclosure/touchscreen_01/preview.html`
+The viewer runs on GitHub Pages. GitHub's code view cannot run the HTML file
+and may display a file-size warning. For offline use, download `preview.html`
+and open it in a browser.
 
 Open its
 [dimensioned layout](touchscreen_01/design_overview.pdf) or
