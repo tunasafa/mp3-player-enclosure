@@ -30,6 +30,15 @@ for name,probe in port_tools().items():
 # Vendor point placement should agree with the measured connector recess on
 # its requested edge; this catches wrong signs/axis swaps during rotation.
 ps=port_specs()
+# Check the actual shell silhouette fits the aperture at the wall and that
+# the old rectangular corner gaps have been removed. This uses vendor edges,
+# independently of the cutter's nominal width/height metadata.
+rim=cq.Face.makeFromWires(usb_mouth_wire())
+shell_probe=cq.Workplane('XY').newObject([cq.Solid.extrudeLinear(rim,(.4,0,0))])
+assert shell_probe.cut(port_tools()['usb']).val().Volume()<1e-6
+assert ps['usb']['width']==9.24 and ps['usb']['height']==3.51
+assert ps['usb']['sealed'] is False
+assert len(usb_mouth_wire().Edges())==8
 assert abs(ps['jack']['center'][0])<1e-6
 assert abs(ps['jack']['center'][1]-(-L/2+.4))<1e-6
 assert abs(ps['usb']['center'][0]-(W/2-.4))<1e-6

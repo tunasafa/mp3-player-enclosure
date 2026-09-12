@@ -2,6 +2,7 @@
 Z points from the touch face to the rear. No rendered substitute vendor models.
 """
 from pathlib import Path
+from functools import lru_cache
 import json, math
 import cadquery as cq
 import numpy as np
@@ -36,13 +37,31 @@ def vendor(id):
  axis=(0,0,1) if id=='audio' else (1,0,0)
  return s.rotate((0,0,0),axis,p['rotation']).translate(p['translation'])
 
+@lru_cache(maxsize=1)
+def usb_mouth_wire():
+ # Take the actual metal-shell rim from the unscaled Seeed STEP. Its centre
+ # differs slightly from the old hand-entered connector point.
+ s=vendor('xiao'); mouth_x=transform_points('xiao',np.array([[13.8086398,2.705,-6.1114]]))[0,0]
+ faces=[f for f in s.val().Faces() if f.geomType()=='PLANE' and abs(f.Center().x-mouth_x)<1e-4 and len(f.Wires())==2]
+ if len(faces)!=1:raise ValueError('Cannot uniquely identify Seeed USB-C shell rim')
+ return faces[0].outerWire()
+
+def usb_profile_tool(clearance=.15,depth=8):
+ # Positive allowance is necessary for assembly; a zero-clearance hard opening
+ # is not a water seal. Preserve all eight manufacturer profile edges.
+ wire=usb_mouth_wire().offset2D(clearance)[0]
+ face=cq.Face.makeFromWires(wire)
+ s=cq.Solid.extrudeLinear(face,(depth,0,0))
+ return cq.Workplane('XY').newObject([s]).translate((-depth/2+.4,0,0))
+
 def port_specs():
  # These points are extracted from the intact vendor CAD, transformed by the
  # SAME placement used for the whole board. They are not independent guesses.
- u=transform_points('xiao',np.array([[13.8086398,2.705,-6.1114]]))[0]
+ bb=usb_mouth_wire().BoundingBox()
+ u=np.array([bb.xmax,(bb.ymin+bb.ymax)/2,(bb.zmin+bb.zmax)/2])
  j=transform_points('audio',np.array([[33.5370095,16.7591527,3.87248296]]))[0]
  sd=E['microsd'];sy=sd['center'][1];sz=sd['z']+1.55
- return {'usb':dict(edge='right',center=u.tolist(),width=9.4,height=3.7,axis=[1,0,0]),
+ return {'usb':dict(edge='right',center=u.tolist(),width=round(bb.ylen+.3,6),height=round(bb.zlen+.3,6),axis=[1,0,0],profile='Seeed STEP outer shell rim offset outward',radial_clearance_mm=.15,sealed=False),
          'jack':dict(edge='bottom',center=j.tolist(),diameter=5,axis=[0,-1,0]),
          'microsd':dict(edge='left',center=[-W/2+.4,sy,sz],width=11.5,height=1.5,axis=[-1,0,0])}
 
@@ -50,7 +69,7 @@ def side_slot(width,height,x,y,z,depth=8):
  return rounded(width,height,depth,min(.45,height/2-.01)).rotate((0,0,0),(1,1,1),120).translate((x-depth/2,y,z))
 def port_tools():
  p=port_specs();u,j,s=p['usb'],p['jack'],p['microsd']
- tools={'usb':side_slot(u['width'],u['height'],W/2,u['center'][1],u['center'][2]),
+ tools={'usb':usb_profile_tool(),
  'microsd':side_slot(s['width'],s['height'],-W/2,s['center'][1],s['center'][2]),
  'jack':cyl(j['diameter']/2,8).rotate((0,0,0),(1,0,0),90).translate((j['center'][0],-L/2+4,j['center'][2]))}
  return tools

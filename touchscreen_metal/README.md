@@ -4,6 +4,8 @@
 
 [Interactive viewer on GitHub Pages](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_metal/preview.html) · [Dimensioned drawing](design_overview.pdf) · [Fit report](validation.json) · [Thinner options study](THICKNESS_STUDY.md)
 
+[Side-jack / 2.4-inch / L-battery packing study](studies/side_jack/README.md) — conditional alternative with its own offline 3D viewer. Startek sample stock and the finished battery pack are unconfirmed; this does not replace the T03 assembly.
+
 The Pages link serves this version after these files are deployed. For immediate local use, open `preview.html` in a browser. GitHub's source-file page does not run HTML.
 
 ## Construction and actual thickness budget
@@ -33,7 +35,7 @@ The steel faces alone weigh approximately 48 g using a planning density of 8 g/c
 - Front perimeter bond and rear perimeter gasket, each 0.15 mm nominal. The front plate is bonded to the frame; rear screws make the component bay serviceable.
 - Dielectric pads under all boards and a 0.07 mm rear liner. The battery has a separate 0.3 mm insulating pad.
 - Three nonconductive rear spacers engage the Adafruit board's original mounting holes. Edge guides oppose headphone-plug insertion; the rear spacers capture the PCB against its insulated seat. Spacer attachment and clamp load require a physical trial.
-- Tight 5 mm bottom jack aperture, 9.4 × 3.7 mm USB aperture and 11.5 × 1.5 mm card slot. Internal reliefs stop 1 mm short of the outside. Ports remain unsealed; the perimeter gasket does not establish an IP rating.
+- Tight 5 mm bottom jack aperture, 9.24 × 3.51 mm USB aperture and 11.5 × 1.5 mm card slot. The USB opening now uses the actual eight-edge Seeed connector shell profile, offset outward by 0.15 mm for assembly. Its centre also comes from that rim, replacing the previous approximate point. Internal reliefs stop 1 mm short of the outside. Ports remain unsealed; the perimeter gasket does not establish an IP rating. See the [port-sealing requirements](studies/side_jack/README.md#port-protection).
 
 Metal reference STLs are named `*_METAL_REFERENCE.stl`; they are not thin plastic shells to print. Only `midframe_FIT_PROTOTYPE.stl` is the polymer frame candidate. The rear cutting-profile DXF uses 2.4 mm underside pilot holes. The STEP defines the subsequent 90° countersinks to 3.2 mm at the top face. Artwork is separated into `rear_marking_ONLY.dxf` and must not be through-cut. Metal cutting, countersinking, edge finishing, bonding and flatness control are separate operations.
 
