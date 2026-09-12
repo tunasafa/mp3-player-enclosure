@@ -4,6 +4,8 @@
 
 Open [the interactive preview](preview.html), [component layout](internal_layout.png), or [shell drawings](design_overview.pdf). See [BOM](BOM.csv), [hardware notes](HARDWARE_NOTES.md) and [model sources](vendor/README.md).
 
+The detached-jack experiment has been withdrawn from this build: it added wiring and retention without reducing the complete case. The intact DAC and onboard socket are restored. See [thickness decision and thinner-battery candidate](THICKNESS_REVIEW.md) for the two limiting stacks and the conditions under which a future change would help.
+
 ## Thin arrangement
 
 | Item | Current allocation |

@@ -32,7 +32,7 @@ def package(target=None):
             raise RuntimeError(f'Invalid current STL: {entry["file"]}')
         if not entry['cad_valid'] or entry['solid_count_cad'] != 1:
             raise RuntimeError('CAD validation failed.')
-    names = ['BOM.csv','vendor/6309.step','vendor/README.md','vendor/LICENSE-Adafruit-CAD.txt','README.md','HARDWARE_NOTES.md','requirements.json',
+    names = ['BOM.csv','vendor/6309.step','vendor/README.md','vendor/LICENSE-Adafruit-CAD.txt','README.md','HARDWARE_NOTES.md','THICKNESS_REVIEW.md','requirements.json',
              'parameters.json','layout_baseline.json','thickness_baseline.json','requirements.txt','build.py',
              'make_viewer.py','make_components.py','make_branding.py','viewer.html','viewer.js','package.json','package-lock.json',
              'vendor/viewer.bundle.js','vendor/LICENSE-viewer.txt','vendor/XIAO-ESP32S3 v2.step',

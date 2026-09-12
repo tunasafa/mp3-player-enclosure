@@ -61,7 +61,7 @@ The [offline 3D viewer](revision_04/preview.html) retains its original layout: f
 - **Engraved rear cap** — centered waveform/m logo and lowercase mytunas name, 0.3 mm recess
 - **Four M2 × 7 mm** heat-set inserts and screws
 - **Clear lens** — 43 × 33 × 0.6 mm, laser-cut from clear sheet
-- **Top Ø9 mm** earphone opening directly above the onboard 3.5 mm socket
+- **Top 5 mm circular opening** around the intact DAC's headphone socket
 - **Side ports** — USB-C and microSD (right)
 
 ## Repository structure
