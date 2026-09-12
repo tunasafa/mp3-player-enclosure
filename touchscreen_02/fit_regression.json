@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "parameter_sha256": "4940640a72e283566d42f79ab1e558b230f2c49e9aaa283939ea09d6bb4bc88f",
+  "parameter_sha256": "d0824a3ec31ed8cc7af93702e23fe2fd29492c5bc804fd7d681ce1e3819d40bb",
   "deliberate_battery_DAC_collision": [
     {
       "a": "bad_battery",
@@ -24,5 +24,85 @@
   ],
   "expansion_violation_detected_mm3": 471.47530964914876,
   "floating_board_gap_detected_mm": 0.20000000000000018,
-  "source_scope": "Fault injection into physical CAD and independent vendor-rim check"
+  "insert_pilots": [
+    {
+      "id": "case_insert_1",
+      "pilot_mm": 2.15,
+      "depth_mm": 3.77,
+      "rear_access_open": true
+    },
+    {
+      "id": "case_insert_2",
+      "pilot_mm": 2.15,
+      "depth_mm": 3.77,
+      "rear_access_open": true
+    },
+    {
+      "id": "case_insert_3",
+      "pilot_mm": 2.15,
+      "depth_mm": 3.77,
+      "rear_access_open": true
+    },
+    {
+      "id": "case_insert_4",
+      "pilot_mm": 2.15,
+      "depth_mm": 3.77,
+      "rear_access_open": true
+    },
+    {
+      "id": "case_insert_5",
+      "pilot_mm": 2.15,
+      "depth_mm": 3.77,
+      "rear_access_open": true
+    },
+    {
+      "id": "case_insert_6",
+      "pilot_mm": 2.15,
+      "depth_mm": 3.77,
+      "rear_access_open": true
+    },
+    {
+      "id": "case_insert_7",
+      "pilot_mm": 2.15,
+      "depth_mm": 3.77,
+      "rear_access_open": true
+    },
+    {
+      "id": "carrier_insert_1",
+      "pilot_mm": 2.15,
+      "depth_mm": 2.27,
+      "rear_access_open": true
+    },
+    {
+      "id": "carrier_insert_2",
+      "pilot_mm": 2.15,
+      "depth_mm": 2.27,
+      "rear_access_open": true
+    },
+    {
+      "id": "carrier_insert_3",
+      "pilot_mm": 2.15,
+      "depth_mm": 2.27,
+      "rear_access_open": true
+    },
+    {
+      "id": "carrier_insert_4",
+      "pilot_mm": 2.15,
+      "depth_mm": 2.27,
+      "rear_access_open": true
+    },
+    {
+      "id": "xiao_clamp_insert_1",
+      "pilot_mm": 2.15,
+      "depth_mm": 2.27,
+      "rear_access_open": true
+    },
+    {
+      "id": "xiao_clamp_insert_2",
+      "pilot_mm": 2.15,
+      "depth_mm": 2.27,
+      "rear_access_open": true
+    }
+  ],
+  "source_scope": "Fault injection into physical CAD, independent vendor rim, and pre-installation frame pilots"
 }

@@ -26,6 +26,17 @@ floating_gap=parts['microsd_pcb'].translate((0,0,.2)).val().distance(parts['sd_m
 assert floating_gap>.19
 assert all(x<=.001 for x in v['assembly_checks'].values())
 assert all(x['gap_mm']<=.005 for x in v['nominal_support_contacts'])
-result={'passed':True,'parameter_sha256':v['parameter_sha256'],'deliberate_battery_DAC_collision':hit,'deliberate_port_blockers':blockers,'expansion_violation_detected_mm3':expanded_hit,'floating_board_gap_detected_mm':floating_gap,'source_scope':'Fault injection into physical CAD and independent vendor-rim check'}
+# Check the print-ready pilots separately from the installed displaced-polymer
+# geometry. Both pilot depth and rear approach must remain open.
+blank=frame_before_inserts(parts['midframe']);pilots=[]
+for id,x,y,top,length,minor,depth in insert_sites():
+ bore=cyl(1.075,depth,x,y,top-depth)
+ assert intersection(bore,blank)<.001,id
+ assert intersection(cyl(1.3,9-top,x,y,top),blank)<.001,id
+ ring_check=cyl(1.25,length,x,y,top-length).cut(bore)
+ retained=intersection(blank,ring_check)
+ assert retained>.1,(id,'pre-install pilot incorrectly oversized')
+ pilots.append({'id':id,'pilot_mm':2.15,'depth_mm':depth,'rear_access_open':True})
+result={'passed':True,'parameter_sha256':v['parameter_sha256'],'deliberate_battery_DAC_collision':hit,'deliberate_port_blockers':blockers,'expansion_violation_detected_mm3':expanded_hit,'floating_board_gap_detected_mm':floating_gap,'insert_pilots':pilots,'source_scope':'Fault injection into physical CAD, independent vendor rim, and pre-installation frame pilots'}
 (ROOT/'fit_regression.json').write_text(json.dumps(result,indent=2)+'\n')
-print('PASS: real-DAC collision, three port blockers, expansion intrusion, floating board and actual USB rim checks')
+print('PASS: real-DAC collision, three port blockers, expansion intrusion, floating board, actual USB rim and 13 installation pilots')

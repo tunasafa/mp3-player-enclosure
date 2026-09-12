@@ -1,6 +1,6 @@
 {
   "model": "Model 02 / selected touchscreen layout",
-  "revision": "M02-02 / complete mechanical prototype",
+  "revision": "M02-03 / serviceable metal chassis prototype",
   "units": "mm",
   "exterior": [
     64,
@@ -134,19 +134,28 @@
         -26
       ],
       [
-        0,
+        -0.2,
         -61
       ],
       [
         -24,
-        -61.4
+        -61.2
       ]
     ],
-    "boss_radius": 1.9,
+    "boss_radius": 2.1,
     "screw": "M1.6 x 5, 90 degree countersunk, nominal",
     "pilot_diameter": 1.3,
     "clearance_diameter": 1.8,
-    "head_diameter": 3.2
+    "head_diameter": 3.2,
+    "insert": {
+      "part": "PEM MSIB-M1.6-300",
+      "outside_diameter_mm": 2.5,
+      "length_mm": 3,
+      "pilot_diameter_mm": 2.15,
+      "minimum_hole_depth_mm": 3.77,
+      "top_z": 7.5,
+      "maximum_outside_diameter_mm": 2.6
+    }
   },
   "carrier": {
     "size": [
@@ -162,24 +171,35 @@
     "screw_points": [
       [
         -25,
-        11.5
+        11.3
       ],
       [
         25,
-        11.5
+        11.3
       ],
       [
-        -25,
-        58.5
+        -23,
+        58.7
       ],
       [
-        25,
-        58.5
+        23,
+        58.7
       ]
     ],
     "screw": "M1.4 x 3, nominal pan head",
     "support_pad_z": 4.3,
-    "support_pad_thickness": 0.05
+    "support_pad_thickness": 0.05,
+    "insert": {
+      "part": "PEM MSIB-M1.4-150",
+      "outside_diameter_mm": 2.5,
+      "length_mm": 1.5,
+      "pilot_diameter_mm": 2.15,
+      "minimum_hole_depth_mm": 2.27,
+      "top_z": 4.35,
+      "maximum_outside_diameter_mm": 2.6
+    },
+    "construction": "0.20 mm stainless web with laser seam welded 0.30 mm stiffening blades; qualify welding and flatness",
+    "boss_radius": 2.1
   },
   "xiao": {
     "center": [
@@ -236,5 +256,45 @@
     ],
     "z": 0.7,
     "status": "Supplier-designed protection/lead joint allocation, not completed circuit"
+  },
+  "xiao_clamp": {
+    "screw_points": [
+      [
+        22,
+        -21.7
+      ],
+      [
+        22,
+        1.7
+      ]
+    ],
+    "z": 4.3,
+    "thickness": 0.4,
+    "pad_size": [
+      2,
+      8,
+      0.3
+    ],
+    "pad_center": [
+      22,
+      -10
+    ],
+    "insert_top_z": 4.3,
+    "boss_radius": 2.1
+  },
+  "engraving": {
+    "depth_mm": 0.03,
+    "source": "assets/branding.json",
+    "finish": "dark laser engraving",
+    "front": "geometric bluefin above mytunas",
+    "rear": "brand and non-regulatory model/revision identification"
+  },
+  "ports": {
+    "usb_radial_clearance_mm": 0.15,
+    "jack_radial_clearance_mm": 0.2,
+    "sd_card_side_clearance_mm": 0.25,
+    "sd_card_vertical_clearance_mm": 0.25,
+    "covers_visible_by_default": false,
+    "note": "Connector-following apertures require positive mating/tolerance clearance; no zero-clearance or IP claim"
   }
 }

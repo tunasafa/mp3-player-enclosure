@@ -32,12 +32,15 @@ try {
  assert(report.mesh_checks.every(c=>c.watertight&&c.winding_consistent&&c.bodies===1));
  assert(report.nominal_support_contacts.every(c=>c.gap_mm<=.005));
  const parts=await page.evaluate(()=>PACKING.inspect());
+ assert.equal(await page.locator('#covers').isChecked(),false);
+ assert(parts.filter(p=>p.kind==='cover').every(p=>!p.visible),'Ports must be exposed on first load');
+ assert.equal(report.service_design.metal_threaded_inserts,13);
  assert.equal(parts.filter(p=>/^cell_[AB]_envelope$/.test(p.id)).length,2);
  for(const part of parts){
   assert.equal(part.physicalMeshes,part.expectedMeshes,`Duplicated or missing physical geometry: ${part.id}`);
   for(let side=0;side<2;side++)for(let axis=0;axis<3;axis++)assert(Math.abs(part.bounds[side][axis]-part.expected[side][axis])<.09,`Mesh differs from CAD: ${part.id}`);
  }
- async function capture(name){
+ async function capture(name,closeup=false){
   await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
   const pixels=await page.evaluate(()=>{
    const c=document.querySelector('#view'),g=c.getContext('webgl2'),p=new Uint8Array(c.width*c.height*4);
@@ -47,7 +50,7 @@ try {
    return {count,minX,maxX,minY,maxY,w:c.width,h:c.height};
   });
   assert(pixels.count>2000,`Blank ${name}`);
-  assert(pixels.minX>0&&pixels.maxX<pixels.w-1&&pixels.minY>0&&pixels.maxY<pixels.h-1,`Clipped ${name}`);
+  if(!closeup)assert(pixels.minX>0&&pixels.maxX<pixels.w-1&&pixels.minY>0&&pixels.maxY<pixels.h-1,`Clipped ${name}`);
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`Overflow ${name}`);
   await page.screenshot({path:join(root,name),fullPage:true});checks.push({name,pixels});
  }
@@ -55,6 +58,16 @@ try {
  for(const view of ['front','rear','inside','side','bottom']){await page.locator(`[data-view="${view}"]`).click();await capture(`preview_${view}.png`);}
  await page.locator('#covers').uncheck();await capture('preview_ports_open.png');
  assert((await page.evaluate(()=>PACKING.inspect())).filter(p=>p.kind==='cover').every(p=>!p.visible));
+ for(const port of ['usb','sd','jack']){
+  await page.locator(`[data-view="${port}"]`).click();await capture(`preview_port_${port}.png`,true);
+  assert.equal(await page.locator('#covers').isChecked(),false);
+  const open=await page.locator('#view').screenshot();
+  await page.locator('#covers').check();
+  await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+  const closed=await page.locator('#view').screenshot();
+  assert(!open.equals(closed),`Port cover has no visible effect: ${port}`);
+  await page.locator('#covers').uncheck();
+ }
  await page.locator('[data-view="iso"]').click();
  await page.locator('#reserves').check();await page.locator('#explode').fill('100');await capture('preview_exploded.png');
  await page.setViewportSize({width:390,height:844});await capture('preview_mobile.png');

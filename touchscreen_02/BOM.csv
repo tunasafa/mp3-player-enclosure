@@ -1,32 +1,46 @@
 part_id,quantity,description,type,definition,qualification
-midframe,1,PA12 frame / guides and pillars,structure,Designed nominal geometry,Nominal prototype; physical qualification required
-front_bezel,1,Front steel / 0.40 mm,structure,Designed nominal geometry,Nominal prototype; physical qualification required
-rear_shell,1,Rear steel / 0.40 mm,structure,Designed nominal geometry,Nominal prototype; physical qualification required
+case_insert_1,1,PEM MSIB-M1.6-300 / case_insert_1,fastener,PEM published 2.5 mm OD envelope; installed polymer displacement modeled; knurl/thread omitted,Nominal prototype; physical qualification required
+case_insert_2,1,PEM MSIB-M1.6-300 / case_insert_2,fastener,PEM published 2.5 mm OD envelope; installed polymer displacement modeled; knurl/thread omitted,Nominal prototype; physical qualification required
+case_insert_3,1,PEM MSIB-M1.6-300 / case_insert_3,fastener,PEM published 2.5 mm OD envelope; installed polymer displacement modeled; knurl/thread omitted,Nominal prototype; physical qualification required
+case_insert_4,1,PEM MSIB-M1.6-300 / case_insert_4,fastener,PEM published 2.5 mm OD envelope; installed polymer displacement modeled; knurl/thread omitted,Nominal prototype; physical qualification required
+case_insert_5,1,PEM MSIB-M1.6-300 / case_insert_5,fastener,PEM published 2.5 mm OD envelope; installed polymer displacement modeled; knurl/thread omitted,Nominal prototype; physical qualification required
+case_insert_6,1,PEM MSIB-M1.6-300 / case_insert_6,fastener,PEM published 2.5 mm OD envelope; installed polymer displacement modeled; knurl/thread omitted,Nominal prototype; physical qualification required
+case_insert_7,1,PEM MSIB-M1.6-300 / case_insert_7,fastener,PEM published 2.5 mm OD envelope; installed polymer displacement modeled; knurl/thread omitted,Nominal prototype; physical qualification required
+carrier_insert_1,1,PEM MSIB-M1.4-150 / carrier_insert_1,fastener,PEM published 2.5 mm OD envelope; installed polymer displacement modeled; knurl/thread omitted,Nominal prototype; physical qualification required
+carrier_insert_2,1,PEM MSIB-M1.4-150 / carrier_insert_2,fastener,PEM published 2.5 mm OD envelope; installed polymer displacement modeled; knurl/thread omitted,Nominal prototype; physical qualification required
+carrier_insert_3,1,PEM MSIB-M1.4-150 / carrier_insert_3,fastener,PEM published 2.5 mm OD envelope; installed polymer displacement modeled; knurl/thread omitted,Nominal prototype; physical qualification required
+carrier_insert_4,1,PEM MSIB-M1.4-150 / carrier_insert_4,fastener,PEM published 2.5 mm OD envelope; installed polymer displacement modeled; knurl/thread omitted,Nominal prototype; physical qualification required
+xiao_clamp_insert_1,1,PEM MSIB-M1.4-150 / xiao_clamp_insert_1,fastener,PEM published 2.5 mm OD envelope; installed polymer displacement modeled; knurl/thread omitted,Nominal prototype; physical qualification required
+xiao_clamp_insert_2,1,PEM MSIB-M1.4-150 / xiao_clamp_insert_2,fastener,PEM published 2.5 mm OD envelope; installed polymer displacement modeled; knurl/thread omitted,Nominal prototype; physical qualification required
+midframe,1,PA12 frame / metal insert seats and guides,structure,Designed nominal geometry,Nominal prototype; physical qualification required
+front_bezel,1,Front satin polished steel / laser engraved / 0.40 mm,structure,Designed nominal geometry,Nominal prototype; physical qualification required
+rear_shell,1,Rear satin polished steel / laser engraved / 0.40 mm,structure,Designed nominal geometry,Nominal prototype; physical qualification required
 front_bond,1,front bond / 0.15 mm,seal,Designed nominal geometry,Nominal prototype; physical qualification required
 rear_gasket,1,rear gasket / 0.15 mm,seal,Designed nominal geometry,Nominal prototype; physical qualification required
 touch_glass,1,Startek capacitive glass / nominal 1.25 mm,component,Startek listing; sample drawing required,Nominal prototype; physical qualification required
 lcd,1,Startek LCD + backlight / nominal 2.50 mm,component,Startek outline; layer split pending supplier drawing,Nominal prototype; physical qualification required
 display_adhesive,1,Continuous display bond / 0.15 mm,seal,Designed nominal geometry,Nominal prototype; physical qualification required
-display_carrier,1,Display retainer / 0.20 mm stainless,structure,Designed nominal geometry,Nominal prototype; physical qualification required
+display_carrier,1,Welded stainless carrier / cross ribs and service windows,structure,Designed nominal geometry,Nominal prototype; physical qualification required
 display_cushion,1,LCD perimeter cushion / 0.05 mm,seal,Designed nominal geometry,Nominal prototype; physical qualification required
-carrier_rib_15,1,Bonded retainer stiffening rib,support,Designed nominal geometry,Nominal prototype; physical qualification required
-carrier_rib_15_bond,1,Retainer rib bond / 0.05 mm,seal,Designed nominal geometry,Nominal prototype; physical qualification required
-carrier_rib_56,1,Bonded retainer stiffening rib,support,Designed nominal geometry,Nominal prototype; physical qualification required
-carrier_rib_56_bond,1,Retainer rib bond / 0.05 mm,seal,Designed nominal geometry,Nominal prototype; physical qualification required
 audio,1,Adafruit 6309 / original bottom jack,component,Unscaled manufacturer STEP,Manufacturer CAD; sample fit required
 xiao,1,Seeed XIAO ESP32-S3 / USB right,component,Unscaled manufacturer STEP,Manufacturer CAD; sample fit required
-audio_insulator,1,DAC insulating adhesive / 0.15 mm,seal,Designed nominal geometry,Nominal prototype; physical qualification required
-xiao_insulator,1,XIAO insulating adhesive / 0.35 mm,seal,Designed nominal geometry,Nominal prototype; physical qualification required
+audio_insulator,1,Removable DAC dielectric sheet / 0.15 mm,seal,Designed nominal geometry,Nominal prototype; physical qualification required
+xiao_insulator,1,Removable XIAO dielectric seat / 0.35 mm,seal,Designed nominal geometry,Nominal prototype; physical qualification required
+xiao_saddle,1,Removable stainless XIAO saddle / two screws,structure,Designed nominal geometry,Nominal prototype; physical qualification required
+xiao_saddle_pad,1,XIAO shield cushion / installed 0.30 mm,seal,Actual shield top Z4.00; compression and allowable shield load require test,Nominal prototype; physical qualification required
+xiao_clamp_screw_1,1,M1.4 × 3 XIAO saddle screw,fastener,Designed nominal geometry,Nominal prototype; physical qualification required
+xiao_clamp_screw_2,1,M1.4 × 3 XIAO saddle screw,fastener,Designed nominal geometry,Nominal prototype; physical qualification required
 xiao_insertion_stop,1,Removable XIAO insertion stop,support,Designed nominal geometry,Nominal prototype; physical qualification required
 xiao_stop_adhesive,1,XIAO stop bonding pad,seal,Designed nominal geometry,Nominal prototype; physical qualification required
-dac_insertion_stop,1,Removable DAC insertion stop,support,Designed nominal geometry,Nominal prototype; physical qualification required
-dac_stop_adhesive,1,DAC stop bonding pad,seal,Designed nominal geometry,Nominal prototype; physical qualification required
-dac_retainer_1,1,DAC locating spacer 1,support,Designed nominal geometry,Nominal prototype; physical qualification required
-dac_retainer_bond_1,1,DAC spacer rear bond / 0.10 mm,seal,Designed nominal geometry,Nominal prototype; physical qualification required
-dac_retainer_2,1,DAC locating spacer 2,support,Designed nominal geometry,Nominal prototype; physical qualification required
-dac_retainer_bond_2,1,DAC spacer rear bond / 0.10 mm,seal,Designed nominal geometry,Nominal prototype; physical qualification required
-dac_retainer_3,1,DAC locating spacer 3,support,Designed nominal geometry,Nominal prototype; physical qualification required
-dac_retainer_bond_3,1,DAC spacer rear bond / 0.10 mm,seal,Designed nominal geometry,Nominal prototype; physical qualification required
+dac_seat_1,1,Insulating DAC shoulder and locating pin,support,Custom POM; nominal 0.10 mm radial pin-to-hole clearance,Nominal prototype; physical qualification required
+dac_retainer_1,1,Threaded stainless DAC column 1,support,Custom turned stainless M1.4 column; thread not tessellated,Nominal prototype; physical qualification required
+dac_rear_screw_1,1,M1.4 × 3 countersunk DAC column screw,fastener,Designed nominal geometry,Nominal prototype; physical qualification required
+dac_seat_2,1,Insulating DAC shoulder and locating pin,support,Custom POM; nominal 0.10 mm radial pin-to-hole clearance,Nominal prototype; physical qualification required
+dac_retainer_2,1,Threaded stainless DAC column 2,support,Custom turned stainless M1.4 column; thread not tessellated,Nominal prototype; physical qualification required
+dac_rear_screw_2,1,M1.4 × 3 countersunk DAC column screw,fastener,Designed nominal geometry,Nominal prototype; physical qualification required
+dac_seat_3,1,Insulating DAC shoulder and locating pin,support,Custom POM; nominal 0.10 mm radial pin-to-hole clearance,Nominal prototype; physical qualification required
+dac_retainer_3,1,Threaded stainless DAC column 3,support,Custom turned stainless M1.4 column; thread not tessellated,Nominal prototype; physical qualification required
+dac_rear_screw_3,1,M1.4 × 3 countersunk DAC column screw,fastener,Designed nominal geometry,Nominal prototype; physical qualification required
 rear_liner,1,Rear dielectric liner / 0.07 mm,seal,Designed nominal geometry,Nominal prototype; physical qualification required
 cell_A_envelope,1,Battery A / finished pack allocation,component,DTP502535 max pack dimensions; combined pack unselected,Nominal prototype; physical qualification required
 cell_A_envelope_adhesive,1,Battery insulating retention pad / 0.30 mm,seal,Designed nominal geometry,Nominal prototype; physical qualification required

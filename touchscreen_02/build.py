@@ -1,4 +1,4 @@
-"""Build the complete M02-02 nominal mechanical assembly; stop on any failure."""
+"""Build the complete M02-03 nominal mechanical assembly; stop on any failure."""
 from pathlib import Path
 import base64,hashlib,json,os,subprocess
 import numpy as np
@@ -6,14 +6,14 @@ import trimesh
 import cadquery as cq
 from geometry import *
 from validate import validate
-OUT=ROOT/'designs/M02_02'
+OUT=ROOT/'designs/M02_03'
 def packed(a):return base64.b64encode(np.asarray(a,dtype='<f4').tobytes()).decode('ascii')
 def triangles(s):
  v,f=s.val().tessellate(.04,.12)
  return np.array([p.toTuple() for p in v])[np.array(f)]
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
- print('Constructing complete M02-02 geometry...',flush=True)
+ print('Constructing complete M02-03 geometry...',flush=True)
  parts,visual,meta=physical();reserved=reserves()
  print('Checking physical intersections, reservations and assembly access...',flush=True)
  report=validate(parts,reserved,meta)
@@ -24,8 +24,8 @@ def main():
   report['mesh_checks'].append({'part':n,'watertight':bool(m.is_watertight),'winding_consistent':bool(m.is_winding_consistent),'bodies':int(m.body_count),'positive_volume':bool(m.volume>0)})
  report['passed']=report['passed'] and all(c['watertight'] and c['winding_consistent'] and c['bodies']==1 and c['positive_volume'] for c in report['mesh_checks'])
  report['parameter_sha256']=sha(ROOT/'parameters.json')
- report['source_sha256']={n:sha(ROOT/n) for n in ['geometry.py','validate.py','build.py']}
- deps=['revision_04/vendor/6309.step','revision_04/vendor/XIAO-ESP32S3 v2.step','revision_04/assets/mytunas-branding.json','touchscreen_metal/vendor/audio_face_meshes.json','touchscreen_metal/vendor/xiao_face_meshes.json']
+ report['source_sha256']={n:sha(ROOT/n) for n in ['geometry.py','validate.py','build.py','assets/branding.json']}
+ deps=['revision_04/vendor/6309.step','revision_04/vendor/XIAO-ESP32S3 v2.step','touchscreen_metal/vendor/audio_face_meshes.json','touchscreen_metal/vendor/xiao_face_meshes.json']
  report['dependency_sha256']={n:sha(ROOT.parent/n) for n in deps}
  report['jack_mouth_mm']=port_specs()['jack']['center'];report['jack_edge']='bottom';report['jack_axis']=[0,-1,0]
  report['vendor_dac_rotation_z_degrees']=-90
@@ -48,12 +48,17 @@ def main():
   cq.exporters.export(s,str(OUT/'reference_only'/f'{n}.stl'),tolerance=.04,angularTolerance=.12)
   if info['kind'] in ['structure','support','cover']:
    cq.exporters.export(s,str(OUT/f'{n}.step'))
-   suffix='PA12_FIT_PROTOTYPE' if n=='midframe' or info['kind']=='support' else 'SILICONE_REFERENCE' if info['kind']=='cover' else 'METAL_REFERENCE'
+   suffix='PA12_INSTALLED_REFERENCE' if n=='midframe' else 'POM_REFERENCE' if n.startswith('dac_seat') or info['kind']=='support' and not n.startswith('dac_retainer') else 'SILICONE_REFERENCE' if info['kind']=='cover' else 'METAL_REFERENCE'
    bb=s.val().BoundingBox();onbed=s.translate((-bb.xmin,-bb.ymin,-bb.zmin))
    cq.exporters.export(onbed,str(OUT/'STL'/f'{n}_{suffix}.stl'),tolerance=.04,angularTolerance=.12)
   if n in ['front_bezel','rear_shell','display_carrier','display_adhesive','display_cushion','front_bond','rear_gasket','rear_liner'] or n.endswith('_adhesive'):
-   faces=s.faces('<Z' if n=='rear_shell' else '>Z')
+   faces=s.faces('<Z' if n in ['rear_shell','display_carrier'] else '>Z')
    cq.exporters.export(faces.wires(),str(OUT/'profiles'/f'{n}.dxf'))
+ blank=frame_before_inserts(parts['midframe'])
+ assert blank.val().isValid() and len(blank.solids().vals())==1
+ cq.exporters.export(blank,str(OUT/'midframe_BEFORE_HEAT_INSERTS.step'))
+ bb=blank.val().BoundingBox()
+ cq.exporters.export(blank.translate((-bb.xmin,-bb.ymin,-bb.zmin)),str(OUT/'STL/midframe_BEFORE_HEAT_INSERTS_PA12_FIT_PROTOTYPE.stl'),tolerance=.04,angularTolerance=.12)
  assembly.export(str(OUT/'assembly_NOMINAL.step'))
  # Keep the formerly linked reference filename current for existing bookmarks.
  assembly.export(str(ROOT/'packing_REFERENCE_ONLY.step'))

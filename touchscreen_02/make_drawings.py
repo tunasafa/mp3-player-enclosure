@@ -7,6 +7,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.patches import Rectangle,FancyBboxPatch,Circle
+from matplotlib.patches import PathPatch
+from matplotlib.path import Path as PlotPath
 ROOT=Path(__file__).resolve().parent
 p=json.loads((ROOT/'parameters.json').read_text());v=json.loads((ROOT/'validation.json').read_text());data=json.loads((ROOT/'model.json').read_text())
 assert v['passed'] and data['report']==v
@@ -14,7 +16,7 @@ ink='#24433f';muted='#637875';bg='#f3f5f3'
 def page(title,subtitle):
  f=plt.figure(figsize=(11.7,8.3),facecolor=bg)
  f.text(.05,.94,title,fontsize=21,color=ink);f.text(.05,.9,subtitle,fontsize=9,color=muted)
- f.text(.05,.035,'M02-02 / mm / nominal mechanical prototype / do not scale PDF / no production release',fontsize=8,color=muted)
+ f.text(.05,.035,'M02-03 / mm / nominal mechanical prototype / do not scale PDF / no production release',fontsize=8,color=muted)
  return f
 def body(ax):
  ax.add_patch(FancyBboxPatch((-32,-64),64,128,boxstyle='round,pad=0,rounding_size=6',facecolor='#dae3df',edgecolor=ink,lw=.8))
@@ -34,6 +36,17 @@ with PdfPages(ROOT/'drawings.pdf') as pdf:
  a=f.add_axes([.04,.13,.24,.71]);body(a)
  x,y=p['display']['window_center'];w,h=p['display']['window'];a.add_patch(Rectangle((x-w/2,y-h/2),w,h,fc='#123039',ec=ink));a.text(x,y,'2.4-inch IPS\n320 × 240',ha='center',va='center',fontsize=10,color='white')
  dim(a,(-32,-70),(32,-70),'64.00');dim(a,(-38,-64),(-38,64),'128.00',True)
+ art=json.loads((ROOT/'assets/branding.json').read_text())
+ for spec in art['front']:
+  paths=[]
+  for curve in art['art'][spec['key']]:
+   pts=[(x*spec['width'],y*spec['width']+spec['cy']) for x,y in curve]
+   if spec['key']=='logo':
+    signed=sum(pts[i][0]*pts[i+1][1]-pts[i+1][0]*pts[i][1] for i in range(len(pts)-1))
+    if not paths:outer_sign=signed
+    elif signed*outer_sign>0:pts=pts[::-1]
+   paths.append(PlotPath(pts,[PlotPath.MOVETO]+[PlotPath.LINETO]*(len(pts)-2)+[PlotPath.CLOSEPOLY]))
+  a.add_patch(PathPatch(PlotPath.make_compound_path(*paths),facecolor='#314655',lw=0))
  a=f.add_axes([.3,.13,.26,.71]);body(a)
  for id,col,label in [('lcd','#90a7a3','LCD / 60.26 × 42.92'),('display_carrier','#cad8d2',''),('microsd_pcb','#80a89b','SD'),('interface_pcb','#80a89b','45P I/O'),('cell_A_envelope','#d3c7a1','Cell A\n37 × 25.5'),('cell_B_envelope','#d3c7a1','Cell B\n25.5 × 37'),('audio','#96a8c1','Adafruit\n6309'),('xiao','#80a89b','XIAO')]:rect(a,id,col,label)
  for x,y in p['case_fasteners']['points']:a.add_patch(Circle((x,y),1.9,fc='white',ec=ink,lw=.6))
@@ -46,9 +59,14 @@ with PdfPages(ROOT/'drawings.pdf') as pdf:
  for x,y in p['carrier']['screw_points']:a.plot(x,y,'+',color='#ad7247')
  rows=[[str(i),f'{x:.2f}',f'{y:.2f}','M1.6 × 5 / CSK'] for i,(x,y) in enumerate(p['case_fasteners']['points'],1)]
  rows += [[f'C{i}',f'{x:.2f}',f'{y:.2f}','M1.4 × 3 / carrier'] for i,(x,y) in enumerate(p['carrier']['screw_points'],1)]
- table(f.add_axes([.36,.39,.58,.45]),rows,['ID','X','Y','Fastener'],[.12,.18,.18,.52],8)
+ for i,(x,y) in enumerate(p['xiao_clamp']['screw_points'],1):
+  a.plot(x,y,'x',color='#80643d');rows.append([f'X{i}',f'{x:.2f}',f'{y:.2f}','M1.4 × 3 / saddle'])
+ for i in range(1,4):
+  lo,hi=v['cad_parts'][f'dac_retainer_{i}']['bounds_mm'];x=(lo[0]+hi[0])/2;y=(lo[1]+hi[1])/2
+  a.plot(x,y,'o',ms=2,color='#80643d');rows.append([f'D{i}',f'{x:.2f}',f'{y:.2f}','M1.4 × 3 / rear column'])
+ t=table(f.add_axes([.36,.34,.58,.50]),rows,['ID','X','Y','Fastener'],[.12,.18,.18,.52],7.5);t.scale(1,.85)
  portrows=[[n,*[f'{c:.4f}' for c in port['center']]] for n,port in v['ports'].items()]
- table(f.add_axes([.36,.14,.58,.2]),portrows,['Mouth centre','X','Y','Z'],[.28,.24,.24,.24],8)
+ table(f.add_axes([.36,.11,.58,.2]),portrows,['Mouth centre','X','Y','Z'],[.28,.24,.24,.24],8)
  pdf.savefig(f);plt.close(f)
  f=page('Depth sections and reserves','03 — Layer values are nominal allocations. Full published DAC height is retained.')
  stacks=[('DAC',[(0,.4,'Steel'),(.4,.55,'Insulation'),(.55,7.65,'Published DAC max'),(7.65,7.83,'Free 0.18'),(7.83,7.9,'Liner'),(7.9,8.3,'Steel')]),('Battery',[(0,.4,'Steel'),(.4,.7,'Adhesive'),(.7,5.9,'Pack max 5.20'),(5.9,7.6,'Expansion 1.70'),(7.6,7.83,'Free 0.23'),(7.83,7.9,'Liner'),(7.9,8.3,'Steel')]),('LCD + SD',[(0,.4,'Bezel'),(.4,.55,'Bond'),(.55,4.3,'Touch + LCD 3.75'),(4.3,4.35,'Cushion'),(4.35,4.55,'Carrier'),(4.55,4.85,'SD adhesive'),(4.85,7.45,'SD max'),(7.45,7.83,'Free 0.38'),(7.83,7.9,'Liner'),(7.9,8.3,'Steel')])]
@@ -63,7 +81,7 @@ with PdfPages(ROOT/'drawings.pdf') as pdf:
   ax.spines[['top','right','bottom']].set_visible(False)
  f.savefig(ROOT/'depth_sections.png',dpi=170,facecolor=bg);pdf.savefig(f);plt.close(f)
  f=page('Manufacturing and assembly checkpoints','04 — STEP defines 3D geometry. DXF profiles are for the named sheet layers only.')
- rows=[['Frame','PA12 fit prototype; 1 connected body','Use STEP for ribs, pockets and pilots'],['Front / rear','0.40 mm stainless sheet','Deburr and insulate all internal edges'],['Retainer','0.20 mm stainless + bonded ribs','Keep cushion on LCD perimeter'],['Case fasteners','7 × M1.6 × 5, countersunk','Pilot 1.30; confirm screw supplier drawing'],['Carrier fasteners','4 × M1.4 × 3, nominal','Pilot 1.10; clearance 1.60'],['Board mounting','Finite adhesive pads + stops','Verify shear strength and plug cycles'],['Port covers','Silicone compression references','Retention and sealing remain unqualified'],['Assembly','Recess, lower, slide boards into ports','Install stops and batteries afterwards'],['Release gate','0.18 mm DAC clearance is tight','Requires tolerance stack and physical trial']]
+ rows=[['Frame','PA12 / 13 metal threaded inserts','Use BEFORE_HEAT_INSERTS geometry'],['Front / rear','0.40 mm satin polished stainless','0.03 mm original vector engravings'],['Carrier','0.20 web / four 0.30 mm welded blades','Weld in flat fixture; inspect distortion'],['Case threads','7 × PEM MSIB-M1.6-300','Pilot 2.15 / depth 3.77 minimum'],['Internal threads','6 × PEM MSIB-M1.4-150','Pilot 2.15 / depth 2.27 minimum'],['XIAO saddle','0.40 steel / 0.30 shield cushion','Two M1.4 × 3 screws; qualify shield load'],['DAC retention','3 steel columns / insulated seats','Three rear M1.4 × 3 CSK screws'],['Ports','Actual USB rim + 0.15 radial gap','Positive clearance; optional covers'],['Release gate','0.18 mm DAC clearance is tight','Tolerance stack and physical cycle tests']]
  table(f.add_axes([.04,.21,.91,.64]),rows,['Part / check','Specification','Process note'],[.17,.39,.44],9)
  pdf.savefig(f);plt.close(f)
  # All physical-part bounds provide a complete measurement schedule.

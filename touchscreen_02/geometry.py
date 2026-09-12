@@ -1,4 +1,4 @@
-"""Authoritative M02-02 geometry. All visible physical geometry is fit checked.
+"""Authoritative M02-03 geometry. All visible physical geometry is fit checked.
 Millimetres; XY is face plane; Z runs from front toward rear.
 """
 from pathlib import Path
@@ -50,6 +50,17 @@ def port_tools():
  return {'usb':usb_tool(),'jack':cyl(2.5,8).rotate((0,0,0),(1,0,0),90).translate((j['center'][0],-60,j['center'][2])),
  'microsd':side_profile(11.5,1.5,8,-32,29,s['center'][2])}
 def head(x,y):return cq.Workplane('XY').newObject([cq.Solid.makeCone(.8,1.6,.8)]).translate((x,y,7.5))
+def small_head(x,y):return cq.Workplane('XY').newObject([cq.Solid.makeCone(.7,1.4,.7)]).translate((x,y,7.6))
+def insert_sites():
+ return [(f'case_insert_{i+1}',x,y,F['insert']['top_z'],3.,.65,3.77) for i,(x,y) in enumerate(F['points'])]+[(f'carrier_insert_{i+1}',x,y,C['insert']['top_z'],1.5,.55,2.27) for i,(x,y) in enumerate(C['screw_points'])]+[(f'xiao_clamp_insert_{i+1}',x,y,P['xiao_clamp']['insert_top_z'],1.5,.55,2.27) for i,(x,y) in enumerate(P['xiao_clamp']['screw_points'])]
+def insert_envelope(x,y,top,length):
+ # Supplier bounding cylinder, not invented knurl or helical-thread geometry.
+ return cyl(1.25,length,x,y,top-length)
+def frame_before_inserts(installed):
+ s=installed
+ for _,x,y,top,length,_,depth in insert_sites():
+  s=s.union(insert_envelope(x,y,top,length)).cut(cyl(1.075,depth,x,y,top-depth))
+ return s.clean()
 def carrier_holes(shape,r=.8,z=0,h=10):
  for x,y in C['screw_points']:shape=shape.cut(cyl(r,h,x,y,z))
  return shape
@@ -60,13 +71,20 @@ def cover_pockets():
  'microsd':side_profile(13.2,2.6,.5,-31.8,s['center'][1],s['center'][2],.6),
  'jack':cyl(3.25,.5).rotate((0,0,0),(1,0,0),90).translate((j['center'][0],-63.55,j['center'][2]))}
 
-def brand(rear):
- art=json.loads((ROOT.parent/'revision_04/assets/mytunas-branding.json').read_text())
- for key,width,cy in [('logo',18,5),('wordmark',22,-11)]:
-  wires=[cq.Wire.makePolygon([cq.Vector(-x*width,y*width+cy,8.27) for x,y in c[:-1]],close=True) for c in art[key]]
+def brand(s,face):
+ art=json.loads((ROOT/'assets/branding.json').read_text());floors=[]
+ # Front is viewed from -Z: X is mirrored relative to the rear view.
+ sign=-1 if face=='front' else 1;floor=.03 if face=='front' else 8.27
+ for spec in art[face]:
+  width,cy=spec['width'],spec['cy']
+  wires=[cq.Wire.makePolygon([cq.Vector(sign*x*width,y*width+cy,floor) for x,y in c[:-1]],close=True) for c in art['art'][spec['key']]]
   wires.sort(key=lambda w:cq.Face.makeFromWires(w).Area(),reverse=True)
-  for outer,*holes in sortWiresByBuildOrder(wires):rear=rear.cut(cq.Solid.extrudeLinear(cq.Face.makeFromWires(outer,holes),(0,0,.1)))
- return rear.clean()
+  for outer,*holes in sortWiresByBuildOrder(wires):
+   f=cq.Face.makeFromWires(outer,holes)
+   s=s.cut(cq.Solid.extrudeLinear(f,(0,0,-.1 if face=='front' else .1)))
+   floors.append(cq.Workplane('XY').newObject([cq.Solid.extrudeLinear(f,(0,0,.002 if face=='front' else -.002))]))
+ floor_shape=compound(floors).intersect(s)
+ return s.clean(),floor_shape
 
 def physical():
  parts={};visual={};meta={}
@@ -76,7 +94,7 @@ def physical():
  # old screen/battery screw positions. Rails stop short of protected cells.
  frame=rounded(W,L,7.2,6,z=.55).cut(rounded(60.8,124.8,9,4.4,z=.4))
  for x,y in F['points']:
-  frame=frame.union(cyl(1.9,7.2,x,y,.55))
+  frame=frame.union(cyl(F['boss_radius'],7.2,x,y,.55))
   # Positive compression stops support the rear at Z7.90. The perimeter
   # gasket occupies 0.15 mm; screw tightening cannot collapse that gap freely.
   frame=frame.union(cyl(1.8,.15,x,y,7.75))
@@ -94,9 +112,13 @@ def physical():
  for yy in [-19.55,-.55]:frame=frame.union(block(22.7,.6,1.7,19.75,yy,.55))
  # Four pillars flank the LCD outline, keeping screw heads off the glass.
  for x,y in C['screw_points']:
-  frame=frame.union(cyl(1.7,3.8,x,y,.55))
+  frame=frame.union(cyl(C['boss_radius'],3.8,x,y,.55))
   edge=math.copysign(30.6,x)
   frame=frame.union(block(abs(edge-x)+1,1.3,2,(edge+x)/2,y,.55))
+ # Two additional insert bosses support a removable steel XIAO saddle.
+ for x,y in P['xiao_clamp']['screw_points']:
+  frame=frame.union(cyl(P['xiao_clamp']['boss_radius'],3.75,x,y,.55))
+  frame=frame.union(block(9.2,1.2,1.4,26.2,y,.55))
  # Connector reliefs stop before the external wall; exact exterior cuts below.
  ps=port_specs();u,j,sd=(ps[n] for n in ['usb','jack','microsd'])
  frame=frame.cut(block(4,12,4.8,29,u['center'][1],u['center'][2]-2.4))
@@ -110,13 +132,24 @@ def physical():
  for tool in [block(12,2,2,3,-21,.8),block(.8,3,2,8.5,-18.5,.8)]:frame=frame.cut(tool)
  for x,y in F['points']:frame=frame.cut(cyl(.65,6,x,y,2.7)).cut(head(x,y))
  for x,y in C['screw_points']:frame=frame.cut(cyl(.55,3.2,x,y,1.4))
- add('midframe',frame.clean(),'#3d555a','PA12 frame / guides and pillars','structure',12)
+ for x,y in P['xiao_clamp']['screw_points']:frame=frame.cut(cyl(.55,3,x,y,1.6))
+ for id,x,y,top,length,minor,depth in insert_sites():
+  envelope=insert_envelope(x,y,top,length)
+  frame=frame.cut(cyl(1.075,depth,x,y,top-depth)).cut(envelope)
+  # Open rear insertion access: do not bury an insert behind a smaller bore.
+  frame=frame.cut(cyl(1.3,1,x,y,top))
+  add(id,envelope.cut(cyl(minor,length+.2,x,y,top-length-.1)),'#c2a76b','PEM '+('MSIB-M1.6-300' if id.startswith('case_') else 'MSIB-M1.4-150')+' / '+id,'fastener',14,'PEM published 2.5 mm OD envelope; installed polymer displacement modeled; knurl/thread omitted')
+ add('midframe',frame.clean(),'#39444a','PA12 frame / metal insert seats and guides','structure',12)
  # Bezel opening follows the published viewing area; offset remains a sample check.
  front=rounded(W,L,.4,6).cut(rounded(*D['window'],1,.35,*D['window_center'],-.2))
  rear=rounded(W,L,.4,6,z=7.9)
  for x,y in F['points']:rear=rear.cut(cyl(.9,2,x,y,7)).cut(head(x,y))
- add('front_bezel',front,'#acb9bd','Front steel / 0.40 mm','structure',-32)
- add('rear_shell',brand(rear),'#a5b4ba','Rear steel / 0.40 mm','structure',42)
+ holes=dac_points(np.array([[2.54,22.86,0],[29.21,2.54,0],[29.21,22.86,0]]))
+ for x,y,z in holes:rear=rear.cut(cyl(.8,1,x,y,7.5)).cut(small_head(x,y))
+ for id,s,face,ex in [('front_bezel',front,'front',-32),('rear_shell',rear,'rear',42)]:
+  s,floor=brand(s,face)
+  add(id,s,'#d1d7dd',face.title()+' satin polished steel / laser engraved / 0.40 mm','structure',ex)
+  visual[id]=[('#d1d7dd',s.cut(floor)),('#314655',floor)]
  for id,z in [('front_bond',.4),('rear_gasket',7.75)]:
   g=ring(W,L,.15,61.2,125.2,6,z=z)
   for x,y in F['points']:g=g.cut(cyl(1.85,1,x,y,z-.2))
@@ -132,31 +165,41 @@ def physical():
  for x,y in F['points']:carrier=carrier.cut(cyl(2.2,1,x,y,4))
  # Access window for provisional folded display/touch tails.
  carrier=carrier.cut(block(7,29,1,26,39,4.2))
- add('display_carrier',carrier,'#8e9f9b','Display retainer / 0.20 mm stainless','structure',8)
+ for yy in [26,44]:carrier=carrier.cut(rounded(8,9,1,1,3.5,yy,4.2))
+ # Laser seam welded thin steel blades form a connected orthogonal chassis.
+ # Weld strength/flatness require coupons; CAD represents the fused joint.
+ for yy in [15,56]:carrier=carrier.union(block(44,.3,1.25,-2,yy,4.55))
+ for xx in [-4.5,11.5]:carrier=carrier.union(block(.3,41,1.25,xx,35.5,4.55))
+ add('display_carrier',carrier.clean(),'#c5cdd4','Welded stainless carrier / cross ribs and service windows','structure',8)
  support=ring(58,41,.05,54,37,.4,0,35,4.3).cut(block(8,29,1,26,39,4.2))
  add('display_cushion',support,'#455d58','LCD perimeter cushion / 0.05 mm','seal',6)
- # Retainer ribs on rear surface bridge the thin plate without loading the LCD.
- for yy in [15,56]:
-  id='carrier_rib_'+str(yy).replace('.','_')
-  add(id,block(44,1.2,1.15,-2,yy,4.6),'#647d76','Bonded retainer stiffening rib','support',10)
-  add(id+'_bond',block(44,1.2,.05,-2,yy,4.55),'#baa060','Retainer rib bond / 0.05 mm','seal',9)
  # Boards retain their original manufacturer mesh/geometry and dimensions.
  for id,label in [('audio','Adafruit 6309 / original bottom jack'),('xiao','Seeed XIAO ESP32-S3 / USB right')]:
   add(id,vendor(id),'#397368',label,'component',16,'Unscaled manufacturer STEP')
  a=P['audio']['vendor_origin_translation'];pad=block(25.4,31.75,.15,a[0]+12.7,a[1]-31.75/2,.4)
- add('audio_insulator',pad,'#bb9c52','DAC insulating adhesive / 0.15 mm','seal',3)
- x,y=P['xiao']['center'];add('xiao_insulator',block(20.9,17.7,.35,x,y,.4),'#bb9c52','XIAO insulating adhesive / 0.35 mm','seal',3)
+ add('audio_insulator',pad,'#bb9c52','Removable DAC dielectric sheet / 0.15 mm','seal',3)
+ x,y=P['xiao']['center'];add('xiao_insulator',block(20.9,17.7,.35,x,y,.4),'#bb9c52','Removable XIAO dielectric seat / 0.35 mm','seal',3)
+ saddle=block(3,23.4,.4,22,-10,4.3)
+ for x,y in P['xiao_clamp']['screw_points']:
+  saddle=saddle.union(cyl(1.8,.4,x,y,4.3)).cut(cyl(.8,1,x,y,4))
+ add('xiao_saddle',saddle.clean(),'#c5cdd4','Removable stainless XIAO saddle / two screws','structure',23)
+ add('xiao_saddle_pad',block(2,8,.3,22,-10,4),'#53616d','XIAO shield cushion / installed 0.30 mm','seal',21,'Actual shield top Z4.00; compression and allowable shield load require test')
+ for i,(x,y) in enumerate(P['xiao_clamp']['screw_points']):
+  screw=cyl(.5,3,x,y,1.7).union(cyl(1.1,.6,x,y,4.7)).cut(block(1.5,.3,.2,x,y,5.15))
+  add('xiao_clamp_screw_'+str(i+1),screw,'#c5cdd4','M1.4 × 3 XIAO saddle screw','fastener',26)
  # Fit these stops after sliding connector mouths into the wall openings.
  add('xiao_insertion_stop',block(.5,15.4,1.7,8.65,-8.75,.55),'#586f68','Removable XIAO insertion stop','support',15)
  add('xiao_stop_adhesive',block(.5,15.4,.15,8.65,-8.75,.4),'#b89c52','XIAO stop bonding pad','seal',2)
- add('dac_insertion_stop',block(25,.6,1.7,14.8,-29.5,.55),'#586f68','Removable DAC insertion stop','support',15)
- add('dac_stop_adhesive',block(25,.6,.15,14.8,-29.5,.4),'#b89c52','DAC stop bonding pad','seal',2)
- # Nonconductive spacers seat on the three actual DAC mounting-hole annuli.
- holes=dac_points(np.array([[2.54,22.86,0],[29.21,2.54,0],[29.21,22.86,0]]))
+ # Rear-fastened custom steel columns locate through insulated original holes.
+ # No adhesive-only load path between headphone jack, PCB and rear panel.
  for i,(x,y,z) in enumerate(holes):
-  spacer=cyl(1.85,7.8-(z+1.57),x,y,z+1.57).union(cyl(.85,1.57,x,y,z))
-  add('dac_retainer_'+str(i+1),spacer,'#687f70','DAC locating spacer '+str(i+1),'support',30)
-  add('dac_retainer_bond_'+str(i+1),cyl(1.85,.1,x,y,7.8),'#baa060','DAC spacer rear bond / 0.10 mm','seal',32)
+  shoulder=z+1.57
+  seat=cyl(1.85,.15,x,y,shoulder).union(cyl(1.15,1.57,x,y,z))
+  add('dac_seat_'+str(i+1),seat,'#576776','Insulating DAC shoulder and locating pin','support',28,'Custom POM; nominal 0.10 mm radial pin-to-hole clearance')
+  spacer=cyl(1.7,7.9-(shoulder+.15),x,y,shoulder+.15).cut(cyl(.55,3.0,x,y,5.1)).cut(small_head(x,y))
+  add('dac_retainer_'+str(i+1),spacer,'#c5cdd4','Threaded stainless DAC column '+str(i+1),'support',30,'Custom turned stainless M1.4 column; thread not tessellated')
+  screw=cyl(.525,2.3,x,y,5.3).union(small_head(x,y)).cut(block(1.8,.3,.2,x,y,8.15))
+  add('dac_rear_screw_'+str(i+1),screw,'#c5cdd4','M1.4 × 3 countersunk DAC column screw','fastener',48)
  liner=rounded(60.4,124.4,.07,4.2,z=7.83)
  for x,y in F['points']:liner=liner.cut(cyl(2,1,x,y,7.5))
  for x,y,z in holes:liner=liner.cut(cyl(1.95,1,x,y,7.5))

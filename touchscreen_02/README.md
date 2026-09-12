@@ -1,10 +1,10 @@
-# Model 02 — complete mechanical fit prototype
+# Model 02 — serviceable metal chassis prototype
 
-**64 × 128 × 8.3 mm**, with the 2.4-inch landscape touchscreen, two battery allocations and the intact Adafruit DAC's original headphone jack at the bottom. M02-02 replaces the earlier packing-only preview with a complete nominal enclosure assembly.
+**64 × 128 × 8.3 mm**, with the 2.4-inch landscape touchscreen, two battery allocations and the intact Adafruit DAC's original headphone jack at the bottom. M02-03 adds satin polished metal, original bluefin engravings and mechanically removable supports to the nominal enclosure assembly.
 
-[Interactive viewer after GitHub Pages deployment](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_02/preview.html) · [Local/offline viewer](preview.html) · [Dimensioned drawing set](drawings.pdf) · [Assembly STEP](designs/M02_02/assembly_NOMINAL.step) · [Every part's measurements](measurements.csv) · [Validation](validation.json)
+[Interactive viewer after GitHub Pages deployment](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_02/preview.html) · [Local/offline viewer](preview.html) · [Dimensioned drawing set](drawings.pdf) · [Assembly STEP](designs/M02_03/assembly_NOMINAL.step) · [Every part's measurements](measurements.csv) · [Validation](validation.json)
 
-The mechanical prototype includes steel front and rear faces, a continuous polymer frame, battery guide rails, insulating retention pads, removable board insertion stops, DAC locating spacers through its real holes, a removable display carrier with bonded stiffening ribs, SD and display-interface mounting lands, fasteners, gaskets, dielectric layers and flush removable port-cover prototypes. The viewer uses the same physical geometry as the CAD checks and STEP export.
+The mechanical prototype includes engraved steel faces, a continuous polymer frame, 13 metal threaded insert seats, a welded steel display carrier with cross ribs and access windows, a two-screw XIAO saddle, rear-fastened steel DAC columns with insulating locating seats, battery guides, insulating pads, SD and display-interface mounting lands, gaskets and flush removable port-cover prototypes. The viewer uses the same physical geometry as the CAD checks and STEP export.
 
 **This is not a production release.** The display drawing/flex and final battery pack have not been qualified; the interface PCB is not routed. Physical tolerances, retention, plate deflection, charging and ingress still require testing. The [release checklist](RELEASE_CHECKLIST.md) makes these remaining steps explicit. Detailed geometry is not evidence that these tests have passed.
 
@@ -12,15 +12,18 @@ The mechanical prototype includes steel front and rear faces, a continuous polym
 
 | Deliverable | Purpose |
 |---|---|
-| `designs/M02_02/assembly_NOMINAL.step` | Current assembly, physical parts only |
-| `designs/M02_02/reserved_spaces_REFERENCE.step` | Unoccupied expansion and routing allocations; never manufacture these solids |
-| `designs/M02_02/*.step` | Individual case, support and cover geometry |
-| `designs/M02_02/STL/*PA12_FIT_PROTOTYPE.stl` | Polymer fit-test parts, positioned on Z0 |
-| `designs/M02_02/STL/*METAL_REFERENCE.stl` | Metal shape references; not thin plastic print instructions |
-| `designs/M02_02/STL/*SILICONE_REFERENCE.stl` | Installed/compressed cover references; retention/mold design unqualified |
-| `designs/M02_02/profiles/*.dxf` | Millimetre profiles for specifically named flat layers; rear profile is before countersinking |
+| `designs/M02_03/assembly_NOMINAL.step` | Current assembly, physical parts only |
+| `designs/M02_03/reserved_spaces_REFERENCE.step` | Unoccupied expansion and routing allocations; never manufacture these solids |
+| `designs/M02_03/*.step` | Individual case, support and cover geometry |
+| `designs/M02_03/STL/midframe_BEFORE_HEAT_INSERTS_PA12_FIT_PROTOTYPE.stl` | Frame before insert installation, with 2.15 mm pilots, positioned on Z0 |
+| `designs/M02_03/midframe.step` | Installed frame with polymer displaced around inserts; do not use as the pre-installation print |
+| `designs/M02_03/STL/*METAL_REFERENCE.stl` | Metal shape references; not thin plastic print instructions |
+| `designs/M02_03/STL/*SILICONE_REFERENCE.stl` | Installed/compressed cover references; retention/mold design unqualified |
+| `designs/M02_03/profiles/*.dxf` | Millimetre profiles for specifically named flat layers; rear profile is before countersinking |
 | `drawings.pdf`, `measurements.csv`, `BOM.csv` | Dimensions, coordinates, materials and part status |
-| `ASSEMBLY.md` | Installation order, including the board insertion paths |
+| `ASSEMBLY.md` | Installation and service sequence, including board insertion paths |
+| `COMPONENT_DIMENSIONS.md` | Evidence and uncertainty for bought and custom parts |
+| `assets/front_engraving.svg`, `assets/rear_engraving.svg` | Original vector engraving artwork in face coordinates |
 
 `packing_REFERENCE_ONLY.step` remains a compatibility alias for the current complete assembly. The GitHub source-file view will not run an HTML viewer; open the Pages link or the downloaded HTML in a browser.
 
@@ -31,8 +34,11 @@ The mechanical prototype includes steel front and rear faces, a continuous polym
 | Exterior | 64.00 × 128.00 × 8.30 mm; R6 corners |
 | Front and rear metal | 0.40 mm stainless each |
 | Perimeter frame | Z0.55–7.75; raised rear compression stops to Z7.90; 1.60 mm walls |
-| Display carrier | 59 × 50 × 0.20 mm steel; four M1.4 × 3 nominal screws |
-| Main fasteners | Seven M1.6 × 5 nominal countersunk screws |
+| Display carrier | 59 × 50 mm; 0.20 mm web and 0.30 × 1.25 mm welded blades; four M1.4 × 3 screws |
+| Main fasteners | Seven M1.6 × 5 nominal countersunk screws into PEM MSIB-M1.6-300 insert allocations |
+| Internal threads | Six PEM MSIB-M1.4-150 insert allocations for carrier and XIAO saddle |
+| DAC attachment | Three custom threaded steel columns and insulating locating seats; three rear M1.4 × 3 countersunk screws |
+| Engravings | 0.03 mm nominal depth on front and rear; original tuna mark and model/revision text |
 | Battery A | 37 × 25.5 × 5.2 mm; centre X−10.5, Y−6; underside Z0.70 |
 | Battery B | 25.5 × 37 × 5.2 mm; centre X−15.75, Y−40.5; underside Z0.70 |
 | Battery rear allowance | 1.93 mm to liner; 1.70 mm reserved for expansion |
@@ -42,7 +48,11 @@ The mechanical prototype includes steel front and rear faces, a continuous polym
 | Jack mouth | X18.8592, Y−63.6000, Z4.4225; 5.00 mm case aperture |
 | SD mouth | X−31.6000, Y29.0000, Z6.4000; 11.50 × 1.50 mm slot |
 
-There are no straps across the pouches. Separate insulating adhesive pads retain the batteries in Z, and frame rails provide lateral clearance. Remove the boards' insertion stops while installing them; a fixed backstop would obstruct the required slide into the port. Rear DAC spacers locate through the original holes and seat on the PCB annuli. Adhesive strengths, screw pilots, clamp loads and repeated plug insertion remain physical qualification tasks.
+There are no straps across the pouches. Separate replaceable insulating adhesive pads retain the batteries, and frame rails provide lateral clearance. The DAC rests on a removable dielectric sheet; its original holes receive insulating locating seats under rear-fastened steel columns. The XIAO rests on a removable dielectric seat and is held by a two-screw steel saddle with a shield cushion. The small removable XIAO side stop still uses a replaceable adhesive pad.
+
+The revised carrier replaces four glued rib/bond parts with a connected welded steel structure. Its four screws and the two saddle screws use metal insert threads. [PEM MSIB-M1.6-300](https://www.pemnet.com/products/product-finder/msib-m1-6-300/) and [MSIB-M1.4-150](https://www.pemnet.com/products/product-finder/msib-m1-4-150/) have published 2.5 mm nominal outside diameters and 2.15 mm installation holes. The CAD uses smooth dimensional envelopes; actual knurls and thread helices are omitted. Supplier installation forces measured in other plastics do not establish PA12 performance. Qualify the chosen frame process, insert installation and torque on coupons.
+
+These changes provide defined retention and service access; they do not establish a multi-year lifetime. Batteries, display bonding and the provisional SD/interface boards still need replaceable adhesive interfaces. XIAO withdrawal requires removing battery A first because the inward USB withdrawal path crosses its installed envelope. See the explicit service order rather than assuming every board lifts out independently.
 
 ## Display and electronics evidence
 
@@ -62,7 +72,7 @@ The metal enclosure has no qualified RF path. Wi-Fi/Bluetooth antenna placement 
 
 ## Ports and sealing
 
-All three case apertures are physically cut and aligned to their corresponding component mouths. Blind internal pockets accommodate the connector bodies while preserving an exterior lip. Flush silicone-cover prototypes close the ports without extending the exterior dimensions. The viewer can remove the covers to inspect the actual holes.
+All three case apertures are physically cut and aligned to their corresponding component mouths. USB follows the actual eight-edge Seeed rim with 0.15 mm radial clearance; the 5.00 mm jack opening allows 0.20 mm around the CAD flange; the SD slot allows 0.25 mm per side around the card. Zero-clearance fits are not specified: they would not accommodate real manufacturing variation. Blind internal pockets accommodate the connector bodies while preserving an exterior lip. Flush silicone-cover prototypes close the ports without extending the exterior dimensions. The viewer starts with covers removed and provides dedicated USB-C, SD and jack closeups. Fit the covers with the checkbox when reviewing the closed enclosure.
 
 The covers are modeled in their installed/compressed shape, with separate recessed sealing lands. Their thin flanges, retention, free-state dimensions, material hardness and mold process have not been validated. They are prototype references, not proven waterproof plugs. The XIAO USB socket and Adafruit headphone jack are not established as sealed receptacles. **No IP or water-resistance rating is claimed**, especially with any cover removed.
 
@@ -73,6 +83,7 @@ The build checks all modeled physical-part intersections, all reservation collis
 From the repository root, using the existing CadQuery environment and `revision_04` npm dependencies:
 
 ```sh
+.venv/bin/python touchscreen_02/make_branding.py
 .venv/bin/python touchscreen_02/build.py
 .venv/bin/python touchscreen_02/verify_fit.py
 .venv/bin/python touchscreen_02/make_drawings.py

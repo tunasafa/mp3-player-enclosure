@@ -1,16 +1,16 @@
-# M02-02 production-release gates
+# M02-03 production-release gates
 
 Status: **mechanical fit prototype, not production-ready**. The selected exterior is preserved, and modeled assembly checks are automated. The following are concrete unresolved engineering items, not tests inferred to have passed from a render.
 
 | Item | Present evidence | Required to release |
 |---|---|---|
 | Display | Startek nominal listing; 45P/0.5 mm LCD flex | Exact suffix stock, sample and controlled drawing; maximum outline/thickness, active-area offset, FPC/stiffener/controller and latch envelope |
-| Display support | Carrier, cushion, screws and side rebate modeled | Permitted LCD support zones, glass stress, cushion compression, tail bend and insertion trial |
+| Display support | Welded cross-rib carrier, cushion, screws and access windows | Weld process/flatness, permitted LCD support zones, glass stress, tail bend and insertion trial |
 | Battery | Two finished-pack size allocations; 1.7 mm expansion each | Approved matched 1S2P pack drawing, protection, cell matching, lead strain relief, service disconnect and charging qualification |
 | Interface / SD | Conservative physical allocations with supports | Routed/tested PCB, selected ZIFs and card socket, solder and harness measurements |
-| DAC | Unscaled Adafruit STEP and full 7.1 mm height allowance | Finished board/solder dimensions, mounting contact area, insertion/pull force and spacer retention |
-| XIAO | Unscaled Seeed STEP and checked USB rim | Board revision, actual connector tolerance, adhesive retention, solder and charging trial |
-| Frame | Connected nominal CAD; guides and pilots included | Process-specific shrink/tolerance coupon, screw pilot sizing, repeated service and plug cycles |
+| DAC | Unscaled STEP, full 7.1 mm allowance, rear-fastened columns and insulated pins | Finished board/solder dimensions, annulus contact area, column threads and plug-load cycles |
+| XIAO | Unscaled STEP, checked USB rim, removable steel saddle and shield cushion | Board revision, connector tolerance, shield load/compression, clamp retention and charging trial |
+| Frame | Connected CAD, 13 PEM insert sites and separate pre-installation export | PA12 process/tolerance coupon, heat staking, insert pullout/torque and repeated service cycles |
 | Metal faces | 0.4 mm nominal steel geometry | Material certificate, thickness/flatness limits, edge finish, countersink process, loaded plate deflection and drop tests |
 | Seals/covers | Installed-shape geometry and clear port access | Free-state tooling dimensions, compression/retention, chosen elastomer, ingress test of entire assembly |
 | Power/UI | Placement only | Single-cell charging limits and power path; safe on/off, touch wake, battery indication and thermal test |
@@ -23,6 +23,7 @@ Status: **mechanical fit prototype, not production-ready**. The selected exterio
 | DAC to rear dielectric | 0.18 mm | Finished-board height, adhesive thickness, metal thickness/flatness, rear deflection, assembly error |
 | Battery to liner | 1.93 mm | 1.70 mm is reserved for expansion, leaving only 0.23 mm beyond that allocation |
 | LCD to straight frame wall | 0.27 mm each side | Panel maximum outline, pocket shrink/finishing, alignment; the flex rebate is local |
+| LCD to enlarged carrier bosses | 0.14 mm at the upper/lower edges | Panel outline tolerance, boss location and frame process; measured screen and fit coupon are required |
 | LCD/cushion/carrier | 0.05 mm cushion | Actual support-zone and compression requirements; this is a layer, not free clearance |
 | SD assembly to liner | 0.38 mm | Socket, solder and PCB thickness; adhesive and carrier/rib tolerances |
 
