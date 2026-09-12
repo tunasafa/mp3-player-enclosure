@@ -1,0 +1,24 @@
+Item,Qty,Part,Specification,Status
+1,1,Front face,0.4 mm stainless steel / DXF and STEP,Aggressive prototype; flatness and deflection unverified
+2,1,Rear face,0.4 mm stainless steel / countersunk screw seats,Aggressive prototype; qualify countersink process
+3,1,Internal frame,PA12 candidate / 7.2 mm nominal height,Polymer fit prototype
+4,1,Display retainer,0.4 mm metal / removable,Profile and STEP; edge finishing required
+5,1,Salvaged touchscreen,43 x 36 outer glass / 3.3 mm stack,User dimensions; tails and border unverified
+6,1,Seeed XIAO ESP32-S3,Headerless / actual vendor STEP,USB faces right
+7,1,Adafruit TLV320DAC3100 #6309,Intact board / full 7.1 mm height allowance,Original jack faces bottom
+8,1,Protected 503040 LiPo,40 x 30 x 5 / nominal 600 mAh,Existing selection; measure finished pack
+9,1,microSD PCB and cage,22 x 18 PCB allowance,Representative module; select actual socket
+10,1,Custom interface PCB,12 x 24 x 0.8,Placement allocation; layout not completed
+11,1,Display ZIF,15P / 0.3 mm pitch / left entry,Select exact part and contact side
+12,1,Touch ZIF,6P / 0.5 mm pitch / left entry,Select exact part and contact side
+13,1,Expander and backlight support,Allocated on interface PCB,Schematic and layout outstanding
+14,1,DAC dielectric pad,0.15 mm total allowance,Must include complete insulation and board underside features
+15,2,XIAO and SD dielectric pads,0.35 mm total allowance each,Representative pad geometry
+16,1,Rear liner,0.07 mm thin dielectric film,3M 5413 thickness class; application qualification required
+17,1,Battery insulating pad,38 x 28 x 0.3,Nominal
+18,1,Front perimeter bond,0.15 mm,Material and process unselected
+19,1,Rear perimeter gasket,0.15 mm compressed target,Material unselected; no IP claim
+20,3,Nonconductive DAC retaining spacers,Actual board hole positions,Clamp/bonding trial required
+21,6,Case screws,M1.6 x 5 countersunk nominal,Select actual head drawing and qualify pilot
+22,2,Display retainer screws,M1 small screws / nominal 3 mm under head,Select actual screw and qualify pilot
+23,1,Wiring and strain relief,Reserved side lanes,Loom not yet detailed

@@ -1,0 +1,285 @@
+{
+  "revision": "T03 / 8.3 mm insulated metal sandwich",
+  "units": "mm",
+  "status": "AGGRESSIVE NOMINAL PROTOTYPE. Full vendor DAC height retained. Plate stiffness, assembly tolerances, solder/insulation clearances and physical parts require validation.",
+  "layout_basis": "Thin metal faces and separate polymer frame; battery above intact bottom-facing DAC; interface beside landscape screen.",
+  "body": {
+    "width": 64,
+    "length": 128,
+    "thickness": 8.3,
+    "corner_radius": 6,
+    "wall": 1.6,
+    "skin": 0.4,
+    "front_height": 0.4,
+    "seam_gap": 0.15,
+    "frame_bottom": 0.55,
+    "frame_top": 7.75,
+    "material": "0.4 mm stainless front and rear faces; separate PA12 frame"
+  },
+  "fasteners": {
+    "x": 28,
+    "y": [
+      -59.5,
+      0,
+      59.5
+    ],
+    "boss_radius": 2.2,
+    "mating_z": 7.5,
+    "pilot_diameter": 1.3,
+    "pilot_bottom_z": 2.7,
+    "clearance_diameter": 1.8,
+    "head_diameter": 3.2,
+    "head_seat_z": 7.5,
+    "screw_length": 5,
+    "head_height": 0.8
+  },
+  "display": {
+    "center": [
+      -6,
+      42
+    ],
+    "glass_size": [
+      43,
+      36,
+      0.25
+    ],
+    "glass_z": 0.55,
+    "sensor_thickness": 0.7,
+    "tape_thickness": 0.2,
+    "lcd_size": [
+      42,
+      35,
+      2.15
+    ],
+    "lcd_z": 1.7,
+    "glass_corner_radius": 7,
+    "opening": [
+      41.4,
+      34.4
+    ],
+    "pocket_clearance": 0.3,
+    "lip_z": 0.4,
+    "active_diagonal_in": 2.01,
+    "pixels": [
+      240,
+      296
+    ],
+    "status": "Outer glass 43 x 36 supplied by user; radius 7 and LCD outline estimated from photos. Active rectangle remains an estimate; UI is clipped at the rounded border.",
+    "display_connector": {
+      "contacts": 15,
+      "pitch_mm": 0.3
+    },
+    "touch_connector": {
+      "contacts": 6,
+      "pitch_mm": 0.5
+    },
+    "flex_status": "Side-entry proposed tails: no added 180 degree rear fold. Actual tail outline, length and stiffener fit must be measured."
+  },
+  "battery": {
+    "center": [
+      0,
+      -13
+    ],
+    "size": [
+      40,
+      30,
+      5
+    ],
+    "z": 0.7,
+    "capacity_mah": 600,
+    "rear_reserve_min": 1.7,
+    "status": "503040 protected pack from P04 and user chart; nominal 40 x 30 x 5 including finished-pack allowance. Verify protection end and connector against sample."
+  },
+  "electronics": [
+    {
+      "id": "xiao",
+      "label": "Seeed XIAO ESP32-S3",
+      "center": [
+        19.5961102,
+        12
+      ],
+      "size": [
+        21,
+        17.8,
+        4.46
+      ],
+      "z": 0.75,
+      "source": "vendor_xiao",
+      "status": "Unscaled Seeed STEP; USB right; no fitted headers."
+    },
+    {
+      "id": "audio",
+      "label": "Adafruit #6309 / intact jack",
+      "center": [
+        -4.0591527,
+        -46.9129905
+      ],
+      "size": [
+        25.4,
+        33.7,
+        7.1
+      ],
+      "z": 0.55,
+      "source": "vendor_dac",
+      "status": "Unscaled intact Adafruit STEP rotated -90 degrees about Z. Original jack faces bottom and its bore is centered at case X=0. Full 7.1 mm product height reserved."
+    },
+    {
+      "id": "microsd",
+      "label": "microSD PCB + socket / nominal",
+      "center": [
+        -18.9,
+        12
+      ],
+      "size": [
+        22,
+        18,
+        2.6
+      ],
+      "z": 0.75,
+      "status": "22 x 18 PCB allowance from chart; detailed representative low-profile cage and card. No selected module drawing."
+    },
+    {
+      "id": "interface_pcb",
+      "label": "Touch / display interface PCB / custom",
+      "center": [
+        24,
+        42
+      ],
+      "size": [
+        12,
+        24,
+        0.8
+      ],
+      "z": 4.15,
+      "status": "Reshaped custom interface allocation beside display, not a completed PCB layout."
+    },
+    {
+      "id": "display_zif",
+      "label": "Display ZIF / 15P at 0.3 mm",
+      "center": [
+        22,
+        45
+      ],
+      "size": [
+        4,
+        7,
+        1.1
+      ],
+      "z": 3.05,
+      "status": "Underside ZIF, entry faces left; exact connector housing/contact side unselected."
+    },
+    {
+      "id": "touch_zif",
+      "label": "Touch ZIF / 6P at 0.5 mm",
+      "center": [
+        22,
+        37
+      ],
+      "size": [
+        4,
+        5,
+        1.1
+      ],
+      "z": 3.05,
+      "status": "Underside ZIF, entry faces left; exact connector housing/contact side unselected."
+    },
+    {
+      "id": "control",
+      "label": "I/O expander + backlight control / custom",
+      "center": [
+        27.5,
+        41
+      ],
+      "size": [
+        4,
+        8,
+        1.1
+      ],
+      "z": 3.05,
+      "status": "Allocated support components on interface PCB, not a routed PCB design."
+    }
+  ],
+  "routing_reserves": [
+    {
+      "id": "battery_expansion",
+      "center": [
+        0,
+        -13
+      ],
+      "size": [
+        40,
+        30,
+        1.7
+      ],
+      "z": 5.7
+    },
+    {
+      "id": "battery_leads",
+      "center": [
+        22,
+        -12.1
+      ],
+      "size": [
+        2.4,
+        27.8,
+        2.8
+      ],
+      "z": 2
+    },
+    {
+      "id": "audio_harness",
+      "center": [
+        22,
+        -32
+      ],
+      "size": [
+        2.4,
+        38,
+        2.5
+      ],
+      "z": 4.5
+    },
+    {
+      "id": "screen_harness",
+      "center": [
+        23,
+        26
+      ],
+      "size": [
+        3,
+        16,
+        1.4
+      ],
+      "z": 5.3
+    }
+  ],
+  "branding": {
+    "name": "mytunas",
+    "depth": 0.03,
+    "logo_width": 18,
+    "wordmark_width": 22
+  },
+  "baseline": {
+    "length": 115,
+    "width": 60,
+    "thickness": 12.9
+  },
+  "excluded": [
+    "clickwheel",
+    "separate headphone jack",
+    "upright pin headers",
+    "external antenna",
+    "physical power switch"
+  ],
+  "minimum_rear_component_clearance": 0.15,
+  "thin_limits": {
+    "front_metal": 0.4,
+    "under_dac_allocation": 0.15,
+    "dac_published_height": 7.1,
+    "rear_dac_clearance": 0.15,
+    "rear_metal": 0.4,
+    "qualification": "Nominal dimensions only; no accumulated tolerance or structural validation. Do not claim absolute minimum or fabrication release.",
+    "rear_liner": 0.07,
+    "calculated_stack_minimum": 8.27
+  }
+}

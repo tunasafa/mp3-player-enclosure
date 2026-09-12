@@ -1,0 +1,640 @@
+{
+  "revision": "T03 / 8.3 mm insulated metal sandwich",
+  "status": "AGGRESSIVE NOMINAL PROTOTYPE. Full vendor DAC height retained. Plate stiffness, assembly tolerances, solder/insulation clearances and physical parts require validation.",
+  "passed": true,
+  "units": "mm",
+  "dimensions_W_L_T": [
+    64,
+    128,
+    8.3
+  ],
+  "collisions": [],
+  "reserve_collisions": [],
+  "outside_case": [],
+  "stls": [
+    {
+      "part": "front_bezel",
+      "cad_valid": true,
+      "solid_count": 1,
+      "watertight": true,
+      "winding_consistent": true,
+      "mesh_bodies": 1,
+      "volume_mm3": 2707.975534937103
+    },
+    {
+      "part": "rear_shell",
+      "cad_valid": true,
+      "solid_count": 1,
+      "watertight": true,
+      "winding_consistent": true,
+      "mesh_bodies": 1,
+      "volume_mm3": 3244.5312003674085
+    },
+    {
+      "part": "midframe",
+      "cad_valid": true,
+      "solid_count": 1,
+      "watertight": true,
+      "winding_consistent": true,
+      "mesh_bodies": 1,
+      "volume_mm3": 5750.043977684997
+    },
+    {
+      "part": "display_carrier",
+      "cad_valid": true,
+      "solid_count": 1,
+      "watertight": true,
+      "winding_consistent": true,
+      "mesh_bodies": 1,
+      "volume_mm3": 120.15804049954193
+    }
+  ],
+  "ports": {
+    "usb": {
+      "edge": "right",
+      "center": [
+        31.599999999999998,
+        12.0,
+        3.705
+      ],
+      "width": 9.4,
+      "height": 3.7,
+      "axis": [
+        1,
+        0,
+        0
+      ]
+    },
+    "jack": {
+      "edge": "bottom",
+      "center": [
+        1.7763568394002505e-15,
+        -63.6,
+        4.42248296
+      ],
+      "diameter": 5,
+      "axis": [
+        0,
+        -1,
+        0
+      ]
+    },
+    "microsd": {
+      "edge": "left",
+      "center": [
+        -31.6,
+        12,
+        2.3
+      ],
+      "width": 11.5,
+      "height": 1.5,
+      "axis": [
+        -1,
+        0,
+        0
+      ]
+    }
+  },
+  "display_rear_loading_sweep_intersection_mm3": 0.0,
+  "port_wall_obstructions": [],
+  "derived": {
+    "active_area_mm": [
+      32.15390918523693,
+      39.65648799512554
+    ],
+    "battery_rear_gap": 2.13,
+    "dac_max_height_rear_gap": 0.18,
+    "thickness_reduction_percent": 35.65891472868217,
+    "footprint_reduction_percent": -18.724637681159418,
+    "volume_reduction_percent": 23.611279631502068
+  },
+  "thickness_study": {
+    "basis": "0.4 mm metal faces, 0.15 mm under-DAC allocation, full 7.1 mm published height, 0.07 mm rear liner and 0.15 mm free rear clearance. Aggressive nominal stack; tolerance and structural qualification outstanding.",
+    "minimum_mm": 8.27,
+    "candidates": [
+      {
+        "thickness_mm": 7.8,
+        "dac_rear_clearance_mm": -0.32,
+        "meets_rear_clearance": false
+      },
+      {
+        "thickness_mm": 8.0,
+        "dac_rear_clearance_mm": -0.12,
+        "meets_rear_clearance": false
+      },
+      {
+        "thickness_mm": 8.1,
+        "dac_rear_clearance_mm": -0.02,
+        "meets_rear_clearance": false
+      },
+      {
+        "thickness_mm": 8.2,
+        "dac_rear_clearance_mm": 0.08,
+        "meets_rear_clearance": false
+      },
+      {
+        "thickness_mm": 8.3,
+        "dac_rear_clearance_mm": 0.18,
+        "meets_rear_clearance": true
+      },
+      {
+        "thickness_mm": 8.5,
+        "dac_rear_clearance_mm": 0.38,
+        "meets_rear_clearance": true
+      },
+      {
+        "thickness_mm": 8.8,
+        "dac_rear_clearance_mm": 0.68,
+        "meets_rear_clearance": true
+      }
+    ]
+  },
+  "construction": {
+    "front_metal_mm": 0.4,
+    "rear_metal_mm": 0.4,
+    "rear_liner_mm": 0.07,
+    "frame_material": "PA12 candidate",
+    "nominal_dac_rear_clearance_mm": 0.18,
+    "plate_flatness_and_total_tolerance_budget_mm": 0.15,
+    "qualified_for_fabrication": false,
+    "remaining_tests": [
+      "Measure finished DAC incl solder",
+      "Dielectric and wire exit clearance",
+      "Metal plate flatness and deflection",
+      "Fastener clamp load and plug insertion",
+      "Real display tails / SD socket fit"
+    ]
+  },
+  "cad_parts": {
+    "front_bezel": {
+      "bounds_mm": [
+        [
+          -32.0,
+          -64.0,
+          0.0
+        ],
+        [
+          32.0,
+          64.0,
+          0.4
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "rear_shell": {
+      "bounds_mm": [
+        [
+          -32.0,
+          -64.0,
+          7.8999999999999995
+        ],
+        [
+          32.0,
+          64.0,
+          8.3
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "midframe": {
+      "bounds_mm": [
+        [
+          -32.0,
+          -64.0,
+          0.55
+        ],
+        [
+          32.0,
+          64.0,
+          7.75
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "display_carrier": {
+      "bounds_mm": [
+        [
+          -28.0,
+          20.3,
+          4.0
+        ],
+        [
+          16.0,
+          62.400000000000006,
+          4.4
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "touch_glass": {
+      "bounds_mm": [
+        [
+          -27.5,
+          24.0,
+          0.55
+        ],
+        [
+          15.5,
+          60.0,
+          0.8
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "touch_sensor": {
+      "bounds_mm": [
+        [
+          -27.5,
+          24.0,
+          0.8
+        ],
+        [
+          15.5,
+          60.0,
+          1.5
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "touch_lcd_tape": {
+      "bounds_mm": [
+        [
+          -27.0,
+          24.5,
+          1.5
+        ],
+        [
+          15.0,
+          59.5,
+          1.7
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "lcd": {
+      "bounds_mm": [
+        [
+          -27.0,
+          24.5,
+          1.7
+        ],
+        [
+          15.0,
+          59.5,
+          3.8499999999999996
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "display_adhesive": {
+      "bounds_mm": [
+        [
+          -27.5,
+          24.0,
+          0.4
+        ],
+        [
+          15.5,
+          60.0,
+          0.55
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "xiao": {
+      "bounds_mm": [
+        [
+          9.11801888558642,
+          3.1099999554124977,
+          0.7500000149011593
+        ],
+        [
+          31.600000035740344,
+          20.88999995541252,
+          5.2100000149013095
+        ]
+      ],
+      "valid": true,
+      "solids": 37
+    },
+    "audio": {
+      "bounds_mm": [
+        [
+          -16.7591527,
+          -63.600000025569635,
+          0.55
+        ],
+        [
+          8.6408473,
+          -30.062990499999994,
+          6.9224830580968275
+        ]
+      ],
+      "valid": true,
+      "solids": 66
+    },
+    "battery": {
+      "bounds_mm": [
+        [
+          -20.0,
+          -28.0,
+          0.7
+        ],
+        [
+          20.0,
+          2.0,
+          5.7
+        ]
+      ],
+      "valid": true,
+      "solids": 2
+    },
+    "battery_foam": {
+      "bounds_mm": [
+        [
+          -19.0,
+          -27.0,
+          0.4
+        ],
+        [
+          19.0,
+          1.0,
+          0.7
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "microsd": {
+      "bounds_mm": [
+        [
+          -31.6,
+          3.0,
+          0.75
+        ],
+        [
+          -7.899999999999999,
+          21.0,
+          3.35
+        ]
+      ],
+      "valid": true,
+      "solids": 3
+    },
+    "interface_pcb": {
+      "bounds_mm": [
+        [
+          18.0,
+          30.0,
+          4.15
+        ],
+        [
+          30.0,
+          54.0,
+          4.95
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "display_zif": {
+      "bounds_mm": [
+        [
+          20.0,
+          41.5,
+          3.05
+        ],
+        [
+          24.0,
+          48.5,
+          4.15
+        ]
+      ],
+      "valid": true,
+      "solids": 16
+    },
+    "touch_zif": {
+      "bounds_mm": [
+        [
+          20.0,
+          34.5,
+          3.05
+        ],
+        [
+          24.0,
+          39.5,
+          4.15
+        ]
+      ],
+      "valid": true,
+      "solids": 7
+    },
+    "control": {
+      "bounds_mm": [
+        [
+          25.5,
+          37.3,
+          3.05
+        ],
+        [
+          29.5,
+          44.7,
+          4.15
+        ]
+      ],
+      "valid": true,
+      "solids": 3
+    },
+    "display_flex": {
+      "bounds_mm": [
+        [
+          14.8,
+          42.75,
+          3.85
+        ],
+        [
+          21.900000000000002,
+          47.25,
+          3.95
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "touch_flex": {
+      "bounds_mm": [
+        [
+          14.8,
+          35.5,
+          3.85
+        ],
+        [
+          21.900000000000002,
+          38.5,
+          3.95
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "audio_insulator": {
+      "bounds_mm": [
+        [
+          -16.7591527,
+          -61.8129905,
+          0.4
+        ],
+        [
+          8.640847299999999,
+          -30.062990499999998,
+          0.55
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "xiao_insulator": {
+      "bounds_mm": [
+        [
+          9.096110199999998,
+          3.0999999999999996,
+          0.4
+        ],
+        [
+          30.0961102,
+          20.9,
+          0.75
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "microsd_insulator": {
+      "bounds_mm": [
+        [
+          -29.9,
+          3.0,
+          0.4
+        ],
+        [
+          -7.899999999999999,
+          21.0,
+          0.75
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "front_bond": {
+      "bounds_mm": [
+        [
+          -32.0,
+          -64.0,
+          0.4
+        ],
+        [
+          32.0,
+          64.0,
+          0.55
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "rear_gasket": {
+      "bounds_mm": [
+        [
+          -32.0,
+          -64.0,
+          7.75
+        ],
+        [
+          32.0,
+          64.0,
+          7.9
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "dac_retention": {
+      "bounds_mm": [
+        [
+          -16.0691527,
+          -61.1229905,
+          0.55
+        ],
+        [
+          7.9508472999999995,
+          -30.752990499999996,
+          7.9
+        ]
+      ],
+      "valid": true,
+      "solids": 3
+    },
+    "rear_liner": {
+      "bounds_mm": [
+        [
+          -30.2,
+          -62.2,
+          7.830000000000001
+        ],
+        [
+          30.2,
+          62.2,
+          7.900000000000001
+        ]
+      ],
+      "valid": true,
+      "solids": 1
+    },
+    "case_screws": {
+      "bounds_mm": [
+        [
+          -29.6,
+          -61.1,
+          3.3000000000000007
+        ],
+        [
+          29.6,
+          61.1,
+          8.3
+        ]
+      ],
+      "valid": true,
+      "solids": 6
+    },
+    "carrier_screws": {
+      "bounds_mm": [
+        [
+          -6.9,
+          21.1,
+          1.5
+        ],
+        [
+          -5.1,
+          62.3,
+          4.9
+        ]
+      ],
+      "valid": true,
+      "solids": 2
+    }
+  },
+  "scope": "All inter-part CAD intersections, empty routing allowances, outer containment, panel insertion, shell continuity and port cutters. Vendor internal construction is retained. Flex geometry, connector selection, solder/lead details, tolerances and real assembly remain unverified. Screw root geometry omits threads.",
+  "parameter_sha256": "4ddfb783062e6b307b62ec63343cf4aece32e843e0c4433bbb24a8f98eebf0da",
+  "source_sha256": {
+    "geometry.py": "ab4741fbdb6960352f6708cb5914e712a26d2357b3cfe3622a92df55e9b36893",
+    "build.py": "44d6f7d9b89fdccd93645b1251bfb2eb9d0a6d682aa8f9244c5c3156d7995381"
+  }
+}

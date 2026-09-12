@@ -2,6 +2,20 @@
 
 > *I got tired of renting my music.*
 
+**New thin-metal study: [mytunas touch / T03](touchscreen_metal/README.md)** —
+**64 × 128 × 8.3 mm**, with insulated metal faces, a separate frame and the intact
+Adafruit board's original jack at the bottom. This is an aggressive nominal fit
+prototype; plate stiffness, tolerances and physical assembly remain unverified.
+
+**[Open the T03 interactive 3D viewer](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_metal/preview.html)**
+
+[![T03 thin-metal touchscreen assembly](touchscreen_metal/preview_iso.png)](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_metal/preview.html)
+
+[Thickness comparison and further-reduction options](touchscreen_metal/THICKNESS_STUDY.md) ·
+[Dimensioned T03 drawing](touchscreen_metal/design_overview.pdf).
+The Pages viewer becomes available when these files are deployed; the standalone
+`touchscreen_metal/preview.html` can also be opened locally in a browser.
+
 **Model 02 is now in development:** [mytunas touch / T02](touchscreen_01/README.md)
  is a **52 × 132 × 10.4 mm touchscreen prototype with a bottom headphone jack**, with no clickwheel.
 [Open the T02 interactive 3D viewer](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_01/preview.html) or click its preview image:

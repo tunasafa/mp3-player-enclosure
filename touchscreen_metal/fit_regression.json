@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "parameter_sha256": "4ddfb783062e6b307b62ec63343cf4aece32e843e0c4433bbb24a8f98eebf0da",
+  "deliberate_battery_DAC_overlap_detected": [
+    {
+      "a": "battery",
+      "b": "actual_dac",
+      "volume_mm3": 1184.194667
+    }
+  ],
+  "deliberate_port_blockers_detected": [
+    {
+      "port": "usb",
+      "detected_blocker_mm3": 27.0
+    },
+    {
+      "port": "microsd",
+      "detected_blocker_mm3": 13.5
+    },
+    {
+      "port": "jack",
+      "detected_blocker_mm3": 27.0
+    }
+  ]
+}
