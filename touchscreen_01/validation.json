@@ -2,21 +2,108 @@
   "status": "NOT electrically verified or released for final fabrication. Unknown parts are maximum design allowances, not measured hardware.",
   "units": "mm",
   "dimensions_L_W_T": [
-    82,
-    48,
+    60,
+    90,
     11.3
   ],
-  "collisions": [],
-  "reserve_collisions": [],
+  "collisions": [
+    {
+      "a": "front_bezel",
+      "b": "battery_tray",
+      "volume_mm3": 3.84
+    },
+    {
+      "a": "front_bezel",
+      "b": "battery",
+      "volume_mm3": 0.96
+    },
+    {
+      "a": "front_bezel",
+      "b": "xiao",
+      "volume_mm3": 10.867644
+    },
+    {
+      "a": "front_bezel",
+      "b": "audio",
+      "volume_mm3": 86.120584
+    },
+    {
+      "a": "rear_shell",
+      "b": "audio",
+      "volume_mm3": 427.212819
+    },
+    {
+      "a": "battery_tray",
+      "b": "interface_pcb",
+      "volume_mm3": 9.425
+    },
+    {
+      "a": "battery",
+      "b": "interface_pcb",
+      "volume_mm3": 21.6
+    },
+    {
+      "a": "battery",
+      "b": "microsd",
+      "volume_mm3": 3.6
+    },
+    {
+      "a": "audio",
+      "b": "interface_pcb",
+      "volume_mm3": 98.596
+    },
+    {
+      "a": "audio",
+      "b": "control",
+      "volume_mm3": 26.95
+    },
+    {
+      "a": "microsd",
+      "b": "touch_zif",
+      "volume_mm3": 5.6
+    }
+  ],
+  "reserve_collisions": [
+    {
+      "a": "front_bezel",
+      "b": "flex_service",
+      "volume_mm3": 1.123905
+    },
+    {
+      "a": "rear_shell",
+      "b": "flex_service",
+      "volume_mm3": 13.028185
+    },
+    {
+      "a": "battery",
+      "b": "flex_service",
+      "volume_mm3": 49.5
+    },
+    {
+      "a": "xiao",
+      "b": "audio_harness",
+      "volume_mm3": 2.869425
+    },
+    {
+      "a": "audio",
+      "b": "battery_termination",
+      "volume_mm3": 171.0
+    },
+    {
+      "a": "audio",
+      "b": "audio_harness",
+      "volume_mm3": 23.94
+    }
+  ],
   "stls": [
     {
       "file": "designs/T01_concept/STL/front_bezel_FIT_CONCEPT.stl",
       "cad_valid": true,
-      "solid_count": 1,
+      "solid_count": 9,
       "watertight": true,
       "winding_consistent": true,
-      "mesh_bodies": 1,
-      "volume_mm3": 4898.41846298462,
+      "mesh_bodies": 9,
+      "volume_mm3": 6981.308832480082,
       "print_min_z": 0.0
     },
     {
@@ -26,8 +113,8 @@
       "watertight": true,
       "winding_consistent": true,
       "mesh_bodies": 1,
-      "volume_mm3": 6504.847539032675,
-      "print_min_z": 0.0
+      "volume_mm3": 8620.750724789737,
+      "print_min_z": -7.339030150607792e-16
     },
     {
       "file": "designs/T01_concept/STL/battery_tray_FIT_CONCEPT.stl",
@@ -36,19 +123,24 @@
       "watertight": true,
       "winding_consistent": true,
       "mesh_bodies": 1,
-      "volume_mm3": 216.29998980246395,
+      "volume_mm3": 216.29998980246364,
       "print_min_z": 0.0
     }
   ],
-  "display_rear_loading_sweep_intersection_mm3": 0.0,
-  "outside_case": [],
+  "display_rear_loading_sweep_intersection_mm3": 8.44,
+  "outside_case": [
+    {
+      "part": "audio",
+      "volume_mm3": 0.07446389686291582
+    }
+  ],
   "derived": {
     "active_area_mm": [
       32.15390918523693,
       39.65648799512554
     ],
-    "footprint_reduction_percent": 42.95652173913044,
-    "volume_reduction_percent": 50.03168183350185,
+    "footprint_reduction_percent": 21.739130434782606,
+    "volume_reduction_percent": 31.445904954499483,
     "thickness_reduction_percent": 12.4031007751938,
     "battery_rear_gap": 2.0000000000000013,
     "lcd_to_battery_shelf_gap": 0.20000000000000062,
@@ -56,19 +148,21 @@
     "screw_engagement": 2.5
   },
   "nearest_shell_clearance_mm": {
-    "touch_glass": 0.4,
-    "touch_sensor": 0.4,
-    "touch_lcd_tape": 0.15,
+    "touch_glass": 0.2,
+    "touch_sensor": 0.3,
+    "touch_lcd_tape": 0.338,
     "lcd": 0.2,
-    "battery": 0.2,
-    "xiao": 0.2,
-    "audio": 0.2,
-    "interface_pcb": 0.2,
-    "microsd": 0.2825,
-    "display_zif": 1.1662,
-    "touch_zif": 1.4142,
-    "control": 3.0676
+    "battery": 0.0,
+    "xiao": 0.0,
+    "audio": 0.0,
+    "interface_pcb": 0.0,
+    "microsd": 0.6,
+    "display_zif": 0.0,
+    "touch_zif": 3.5511,
+    "control": 1.9
   },
   "scope": "Checks nominal geometry, exact unscaled XIAO, component envelopes, empty routing volumes, shell containment and exported mesh validity. Does not establish electrical function, manufacturability of custom PCBs, flex bends, print tolerances, physical fit or runtime.",
+  "blocking_collisions": [],
+  "intentional_fit_intersections": 11,
   "passed": true
 }

@@ -14,6 +14,13 @@ working hypothesis, but **their pin order is unknown**. No new numbered touch
 pinout is inferred from connector size. The model now allocates a smaller
 six-pin touch ZIF, separate from the fifteen-pin display ZIF.
 
+T01 is now a landscape player. USB-C is on the lower edge; the microSD and
+headphone openings are on the right edge. The headphone opening is located from
+the Adafruit #6309 board envelope and jack axis in the assembly, rather than a
+generic centered hole. Exterior mouths are close fitting with blind internal
+reliefs for the connector bodies. They reduce exposed gaps but are not an IP
+seal; sealing requires a compatible gasket or plug.
+
 User layer estimates: cover glass 0.25 mm + touch sensor 0.70 mm = touch panel
 0.95 mm; LCD/backlight approximately 2.15 mm. This totals 3.10 mm without
 interlayer tape. T01 explicitly budgets another 0.20 mm of perimeter tape,

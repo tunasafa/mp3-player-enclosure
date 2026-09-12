@@ -6,11 +6,11 @@
     {
       "name": "preview_iso.png",
       "pixels": {
-        "count": 95210,
-        "minX": 425,
-        "maxX": 659,
-        "minY": 160,
-        "maxY": 579,
+        "count": 124967,
+        "minX": 334,
+        "maxX": 754,
+        "minY": 207,
+        "maxY": 532,
         "w": 1085,
         "h": 740
       }
@@ -18,11 +18,11 @@
     {
       "name": "preview_front.png",
       "pixels": {
-        "count": 95575,
-        "minX": 424,
-        "maxX": 660,
-        "minY": 159,
-        "maxY": 572,
+        "count": 131222,
+        "minX": 320,
+        "maxX": 777,
+        "minY": 222,
+        "maxY": 517,
         "w": 1085,
         "h": 740
       }
@@ -30,11 +30,11 @@
     {
       "name": "preview_back.png",
       "pixels": {
-        "count": 95575,
-        "minX": 424,
-        "maxX": 660,
-        "minY": 158,
-        "maxY": 572,
+        "count": 131222,
+        "minX": 307,
+        "maxX": 764,
+        "minY": 222,
+        "maxY": 517,
         "w": 1085,
         "h": 740
       }
@@ -42,11 +42,11 @@
     {
       "name": "preview_inside.png",
       "pixels": {
-        "count": 94914,
-        "minX": 420,
-        "maxX": 658,
-        "minY": 162,
-        "maxY": 572,
+        "count": 129320,
+        "minX": 312,
+        "maxX": 759,
+        "minY": 212,
+        "maxY": 522,
         "w": 1085,
         "h": 740
       }
@@ -54,11 +54,11 @@
     {
       "name": "preview_exploded.png",
       "pixels": {
-        "count": 126037,
-        "minX": 371,
-        "maxX": 719,
-        "minY": 163,
-        "maxY": 575,
+        "count": 144898,
+        "minX": 289,
+        "maxX": 801,
+        "minY": 205,
+        "maxY": 533,
         "w": 1085,
         "h": 740
       }
@@ -66,11 +66,11 @@
     {
       "name": "preview_mobile.png",
       "pixels": {
-        "count": 44088,
-        "minX": 103,
-        "maxX": 262,
-        "minY": 169,
-        "maxY": 454,
+        "count": 57891,
+        "minX": 41,
+        "maxX": 326,
+        "minY": 201,
+        "maxY": 422,
         "w": 366,
         "h": 570
       }
@@ -78,11 +78,11 @@
     {
       "name": "preview_mobile_inside.png",
       "pixels": {
-        "count": 43874,
-        "minX": 100,
-        "maxX": 261,
-        "minY": 170,
-        "maxY": 449,
+        "count": 59711,
+        "minX": 26,
+        "maxX": 330,
+        "minY": 204,
+        "maxY": 415,
         "w": 366,
         "h": 570
       }

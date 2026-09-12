@@ -159,7 +159,7 @@ for (const spec of data.parts) {
   else imported(group, spec.positions, material(spec.color, spec.id === 'battery' ? .45 : .06, .52));
   if (spec.engraving_positions) imported(group, spec.engraving_positions, material('#344d49', .1, .7));
 }
-const d = parameters.display, aw = data.validation.derived.active_area_mm[0], ah = data.validation.derived.active_area_mm[1];
+const d = parameters.display, aw = data.validation.derived.active_area_mm[1], ah = data.validation.derived.active_area_mm[0];
 const screen = texture(480, 592, (ctx,w,h) => {
   ctx.fillStyle='#0c2021'; ctx.fillRect(0,0,w,h);
   ctx.fillStyle='#9cbbb1'; ctx.font='20px Arial'; ctx.fillText('MY LIBRARY',30,36);
@@ -210,7 +210,9 @@ function detailedBattery(group) {
 function detailedAudio(group) {
   const e=parameters.electronics.find(e=>e.id==='audio'),[x,y]=e.center,z=e.z;
   board(group,e.size[0],e.size[1],1,[x,y,z],mats.pcb,[[e.size[0]/2-2,e.size[1]/2-2,1]]);chip(group,x,y+2,z+1,7,5);chip(group,x-5,y-5,z+1,3,2);for(let i=0;i<5;i++)passive(group,x-5+i*2,y+7,z+1);label(group,['AUDIO','DAC + HP'],13,6,[x,y,z+1.7],true,null,'#dcebe2');
-  cylinder(group,2.3,4,[x,y-e.size[1]/2-1.5,z+2.6],mats.silver,32);cylinder(group,1.5,4.1,[x,y-e.size[1]/2-1.5,z+2.6],mats.black,32);
+  // The #6309 jack is on the right edge in this landscape placement. The CAD
+  // aperture is cut on that same edge, with a tight 5.2 mm circular mouth.
+  cylinder(group,2.3,4,[x+e.size[0]/2+1.5,y,z+2.6],mats.silver,32);cylinder(group,1.5,4.1,[x+e.size[0]/2+1.5,y,z+2.6],mats.black,32);
 }
 function detailedInterface(group) {
   const e=parameters.electronics.find(e=>e.id==='interface_pcb'),[x,y]=e.center,z=e.z;

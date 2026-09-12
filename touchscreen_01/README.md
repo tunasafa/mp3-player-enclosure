@@ -1,6 +1,6 @@
 # mytunas touch / T01
 
-**82 × 48 × 11.3 mm conditional touchscreen concept.** The clickwheel and its
+**90 × 60 × 11.3 mm landscape touchscreen concept.** The clickwheel and its
 adapter are removed. Against P04's 115 × 60 × 12.9 mm, this is **43.0% less
 footprint, 12.4% thinner and 50.0% less bounding-box volume**. The existing
 clickwheel model remains a separate model.
@@ -8,6 +8,12 @@ clickwheel model remains a separate model.
 Open [the offline interactive model](preview.html), [dimensioned drawing](design_overview.pdf),
 [layout image](design_overview.png), [hardware audit and revised wiring](HARDWARE_AUDIT.md)
 or [CAD validation](validation.json).
+
+The display is rotated horizontally for the music-player UI. USB-C is centered
+on the lower edge; the microSD slot and actual Adafruit #6309 headphone jack are
+both on the right edge. Each aperture uses a close-fitting outer cut with an
+internal relief sized to its connector body. These are dust-reduced mechanical
+apertures, not waterproof seals; sealing requires a gasket or plug.
 
 The [Scaniverse inspection](scan/README.md) helps assess the outer body and folded
 ribbons. The latest **user-provided layer estimate** controls thickness: **0.25 mm
@@ -39,14 +45,14 @@ module or battery capacity is presented as verified hardware.
 
 | Part | Allocation, mm | Basis |
 |---|---|---|
-| Cover glass | 36 × 43 × 0.25 | User-confirmed outer glass; thickness estimate; Z 0.4–0.65 |
-| Touch sensor | 36 × 43 × 0.70 | Follows confirmed outer glass; thickness estimate; Z 0.65–1.35 |
+| Cover glass | 43 × 36 × 0.25 | User-confirmed outer glass, rotated landscape; thickness estimate; Z 0.4–0.65 |
+| Touch sensor | 43 × 36 × 0.70 | Follows confirmed outer glass; thickness estimate; Z 0.65–1.35 |
 | Touch–LCD tape | 0.20 thick perimeter ring | Adhesive allowance; Z 1.35–1.55 |
 | LCD + backlight | 36 × 44 × 2.15 | User thickness estimate; Z 1.55–3.70; complete assembly 3.30 |
 | Active display | approximately 32.15 × 39.66 | Derived from 2.01-inch diagonal and 240:296 ratio, assuming square pixels; not a measured aperture |
 | Protected battery | 34 × 30 × 3.4 | Unselected finished pack; Z 4.7–8.1; capacity unspecified |
 | XIAO | 17.8 × 21 × 4.5 nominal | Exact vendor shape additionally used in collision checks; includes USB protrusion |
-| Audio board | 18 × 22 × 5.2 + jack mouth | Custom-board maximum allowance; not an identified ES9219/CS43131 module |
+| Audio board | 33.7 × 25.4 × 7.1 + jack mouth | Adafruit #6309 manufacturer STEP, translated into the landscape case |
 | Interface PCB | 36 × 16 × 0.8 | Z 4.3–5.1; custom board requirement; schematic and traces not designed |
 | microSD socket + seated card | 18 × 14 × 1.8 above PCB | Low-profile candidate envelope, not existing P04 module |
 | Display ZIF / 15-pin, 0.3 mm | 12 × 4 × 1.4 above PCB | User connector specification; housing and contact side unverified |

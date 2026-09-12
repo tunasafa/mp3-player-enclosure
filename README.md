@@ -3,7 +3,7 @@
 > *I got tired of renting my music.*
 
 **Model 02 is now in development:** [mytunas touch / T01](touchscreen_01/README.md)
-is an **82 × 48 × 11.3 mm conditional touchscreen concept**, with no clickwheel.
+ is a **90 × 60 × 11.3 mm landscape touchscreen concept**, with no clickwheel.
 [Open the T01 interactive 3D viewer](touchscreen_01/preview.html) or click its preview image:
 
 [![Interactive T01 touchscreen model](touchscreen_01/preview_iso.png)](touchscreen_01/preview.html)

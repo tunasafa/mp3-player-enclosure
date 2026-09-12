@@ -27,6 +27,12 @@ def main():
             def transform(a): return np.column_stack((-a[:,2]-6.1114+e['center'][0],-a[:,0]+e['center'][1]+1.80475,a[:,1]+.25+e['z']))
             spec['batches']=vendor_meshes('xiao',transform)
             spec['source']='Seeed manufacturer STEP / unscaled'
+        elif id=='audio':
+            e=next(e for e in p['electronics'] if e['id']=='audio')
+            def transform(a):
+                return np.column_stack((a[:,0]-16.85+e['center'][0],a[:,1]-12.7+e['center'][1],a[:,2]+e['z']))
+            spec['batches']=vendor_meshes('dac',transform)
+            spec['source']='Adafruit TLV320DAC3100 #6309 manufacturer STEP / unscaled'
         else:
             mesh=trimesh.load_mesh(ROOT/'designs/T01_concept/reference_only'/f'{id}.stl',process=True)
             spec['positions']=packed(mesh.triangles.reshape(-1,3))

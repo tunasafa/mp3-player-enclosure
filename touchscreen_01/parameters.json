@@ -3,8 +3,8 @@
   "units": "mm",
   "status": "NOT electrically verified or released for final fabrication. Unknown parts are maximum design allowances, not measured hardware.",
   "body": {
-    "width": 48,
-    "length": 82,
+    "width": 90,
+    "length": 60,
     "thickness": 11.3,
     "corner_radius": 6,
     "wall": 1.6,
@@ -15,8 +15,8 @@
   "fasteners": {
     "x": 21.1,
     "y": [
-      -18,
-      33.5
+      -25,
+      25
     ],
     "boss_radius": 2,
     "mating_z": 7.1,
@@ -29,25 +29,25 @@
   },
   "display": {
     "center": [
-      0,
-      14
+      -17,
+      0
     ],
     "glass_size": [
-      36,
       43,
+      36,
       0.25
     ],
     "glass_z": 0.4,
     "lcd_size": [
-      36,
-      44,
+      42,
+      35,
       2.15
     ],
     "lcd_z": 1.55,
     "glass_corner_radius": 3,
     "opening": [
-      36.8,
-      44.8
+      42.8,
+      35.8
     ],
     "pocket_clearance": 0.3,
     "lip_z": 0.2,
@@ -75,8 +75,8 @@
   },
   "battery": {
     "center": [
-      0,
-      15
+      -17,
+      0
     ],
     "size": [
       34,
@@ -92,9 +92,9 @@
     {
       "id": "xiao",
       "label": "XIAO ESP32-S3 / vendor geometry",
-      "center": [
-        -10.2,
-        -27.9961102
+        "center": [
+        28,
+        -17
       ],
       "size": [
         17.8,
@@ -108,13 +108,13 @@
       "id": "audio",
       "label": "Audio + headphone board / allowance",
       "center": [
-        9.9,
-        -28
+        27,
+        15
       ],
       "size": [
-        18,
-        22,
-        5.2
+        33.7,
+        25.4,
+        7.1
       ],
       "z": 3.4,
       "status": "UNSELECTED custom board allowance includes regulators, clock, level translation and headphone driver; ES9219 / CS43131 are IC candidates, not module dimensions."
@@ -124,7 +124,7 @@
       "label": "Custom interface PCB / allowance",
       "center": [
         0,
-        -9
+        20
       ],
       "size": [
         36,
@@ -138,8 +138,8 @@
       "id": "microsd",
       "label": "Bare microSD socket + card / allowance",
       "center": [
-        11,
-        -9
+        8,
+        -20
       ],
       "size": [
         18,
@@ -153,8 +153,8 @@
       "id": "display_zif",
       "label": "15-pin 0.3 mm display ZIF / allowance",
       "center": [
-        -10,
-        -3.5
+        -17,
+        -21
       ],
       "size": [
         12,
@@ -168,8 +168,8 @@
       "id": "touch_zif",
       "label": "6-pin 0.5 mm touch ZIF / allowance",
       "center": [
-        -10,
-        -13.5
+        -4,
+        -21
       ],
       "size": [
         8,
@@ -183,8 +183,8 @@
       "id": "control",
       "label": "GPIO expander + power control / allowance",
       "center": [
-        -10,
-        -8.5
+        8,
+        24
       ],
       "size": [
         12,
@@ -197,18 +197,20 @@
   ],
   "ports": {
     "usb": {
-      "x": -10.2,
+      "x": 28,
       "z": 6.355,
       "width": 11,
       "height": 4.2
     },
     "jack": {
-      "x": 9.9,
+      "y": 15,
+      "edge": "right",
       "z": 6.1,
       "diameter": 5.2
     },
     "microsd": {
-      "y": -9,
+      "y": -20,
+      "edge": "right",
       "z": 6.0,
       "width": 12,
       "height": 2
@@ -219,8 +221,8 @@
       "id": "battery_expansion",
       "label": "Battery rear allowance",
       "center": [
-        0,
-        15
+        -17,
+        0
       ],
       "size": [
         34,
@@ -233,8 +235,8 @@
       "id": "flex_service",
       "label": "Flex folds + ZIF latch service",
       "center": [
-        -10,
-        -9
+        -17,
+        -20
       ],
       "size": [
         15,
@@ -247,8 +249,8 @@
       "id": "battery_termination",
       "label": "Battery protection/lead termination",
       "center": [
-        0,
-        33.5
+        28,
+        25
       ],
       "size": [
         9,
@@ -261,8 +263,8 @@
       "id": "left_harness",
       "label": "Battery harness lane",
       "center": [
-        -19.4,
-        13
+        -39,
+        0
       ],
       "size": [
         1.5,
@@ -275,8 +277,8 @@
       "id": "audio_harness",
       "label": "I2S/I2C harness between lower boards",
       "center": [
-        0,
-        -27.5
+        28,
+        -1
       ],
       "size": [
         1.5,
