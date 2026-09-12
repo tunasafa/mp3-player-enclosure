@@ -1,6 +1,6 @@
 {
   "BOM.csv": "a373dda3696b8793d23cf9139f44693b10848134526483943bd1a13d58dbc9a2",
-  "README.md": "87988405b3af04d77f22c480abec65cbc44f58818ef559edda0e018f42297503",
+  "README.md": "52f8502edc8dab5c0b0f6f355ad2da154a7b7aab54ce02c90fb5190bef4d9e34",
   "THICKNESS_STUDY.md": "732209a11fde4b64b5f564dafdbc38f443b036976a867d30b3b7084f9b4ac02d",
   "build.py": "44d6f7d9b89fdccd93645b1251bfb2eb9d0a6d682aa8f9244c5c3156d7995381",
   "design_overview.pdf": "eb4167eef564a1bc176246fb10c55b56c7d5ddcbc47fa8ad87943fd1d4ab22bc",
@@ -64,7 +64,7 @@
   "preview_mobile_inside.png": "f38dd2bf48a2bc26bca2c18f465ac348a5a80c45b77f20b2d5e632f464f5abbb",
   "preview_ports.png": "ce3351ddceb16079a6d0da3273046e4ff115cc10903110e84926b1a9e1d818d8",
   "scan_preview_check.png": "e1768fa337e8b4b2defe1c2878519708f8c85423fd98e02aa612f014cbebb2c2",
-  "studies/side_jack/README.md": "f5e298335440407119fa1aa821ed33b43f716e980b23e2c8ea5e4c69260a2cfe",
+  "studies/side_jack/README.md": "ea90415be0712c11b4b12822fd14c844f0ef2eb67d56bb7fda48bdf9f329cbf9",
   "studies/side_jack/SUPPLIER_INQUIRY.md": "08d3620b053ee8051fcafa9cb7f2a867e100d517447a8aeedf5f500ca25a3ff6",
   "studies/side_jack/build_study.py": "dc840db4ae0e132dfb29a59ea22d1080c1aaf06874a7f6c78ff5dcc9a408c1b8",
   "studies/side_jack/model.json": "75a0d2381a86f9f9b69ec02ffa7dc193a08c9ce8445de9df8c599443769fac0b",

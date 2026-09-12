@@ -1,0 +1,211 @@
+{
+  "scope": "Packing envelopes only. No enclosure mounts, actual Startek flex, completed battery pack or seals are validated.",
+  "model": "Model 02 / selected touchscreen layout",
+  "revision": "M02-01 / bottom jack / two cells / 2.4 inch",
+  "exterior_mm": [
+    64,
+    128,
+    8.3
+  ],
+  "screen_stock_confirmed": false,
+  "qualified_for_fabrication": false,
+  "physical_collisions": [],
+  "reserve_collisions": [],
+  "published_dac_envelope_collisions": [],
+  "outside_exterior": [],
+  "nominal_packing_passed": true,
+  "screen_side_clearance_to_existing_1_6mm_wall": 0.27,
+  "screen_to_underlying_electronics_gap_mm": 0.2,
+  "battery_rear_liner_gap_mm": 1.93,
+  "battery_expansion_reserved_mm": 1.7,
+  "dac_rear_liner_gap_mm": 0.18,
+  "battery_basis": "Each 37 x 25.5 x 5.2 mm envelope uses DTP502535 published maximum pack dimensions. Two 400 mAh cells suggest an 800 mAh target, but a matched supplier-built 1S2P assembly is unselected. Do not parallel two retail protected packs.",
+  "jack_mouth_mm": [
+    18.859152700000003,
+    -63.60000000000001,
+    4.42248296
+  ],
+  "jack_edge": "bottom",
+  "jack_axis": [
+    0,
+    -1,
+    0
+  ],
+  "vendor_dac_rotation_z_degrees": -90,
+  "dac_manufacturer_volume_mm3": 1581.9839397215364,
+  "bounds_mm": {
+    "startek_envelope": [
+      [
+        -30.13,
+        13.54,
+        0.55
+      ],
+      [
+        30.13,
+        56.46,
+        4.3
+      ]
+    ],
+    "audio": [
+      [
+        2.1,
+        -63.60000002556965,
+        0.55
+      ],
+      [
+        27.500000000000004,
+        -30.062990499999998,
+        6.92248295809683
+      ]
+    ],
+    "xiao": [
+      [
+        9.11801888558642,
+        -18.890000044587502,
+        0.7500000149011593
+      ],
+      [
+        31.600000035740344,
+        -1.11000004458748,
+        5.2100000149013095
+      ]
+    ],
+    "microsd_nominal": [
+      [
+        -31.6,
+        20.0,
+        4.5
+      ],
+      [
+        -7.899999999999999,
+        38.0,
+        7.1
+      ]
+    ],
+    "interface_envelope": [
+      [
+        15.0,
+        26.0,
+        4.5
+      ],
+      [
+        27.0,
+        50.0,
+        6.4
+      ]
+    ],
+    "cell_A_envelope": [
+      [
+        -29.0,
+        -18.75,
+        0.7
+      ],
+      [
+        8.0,
+        6.75,
+        5.9
+      ]
+    ],
+    "cell_B_envelope": [
+      [
+        -28.5,
+        -59.0,
+        0.7
+      ],
+      [
+        -3.0,
+        -22.0,
+        5.9
+      ]
+    ],
+    "cell_A_expansion": [
+      [
+        -29.0,
+        -18.75,
+        5.9
+      ],
+      [
+        8.0,
+        6.75,
+        7.6000000000000005
+      ]
+    ],
+    "cell_B_expansion": [
+      [
+        -28.5,
+        -59.0,
+        5.9
+      ],
+      [
+        -3.0,
+        -22.0,
+        7.6000000000000005
+      ]
+    ],
+    "pack_protection_and_leads": [
+      [
+        -23.0,
+        8.0,
+        0.7
+      ],
+      [
+        3.0,
+        12.0,
+        3.7
+      ]
+    ],
+    "screen_tail_and_zif": [
+      [
+        -28.0,
+        14.5,
+        4.5
+      ],
+      [
+        28.0,
+        19.5,
+        7.2
+      ]
+    ],
+    "cell_link_route": [
+      [
+        -3.0,
+        -22.0,
+        0.8
+      ],
+      [
+        9.0,
+        -20.0,
+        2.8
+      ]
+    ],
+    "cell_link_turn": [
+      [
+        8.1,
+        -20.0,
+        0.8
+      ],
+      [
+        8.9,
+        -17.0,
+        2.8
+      ]
+    ]
+  },
+  "single_rectangular_alternative": "A single 37 x 25.5 mm envelope fits the same upper battery bay; no larger stocked single pack has been selected. One continuous L cell requires custom tooling/quotation.",
+  "remaining_work": [
+    "Exact Startek sample availability, drawing, pinout and initialization",
+    "Flex fold and latch insertion sweep",
+    "New screw and board-retention layout",
+    "Cell supplier design including protection, leads, insulation and charger review",
+    "USB/SD/headphone sealing and physical testing"
+  ],
+  "source_sha256": "aba422e0f8046c189b163e271337ab0ac48bc10e0287acabfeaa3baf29fe4f23",
+  "parameter_sha256": "bdbfaaddc1a8b7e6f87adfeaf65d349caf7be16ee115660b1bffdbeff25e122c",
+  "dependency_sha256": {
+    "touchscreen_metal/geometry.py": "5074f9d33e1bf8ca6b43c03db722424a232a5f14e119503ae17c1178def84de3",
+    "touchscreen_metal/parameters.json": "4ddfb783062e6b307b62ec63343cf4aece32e843e0c4433bbb24a8f98eebf0da",
+    "touchscreen_metal/build.py": "44d6f7d9b89fdccd93645b1251bfb2eb9d0a6d682aa8f9244c5c3156d7995381",
+    "revision_04/vendor/6309.step": "3eba386a14eb87e26fc5a287a6e5b4a30515306079798d11c45fc202c79b4627",
+    "revision_04/vendor/XIAO-ESP32S3 v2.step": "870ad45c7af5d92324cec4c6ae65fbf86e3b049d5a97ab9ffd9039ebd73455dd"
+  }
+}

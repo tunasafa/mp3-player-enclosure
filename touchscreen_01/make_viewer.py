@@ -12,6 +12,6 @@ def main():
  html=(ROOT/'viewer.html').read_text().replace('__MODEL_DATA__',json.dumps(data,separators=(',',':')))
  html=html.replace('__VIEWER_SCRIPT__',(ROOT/'vendor/viewer.bundle.js').read_text().replace('</script','<\\/script'))
  html=html.replace('__VIEWER_LICENSES__',(ROOT.parent/'revision_04/vendor/LICENSE-viewer.txt').read_text())
- (ROOT/'preview.html').write_text(html)
- print('Wrote offline T02 viewer with validated shared CAD geometry.')
+ (ROOT/'historical_preview.html').write_text(html)
+ print('Wrote historical offline T02 viewer with validated shared CAD geometry.')
 if __name__=='__main__':main()

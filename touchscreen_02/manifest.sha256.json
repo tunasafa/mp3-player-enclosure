@@ -1,0 +1,22 @@
+{
+  "README.md": "484b27b95da69d59b29e1bf2554567a629f4aeb83fce766ff453d7f7651f457a",
+  "SUPPLIER_INQUIRY.md": "08d3620b053ee8051fcafa9cb7f2a867e100d517447a8aeedf5f500ca25a3ff6",
+  "build.py": "aba422e0f8046c189b163e271337ab0ac48bc10e0287acabfeaa3baf29fe4f23",
+  "model.json": "9843c044e670b1871adf242d58dc890446c33e5c60b6fb1cc1361b9feca675b2",
+  "packing_REFERENCE_ONLY.step": "b588adac66b0e85204009389804030ed373900bf9c9aef15d95901bb81af12bb",
+  "parameters.json": "bdbfaaddc1a8b7e6f87adfeaf65d349caf7be16ee115660b1bffdbeff25e122c",
+  "preview.html": "66cfeed386d4b1457f8061ef32de2493616648ff7943a4ba1b68e3a5e2df5df9",
+  "preview_bottom.png": "ec19987e2d12b303d6a3d44d7ac165202cd362fb7339c8a294a2625310a2ab23",
+  "preview_exploded.png": "acd5d7e92ce8fc2c66306d07177cf605c287b6b8f65c807781d80843838adc1e",
+  "preview_front.png": "2185332ca64dde7b54aa98c9d5bd93cb62a1e065db8660f78a2c38fb6f552a6d",
+  "preview_iso.png": "1c7b80b62e6e0cd3b325269086e011ac8522e7ff89fe1a46192d5b2a428896e9",
+  "preview_mobile.png": "41b24bb877a5b72c842908beb3a677733242680a0877de311369d1345ffb9d1f",
+  "preview_rear.png": "f1220896fc3a213a8030661a4ccf94f3a3399039a03e1b551d12744c50684e20",
+  "preview_side.png": "e3bf71a135b846ee4665a44abb6ec00aabcde7fc8b1e045a1b01e449b75f0bc2",
+  "validation.json": "6757fb8114f81cd937d1543fc9ae325c8e978b7143530b8cf3e548c7502826fb",
+  "verify_viewer.mjs": "84fade1759324f7c138c392c7f78147ca33687d0d14aec3d3f9c5bebb02dde16",
+  "viewer.bundle.js": "743a8f7be7054199cb8e590facfb8d875ac901c895fcf0dbc8b1daa2fa518e2d",
+  "viewer.html": "9bdfe26537b59ad2002325ecfecb4b87ab3769571ee9a7a1bd5b209298cc6290",
+  "viewer.js": "f731f1bfafcfbba911812566a0445468d6a6aefba7b9c19ed9043eee24c5f612",
+  "viewer_validation.json": "64e96989265f89c3ec535500950235644d0dbc31ba5b252bbe60e4c8d78e31eb"
+}

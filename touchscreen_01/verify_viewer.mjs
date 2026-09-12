@@ -10,7 +10,7 @@ try {
  const page=await browser.newPage({viewport:{width:1440,height:1050}});
  page.on('pageerror',e=>errors.push(e.message));
  page.on('request',r=>{if(/^https?:/.test(r.url())) requests.push(r.url());});
- await page.goto(pathToFileURL(join(root,'preview.html')).href);
+ await page.goto(pathToFileURL(join(root,'historical_preview.html')).href);
  await page.waitForFunction(()=>window.T01);
  const info=await page.evaluate(()=>T01.getInspection());
  assert(info.validated);assert.equal(info.ids.length,20);assert(!info.ids.some(id=>/wheel|fpc8/.test(id)));

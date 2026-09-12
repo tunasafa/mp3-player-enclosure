@@ -1,0 +1,16 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>mytunas · Model 02 touchscreen</title><!-- __LICENSE__ -->
+<style>
+*{box-sizing:border-box}body{margin:0;background:#edf1f2;color:#263e43;font:15px system-ui}header{padding:20px 26px;background:#fff;border-bottom:1px solid #ccd7d7}h1{font-size:21px;margin:0 0 8px}p{line-height:1.5;margin:8px 0}main{display:grid;grid-template-columns:minmax(0,1fr) 300px}#stage{height:760px;position:relative}canvas{display:block;width:100%;height:100%;touch-action:none}aside{padding:20px;background:#fff}button{background:#f5f7f5;border:1px solid #adbdbb;padding:9px 12px;margin:3px;cursor:pointer;border-radius:4px;color:inherit}label{display:block;margin:10px 0}input[type=range]{width:100%}small{color:#617575;line-height:1.5;display:block}.status{color:#855c1e;font-weight:600}.parts label{font-size:12px;overflow-wrap:anywhere}a{color:#226c60}#error{color:#a22;padding:20px}footer{padding:15px 26px;border-top:1px solid #ccd7d7}@media(max-width:760px){main{grid-template-columns:1fr}#stage{height:540px}aside{padding:16px}.parts{display:grid;grid-template-columns:1fr 1fr;gap:4px}header{padding:16px}}
+</style>
+<header><h1>mytunas / Model 02 touchscreen</h1><p><strong>64 × 128 × 8.3 mm exterior target</strong> · 2.4″ landscape touchscreen</p><p class="status">Selected layout · bottom headphone jack · two batteries · screen and pack confirmation pending.</p></header>
+<main><section id="stage" aria-label="Interactive selected Model 02 layout"><canvas id="view" aria-label="Drag to rotate; scroll to zoom"></canvas><div id="error" hidden></div></section><aside>
+<div><button data-view="iso">3D</button><button data-view="front">Front</button><button data-view="rear">Rear</button><button data-view="side">Side</button><button data-view="bottom">Bottom jack</button></div>
+<label>Separate layers <input id="explode" type="range" min="0" max="100" value="0"></label>
+<label><input id="reserves" type="checkbox"> Show space reserved for expansion and wiring</label>
+<p>Blue outline: exterior limit. Green outline: present wall allowance. Boards use original manufacturer geometry.</p>
+<p>Screen, batteries and interface are labelled size envelopes. Mounts and seals are not modeled here.</p>
+<div class="parts" id="parts"></div><small id="check"></small>
+<p><a href="README.md">Design notes and source links</a> · <a href="packing_REFERENCE_ONLY.step">Reference STEP</a></p>
+</aside></main><footer><p>Nominal packing clearance only. Not a fabrication release or waterproof design. Do not wire two retail batteries together based on this study.</p></footer>
+<script>window.STUDY_DATA=__DATA__;</script><script>__SCRIPT__</script></html>

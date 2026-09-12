@@ -1,5 +1,7 @@
 # T03 — thin metal touchscreen player
 
+**Construction reference. The current touchscreen layout is [Model 02](../touchscreen_02/README.md): 2.4-inch screen, two batteries and bottom jack at the same 64 × 128 × 8.3 mm exterior.** This T03 assembly retains its earlier screen and single battery.
+
 **64 × 128 × 8.3 mm.** An aggressive nominal fit prototype with the intact Adafruit #6309, its original jack facing the bottom, the 5 mm battery above it, and the landscape touchscreen at the top. USB faces right; microSD faces left. The display interface is now beside the screen, with proposed side-entry ribbon routes.
 
 [Interactive viewer on GitHub Pages](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_metal/preview.html) · [Dimensioned drawing](design_overview.pdf) · [Fit report](validation.json) · [Thinner options study](THICKNESS_STUDY.md)

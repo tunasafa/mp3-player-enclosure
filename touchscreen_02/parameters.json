@@ -1,0 +1,14 @@
+{
+  "model": "Model 02 / selected touchscreen layout",
+  "revision": "M02-01 / bottom jack / two cells / 2.4 inch",
+  "units": "mm",
+  "exterior": [64, 128, 8.3],
+  "display": {"part": "KD024QVFMA020-C003A", "size": [60.26, 42.92, 3.75], "center": [0, 35], "z": 0.55, "stock_confirmed": false},
+  "audio": {"part": "Adafruit 6309", "rotation_z_degrees": -90, "vendor_origin_translation": [2.1, -30.0629905, 0.55], "published_size": [25.4, 33.7, 7.1], "jack_edge": "bottom"},
+  "battery_envelopes": [
+    {"id": "cell_A_envelope", "size": [37, 25.5, 5.2], "center": [-10.5, -6], "z": 0.7},
+    {"id": "cell_B_envelope", "size": [25.5, 37, 5.2], "center": [-15.75, -40.5], "z": 0.7}
+  ],
+  "battery_pack": {"configuration": "supplier-designed 1S2P", "capacity_target_mah": 800, "selected": false, "expansion_reserve_mm": 1.7},
+  "status": "Selected visual layout. Nominal packing only; screen procurement, battery assembly, mounts, flex and seals remain unverified."
+}

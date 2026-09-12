@@ -2,35 +2,27 @@
 
 > *I got tired of renting my music.*
 
-**New thin-metal study: [mytunas touch / T03](touchscreen_metal/README.md)** —
-**64 × 128 × 8.3 mm**, with insulated metal faces, a separate frame and the intact
-Adafruit board's original jack at the bottom. This is an aggressive nominal fit
-prototype; plate stiffness, tolerances and physical assembly remain unverified.
+**Current Model 02: [mytunas touchscreen](touchscreen_02/README.md)** —
+**64 × 128 × 8.3 mm**, a 2.4-inch landscape Startek screen, two battery envelopes
+in an L arrangement, and the intact Adafruit board with its original jack facing
+the bottom. This is the selected touchscreen layout. Nominal packing checks pass;
+screen procurement, the finished battery pack, mounting hardware and seals remain
+unverified.
 
-**[Open the T03 interactive 3D viewer](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_metal/preview.html)**
+**[Open the current Model 02 interactive 3D viewer](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_02/preview.html)**
 
-[![T03 thin-metal touchscreen assembly](touchscreen_metal/preview_iso.png)](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_metal/preview.html)
+[![Current Model 02 touchscreen layout](touchscreen_02/preview_iso.png)](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_02/preview.html)
 
-[Thickness comparison and further-reduction options](touchscreen_metal/THICKNESS_STUDY.md) ·
-[Dimensioned T03 drawing](touchscreen_metal/design_overview.pdf).
-The Pages viewer becomes available when these files are deployed; the standalone
-`touchscreen_metal/preview.html` can also be opened locally in a browser.
+[Layout notes](touchscreen_02/README.md) · [Packing validation](touchscreen_02/validation.json) ·
+[Reference STEP](touchscreen_02/packing_REFERENCE_ONLY.step).
+The Pages link serves this revision after deployment. Open `touchscreen_02/preview.html`
+locally for immediate offline use. GitHub's code view cannot run the HTML viewer.
 
-**Model 02 is now in development:** [mytunas touch / T02](touchscreen_01/README.md)
- is a **52 × 132 × 10.4 mm touchscreen prototype with a bottom headphone jack**, with no clickwheel.
-[Open the T02 interactive 3D viewer](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_01/preview.html) or click its preview image:
-
-[![Interactive T02 touchscreen model](touchscreen_01/preview_iso.png)](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_01/preview.html)
-
-The viewer runs on GitHub Pages. GitHub's code view cannot run the HTML file
-and may display a file-size warning. For offline use, download `preview.html`
-and open it in a browser.
-
-Open its
-[dimensioned layout](touchscreen_01/design_overview.pdf) or
-[hardware audit and corrected pin allocation](touchscreen_01/HARDWARE_AUDIT.md).
-The Adafruit and XIAO use manufacturer CAD; panel, flex, SD and finished-pack fit remain provisional. The P04
-clickwheel model below remains available separately.
+The previous **52 × 132 × 10.4 mm T02 is superseded**, and its viewer entry now
+forwards to Model 02. [Historical T02 files](touchscreen_01/README.md),
+[T03 metal construction reference](touchscreen_metal/README.md), and the
+[original side-jack study](touchscreen_metal/studies/side_jack/README.md) remain
+available as references. The P04 clickwheel model below is a separate design.
 
 ---
 

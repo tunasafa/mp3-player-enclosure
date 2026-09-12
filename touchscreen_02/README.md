@@ -1,10 +1,8 @@
-# Conditional side-jack / Startek / L-battery packing study
+# Model 02 — selected touchscreen layout
 
-**Layout accepted and developed into [current Model 02](../../../touchscreen_02/README.md), with the intact DAC rotated toward the bottom.** This page preserves the earlier side-jack alternative.
+**Selected layout: 64 × 128 × 8.3 mm, 2.4-inch landscape touchscreen, two battery envelopes and the intact Adafruit DAC facing the bottom.** This replaces the rejected 52 × 132 × 10.4 mm T02 as the current touchscreen model. The nominal component and reserved-space checks pass. This is a component packing study, not a finished enclosure: retention, fasteners, real display tails, battery wiring and seals are not validated.
 
-**Exterior target remains 64 × 128 × 8.3 mm.** The nominal component and reserved-space checks pass. This is a component packing study, not a finished enclosure: retention, fasteners, real display tails, battery wiring and seals are not validated.
-
-[Interactive viewer on GitHub Pages after deployment](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_metal/studies/side_jack/preview.html) · [Offline viewer](preview.html) · [Reference STEP](packing_REFERENCE_ONLY.step) · [Packing report](validation.json)
+[Interactive viewer on GitHub Pages after deployment](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_02/preview.html) · [Offline viewer](preview.html) · [Reference STEP](packing_REFERENCE_ONLY.step) · [Packing report](validation.json)
 
 Open the downloaded/local HTML directly in a browser. A GitHub source-file page will not run the viewer. The viewer bundles its dependencies and displays the same CAD meshes that were checked. Manufacturer boards have their original face colors; dimension envelopes are explicitly named. The blue box is an exterior limit, not a manufactured case.
 
@@ -13,6 +11,8 @@ Open the downloaded/local HTML directly in a browser. A GitHub source-file page 
 Research date: 2026-09-12. Startek [lists KD024QVFMA020-C003A](https://www.startek-lcd.com/product/474-KD024QVFMA020-C003A-2.4-inch-240x320-ST7789V-IPS-LCD-module-with-build-in-capacitive-touch-panel.html): 240 × 320 IPS, ST7789V, FT6336G capacitive touch, SPI/MCU/RGB, complete nominal outline 42.92 × 60.26 × 3.75 mm. Landscape active area is 48.96 × 36.72 mm.
 
 Its [company site](https://www.startek-lcd.com/?no=1) advertises one-piece orders and stocked samples. That is a general sales policy, not confirmation of this exact part's current inventory, price or lead time. No order or supplier message was sent. The user's condition “use it if sure it is for sale” is therefore not yet met for final component selection. A [ready-to-send inquiry](SUPPLIER_INQUIRY.md) records the missing information.
+
+The chosen layout keeps both battery placements and the exterior unchanged from the accepted side-jack study. Only the complete DAC has been rotated and repositioned in its lower-right bay. The jack is offset toward the right side of the bottom edge; it is not a detached connector.
 
 The model uses a square-corner maximum outline, not an invented detailed Startek model. Real flex, touch-controller protrusions, connector and adhesive tolerances are outstanding. The 60.26 mm landscape width leaves just 0.27 mm nominal clearance per side against the current 1.6 mm wall. Tolerance, insertion clearance and corner geometry must be confirmed before cutting metal.
 
@@ -23,7 +23,7 @@ Coordinates are millimetres; XY is the face plane, Z runs from front to rear.
 | Part | Placement / envelope | Evidence and limitation |
 |---|---|---|
 | Startek | 60.26 × 42.92 × 3.75; centre (0,35); Z 0.55 | Manufacturer nominal outline; procurement and detailed drawing pending |
-| Adafruit #6309 | Whole original vendor STEP, jack toward right; mouth (31.6,-33.94085,4.42248) | No separate or relocated jack; full 7.1 mm published height also reserved |
+| Adafruit #6309 | Whole original vendor STEP rotated −90° about Z, jack toward bottom; mouth (18.85915,-63.6,4.42248) | No separate or relocated jack; full 7.1 mm published height also reserved |
 | XIAO ESP32-S3 | Same unscaled board; centre Y -10; USB right | Solder, RF performance within metal case and final wiring unverified |
 | Battery A allowance | 37 × 25.5 × 5.2; centre (-10.5,-6); Z 0.7 | Finished-pack dimension reference, not selected 1S2P subassembly |
 | Battery B allowance | 25.5 × 37 × 5.2; centre (-15.75,-40.5); Z 0.7 | Identical capacity class, rotated in plane |
@@ -45,12 +45,12 @@ Prefer a pack assembler to provide matched cells, the intended parallel intercon
 | Option | Assessment |
 |---|---|
 | One rectangular battery in the upper bay | Simplest wiring; the 37 × 25.5 mm allocation does not establish an improvement over the current 600 mAh pack. No larger fitting stocked pack has been verified. |
-| Matched two-cell L arrangement | Uses the space beside the side-facing DAC; 800 mAh is a plausible target subject to the assembler's final outline and protection design. |
+| Matched two-cell L arrangement | Uses the space beside the bottom-facing DAC; 800 mAh is a plausible target subject to the assembler's final outline and protection design. |
 | One custom L-shaped cell | Potentially uses the corner space continuously; tooling, minimum order, capacity and finished outline require quotation. No purchasable exact part has been identified. |
 
 ## Port protection
 
-The independently implemented T03 USB fix takes the real Seeed shell rim and offsets it by 0.15 mm. Result: 9.24 × 3.51 mm overall opening with the real curved profile. CAD checks verify the shell fits; this eliminates the old excess corner gaps. It does not establish a watertight interface.
+The [independently implemented T03 USB fix](../touchscreen_metal/README.md) takes the real Seeed shell rim and offsets it by 0.15 mm. Result: 9.24 × 3.51 mm overall opening with the real curved profile. CAD checks verify the shell fits; this eliminates the old excess corner gaps. It does not establish a watertight interface.
 
 For a sealed device, the intended construction needs both a seal between receptacle and enclosure and protection against leakage through the receptacle itself. Keep a removable silicone cover for USB and SD when unused. A flush cover would require a recess, a continuous sealing land and controlled compression, then plug-access and leak tests; no such cap has been represented as finished hardware in this study. The jack and other seams need equivalent consideration. A close metal opening alone cannot meet the requested no-dust/no-water objective.
 
@@ -61,8 +61,8 @@ If protection must continue while USB is exposed, use a connector designed with 
 From the repository root:
 
 ```sh
-.venv/bin/python touchscreen_metal/studies/side_jack/build_study.py
-node touchscreen_metal/verify_viewer.mjs
+.venv/bin/python touchscreen_02/build.py
+node touchscreen_02/verify_viewer.mjs
 ```
 
 The build rejects component overlaps, reserve overlaps, full published DAC-envelope conflicts and parts outside the target exterior. These checks do not cover omitted mounting hardware, actual flex geometry, water protection, tolerance accumulation or a final battery assembly.
