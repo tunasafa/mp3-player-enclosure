@@ -12,24 +12,26 @@
 @media(max-width:480px){.page{padding:12px}.wordmark{font-size:15px}.wordmark span{font-size:10px}.viewport{height:570px}.stage-top{top:18px}.viewname{font-size:17px}.badge{font-size:8px;max-width:94px}.stage-bottom{left:18px;right:18px}.count{left:18px;top:76px;font-size:8px}.view-buttons{right:12px;bottom:76px}.axis{left:12px;bottom:73px;width:52px;height:52px}.side{padding:23px 6px;gap:23px 16px}.legend{column-gap:12px}.legend-row{font-size:10px}.footer{font-size:9px}.tiny{font-size:9px;padding:6px 7px}.icon-button{padding:6px}}
 @media(max-width:480px){.count{display:none}}
 @media(max-width:360px){.view-buttons{max-width:calc(100% - 86px)}}
+/* Keep the canvas fitted to the whole stage when the parts list grows. */
+@media(min-width:761px){.stage{min-height:740px}.viewport{position:absolute;inset:0;height:100%}}
 </style>
 </head>
 <body><div class="page">
-<header class="masthead"><div class="wordmark">mytunas <span>/ MP3 PLAYER</span></div><div class="revision">T01 / MECHANICAL FIT STUDY / 2026</div></header>
+<header class="masthead"><div class="wordmark">mytunas <span>/ MP3 PLAYER</span></div><div class="revision">T02 / BOTTOM-JACK FIT STUDY / 2026</div></header>
 <main class="layout">
 <section class="stage no-select" aria-label="Interactive enclosure model">
 <canvas id="view" class="viewport" tabindex="0" aria-label="3D enclosure. Drag to orbit, scroll to zoom. Arrow keys rotate. Home resets."></canvas>
-<div class="stage-top"><div><div class="eyebrow">Assembly / millimetres</div><div id="viewname" class="viewname">Compact construction</div></div><div class="badge">T01 / Concept</div></div>
+<div class="stage-top"><div><div class="eyebrow">Assembly / millimetres</div><div id="viewname" class="viewname">Compact construction</div></div><div class="badge">T02 / Prototype</div></div>
 <div class="count" id="meshcount"></div><canvas id="axis" class="axis" width="130" height="130" aria-hidden="true"></canvas>
-<div class="view-buttons" role="group" aria-label="View presets"><button class="tiny" data-view="front" aria-pressed="false">Front</button><button class="tiny" data-view="back" aria-pressed="false">Rear</button><button class="tiny" data-view="inside" aria-pressed="false">Inside</button><button class="tiny" data-view="iso" aria-pressed="true">3D</button><button class="tiny icon-button" id="reset" title="Reset view" aria-label="Reset view"></button></div>
+<div class="view-buttons" role="group" aria-label="View presets"><button class="tiny" data-view="front" aria-pressed="false">Front</button><button class="tiny" data-view="back" aria-pressed="false">Rear</button><button class="tiny" data-view="inside" aria-pressed="false">Inside</button><button class="tiny" data-view="ports" aria-pressed="false">Ports</button><button class="tiny" data-view="iso" aria-pressed="true">3D</button><button class="tiny icon-button" id="reset" title="Reset view" aria-label="Reset view"></button></div>
 <div class="stage-bottom"><div class="dimension"><span id="dimensions"></span><small>Length x width x thickness / mm</small></div><div><button class="tiny icon-button" id="zoom-out" title="Zoom out" aria-label="Zoom out" style="pointer-events:auto"></button> <button class="tiny icon-button" id="zoom-in" title="Zoom in" aria-label="Zoom in" style="pointer-events:auto"></button></div></div>
 <div class="error" id="error" role="alert">This preview requires WebGL. Open it in a browser with hardware acceleration enabled.</div>
 </section>
 <aside class="side">
-<div class="intro-block"><div class="eyebrow">MODEL 02 / TOUCH</div><h1 class="intro">mytunas</h1><div class="subline">90 × 60 × 11.3 mm / Two shells<br>Landscape touch UI / 3.5 mm audio</div></div>
+<div class="intro-block"><div class="eyebrow">MODEL 02 / TOUCH</div><h1 class="intro">mytunas</h1><div class="subline">52 × 132 × 10.4 mm / Two shells<br>Landscape screen / Bottom headphone jack</div></div>
 <div class="section"><label class="label" for="explode"><span>EXPLODED ASSEMBLY</span><output id="explode-out">0%</output></label><input id="explode" class="range" type="range" min="0" max="100" value="0"><div class="range-labels"><span>ASSEMBLED</span><span>SEPARATED</span></div></div>
-<div class="section"><div class="label">VISIBLE LAYERS</div><div class="checks"><label class="check">Shells + tray<input type="checkbox" data-group="shell" checked></label><label class="check">Components<input type="checkbox" data-group="components" checked></label><label class="check">Technical outlines<input id="outlines" type="checkbox"></label></div></div>
-<div class="section parts-section"><div class="label">PARTS / 15</div><div class="legend" id="legend"></div></div>
+<div class="section"><div class="label">VISIBLE LAYERS</div><div class="checks"><label class="check">Shells + carrier<input type="checkbox" data-group="shell" checked></label><label class="check">Components<input type="checkbox" data-group="components" checked></label><label class="check">Technical outlines<input id="outlines" type="checkbox"></label></div></div>
+<div class="section parts-section"><div class="label">ASSEMBLY PARTS</div><div class="legend" id="legend"></div></div>
 </aside></main>
 <footer class="footer"><p>Conditional dimensions. <a href="HARDWARE_AUDIT.md">Hardware audit</a> &middot; <a href="README.md">Design notes</a> &middot; <a href="scan/preview.html">Display scan</a></p><div class="offline">OFFLINE / EMBEDDED GEOMETRY</div></footer>
 </div>

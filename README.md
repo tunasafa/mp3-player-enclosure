@@ -2,11 +2,11 @@
 
 > *I got tired of renting my music.*
 
-**Model 02 is now in development:** [mytunas touch / T01](touchscreen_01/README.md)
- is a **90 × 60 × 11.3 mm landscape touchscreen concept**, with no clickwheel.
-[Open the T01 interactive 3D viewer](touchscreen_01/preview.html) or click its preview image:
+**Model 02 is now in development:** [mytunas touch / T02](touchscreen_01/README.md)
+ is a **52 × 132 × 10.4 mm touchscreen prototype with a bottom headphone jack**, with no clickwheel.
+[Open the T02 interactive 3D viewer](touchscreen_01/preview.html) or click its preview image:
 
-[![Interactive T01 touchscreen model](touchscreen_01/preview_iso.png)](touchscreen_01/preview.html)
+[![Interactive T02 touchscreen model](touchscreen_01/preview_iso.png)](touchscreen_01/preview.html)
 
 When the repository is viewed through GitHub Pages, use the hosted URL:
 `https://tunasafa.github.io/mp3-player-enclosure/touchscreen_01/preview.html`
@@ -14,7 +14,7 @@ When the repository is viewed through GitHub Pages, use the hosted URL:
 Open its
 [dimensioned layout](touchscreen_01/design_overview.pdf) or
 [hardware audit and corrected pin allocation](touchscreen_01/HARDWARE_AUDIT.md).
-Panel, battery and audio-board measurements remain provisional. The P04
+The Adafruit and XIAO use manufacturer CAD; panel, flex, SD and finished-pack fit remain provisional. The P04
 clickwheel model below remains available separately.
 
 ---

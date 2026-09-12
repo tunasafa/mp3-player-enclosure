@@ -13,8 +13,24 @@ try {
  await page.goto(pathToFileURL(join(root,'preview.html')).href);
  await page.waitForFunction(()=>window.T01);
  const info=await page.evaluate(()=>T01.getInspection());
- assert(info.validated);assert.equal(info.ids.length,15);assert(!info.ids.some(id=>/wheel|fpc8/.test(id)));
+ assert(info.validated);assert.equal(info.ids.length,20);assert(!info.ids.some(id=>/wheel|fpc8/.test(id)));
  assert.equal(info.screen.parent,'touch_glass');
+ assert(info.screen.width>info.screen.height,'Screen is not landscape');
+ assert.deepEqual(info.validation.collisions,[]);assert.deepEqual(info.validation.reserve_collisions,[]);
+ assert.deepEqual(info.validation.outside_case,[]);assert.deepEqual(info.validation.port_wall_obstructions,[]);
+ assert.equal(info.validation.display_rear_loading_sweep_intersection_mm3,0);
+ assert.equal(info.validation.ports.jack.edge,'bottom');
+ assert(Math.abs(info.validation.ports.jack.center[0])<0.001);
+ assert(Math.abs(info.validation.ports.jack.center[1]+info.parameters.body.length/2-.4)<.001);
+ assert.equal(info.validation.ports.usb.edge,'right');assert.equal(info.validation.ports.microsd.edge,'left');
+ assert(info.parameters.battery.center[1]>info.parameters.electronics.find(e=>e.id==='audio').center[1]);
+ let uiCount=0;
+ for(const part of info.geometry){
+  assert.equal(part.physicalMeshes,part.expectedMeshes,`Duplicate physical geometry: ${part.id}`);
+  for(let side=0;side<2;side++)for(let axis=0;axis<3;axis++)assert(Math.abs(part.bounds[side][axis]-part.expected[side][axis])<.09,`Viewer/CAD bounds diverge: ${part.id}`);
+  uiCount+=part.surfaces.filter(s=>s==='touch-ui').length;
+ }
+ assert.equal(uiCount,1,'Duplicate touch display surface');
  async function capture(name){
   await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
   const pixels=await page.evaluate(()=>{
@@ -30,12 +46,13 @@ try {
   await page.screenshot({path:join(root,name),fullPage:true});checks.push({name,pixels});
  }
  await capture('preview_iso.png');
- for(const view of ['front','back','inside']){await page.locator(`[data-view="${view}"]`).click();await capture(`preview_${view}.png`);}
+ for(const view of ['front','back','inside','ports']){await page.locator(`[data-view="${view}"]`).click();await capture(`preview_${view}.png`);}
  await page.locator('[data-view="iso"]').click();
  await page.locator('#explode').fill('65');await capture('preview_exploded.png');
+ await page.locator('#explode').fill('100');await capture('preview_exploded_full.png');
  await page.locator('#reset').click();
  await page.locator('[data-part="battery"]').click();assert((await page.evaluate(()=>T01.getState())).hidden.includes('battery'));
- await page.locator('#reset').click();assert.equal((await page.evaluate(()=>T01.getState())).visible,15);
+ await page.locator('#reset').click();assert.equal((await page.evaluate(()=>T01.getState())).visible,info.ids.length);
  await page.setViewportSize({width:390,height:844});await capture('preview_mobile.png');
  await page.locator('[data-view="inside"]').click();await capture('preview_mobile_inside.png');
  await page.setViewportSize({width:1200,height:950});
@@ -47,6 +64,6 @@ try {
  await page.waitForTimeout(400);
  await page.screenshot({path:join(root,'scan/preview_check.png'),fullPage:true});
  assert.deepEqual(errors,[]);assert.deepEqual(requests,[]);
- await writeFile(join(root,'viewer_validation.json'),JSON.stringify({passed:true,errors,externalRequests:requests,checks},null,2)+'\n');
+ await writeFile(join(root,'viewer_validation.json'),JSON.stringify({passed:true,variant:'T02_bottom_jack',parameter_sha256:info.validation.parameter_sha256,geometry:info.geometry,ports:info.validation.ports,errors,externalRequests:requests,checks},null,2)+'\n');
  console.log('PASS: desktop/mobile views, exploded assembly, part toggles, no clipping/errors/network requests');
 } finally {await browser.close();}

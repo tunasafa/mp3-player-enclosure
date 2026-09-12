@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { createElement, RotateCcw, ZoomIn, ZoomOut } from 'lucide';
 
@@ -50,67 +49,9 @@ let yaw = -0.50, pitch = -0.14, zoom = 1, explode = 0, outline = false;
 let view = 'iso', dirty = false;
 
 const material = (color, metalness = 0, roughness = 0.55) => new THREE.MeshStandardMaterial({ color, metalness, roughness });
-const mats = {
-  pcb: material('#17664e', 0.05, 0.6), blue: material('#175d9a', 0.06, 0.6),
-  black: material('#111820', 0, 0.7), dark: material('#30363b', 0.1, 0.4),
-  silver: material('#b8c2cc', 0.86, 0.28), solder: material('#b6bec1', 0.8, 0.37),
-  gold: material('#d4aa45', 0.82, 0.27), copper: material('#ae782d', 0.7, 0.42),
-  ceramic: material('#a99573', 0, 0.6), white: material('#e9e8e3', 0, 0.4),
-  wheel: material('#d3d7d9', 0.03, 0.4), flex: material('#ba6d18', 0.2, 0.42),
-  tape: material('#eab128', 0.15, 0.3), red: material('#be2534', 0, 0.58),
-};
-function mesh(group, geometry, mat, position = [0, 0, 0], name = '') {
-  const item = new THREE.Mesh(geometry, mat);
-  item.position.set(...position);
-  item.name = name;
-  group.add(item);
-  return item;
-}
-function box(group, size, position, mat, radius = 0) {
-  const geometry = radius ? new RoundedBoxGeometry(...size, 2, Math.min(radius, ...size.map(n => n / 2 - 0.001))) : new THREE.BoxGeometry(...size);
-  return mesh(group, geometry, mat, position);
-}
-function cylinder(group, radius, height, position, mat, segments = 48) {
-  const geometry = new THREE.CylinderGeometry(radius, radius, height, segments);
-  geometry.rotateX(Math.PI / 2);
-  return mesh(group, geometry, mat, position);
-}
-function ring(group, outer, inner, position, mat) {
-  return mesh(group, new THREE.RingGeometry(inner, outer, 32), mat, position);
-}
-function path(group, points, radius, mat) {
-  const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)), false, 'centripetal');
-  return mesh(group, new THREE.TubeGeometry(curve, 32, radius, 7, false), mat);
-}
-function ribbon(group, points, width) {
-  const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)));
-  const vertices = [], indices = [];
-  for (let i = 0; i <= 32; i++) {
-    const p = curve.getPoint(i / 32);
-    vertices.push(p.x - width / 2, p.y, p.z, p.x + width / 2, p.y, p.z);
-    if (i < 32) { const n = i * 2; indices.push(n, n + 1, n + 2, n + 1, n + 3, n + 2); }
-  }
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-  geometry.setIndex(indices); geometry.computeVertexNormals();
-  const mat = mats.flex.clone(); mat.side = THREE.DoubleSide;
-  mesh(group, geometry, mat);
-  for (let i = 0; i < Math.min(8, Math.max(2, Math.round(width))); i++) {
-    path(group, curve.getPoints(16).map(p => [p.x + (i - 3.5) * width / 8, p.y, p.z + .045]), .035, mats.copper);
-  }
-}
-function board(group,width,height,thickness,position,mat,holes=[]) {
-  box(group,[width,height,thickness],position,mat,.7);
-  for (const [hx,hy,r] of holes) { ring(group,r+.45,r,[position[0]+hx,position[1]+hy,position[2]+thickness+.02],mats.gold); }
-}
-function passive(group,x,y,z,width=1.4,length=.75,mat=mats.ceramic) {
-  box(group,[width,length,.45],[x,y,z+.225],mat,.08);
-  for (const dx of [-width*.4,width*.4]) box(group,[width*.22,length+.05,.48],[x+dx,y,z+.24],mats.solder);
-}
-function chip(group,x,y,z,width,height) {
-  box(group,[width,height,.65],[x,y,z+.325],mats.black,.12);
-  for (let i=0;i<5;i++) for (const side of [-1,1]) box(group,[.7,.25,.18],[x+side*(width/2+.2),y+(i-2)*height/5,z+.1],mats.solder);
-  cylinder(group,.16,.02,[x-width/2+.45,y+height/2-.45,z+.66],mats.dark,12);
+function mesh(group, geometry, mat, position = [0,0,0], name = '') {
+  const item = new THREE.Mesh(geometry, mat); item.position.set(...position);
+  item.name = name; group.add(item); return item;
 }
 function texture(width, height, draw) {
   const c = document.createElement('canvas');
@@ -134,8 +75,8 @@ function label(group, lines, width, height, position, back = true, background = 
     ctx.fillStyle = color;
     ctx.textAlign = 'center';
     lines.forEach((line, i) => {
-      ctx.font = `${i ? 26 : 36}px Arial`;
-      ctx.fillText(line, w / 2, 56 + i * 48, w - 30);
+      ctx.font = `${lines.length===1 ? 96 : i ? 26 : 36}px Arial`;
+      ctx.fillText(line, w / 2, lines.length===1 ? 165 : 56 + i * 48, w - 30);
     });
   });
   return surface(group, width, height, position, map, back);
@@ -155,81 +96,40 @@ for (const spec of data.parts) {
   const group = new THREE.Group(); group.name = spec.id; group.userData = spec;
   parts.set(spec.id, group); assembly.add(group);
   if (spec.batches) for (const batch of spec.batches) imported(group, batch.positions,
-    material(new THREE.Color().setRGB(...batch.color, THREE.LinearSRGBColorSpace), .35, .5));
+    material(batch.color_linear ? new THREE.Color().setRGB(...batch.color_linear, THREE.LinearSRGBColorSpace) : batch.color, .22, .48));
   else imported(group, spec.positions, material(spec.color, spec.id === 'battery' ? .45 : .06, .52));
   if (spec.engraving_positions) imported(group, spec.engraving_positions, material('#344d49', .1, .7));
 }
 const d = parameters.display, aw = data.validation.derived.active_area_mm[1], ah = data.validation.derived.active_area_mm[0];
-const screen = texture(480, 592, (ctx,w,h) => {
-  ctx.fillStyle='#0c2021'; ctx.fillRect(0,0,w,h);
-  ctx.fillStyle='#9cbbb1'; ctx.font='20px Arial'; ctx.fillText('MY LIBRARY',30,36);
-  ctx.fillStyle='#b3e6c9'; ctx.fillRect(394,21,43,17);ctx.fillRect(440,26,4,7);
-  const grad=ctx.createLinearGradient(80,70,400,350); grad.addColorStop(0,'#d3e7b8');grad.addColorStop(.5,'#549c88');grad.addColorStop(1,'#153f48');
-  ctx.fillStyle=grad;ctx.beginPath();ctx.roundRect(84,65,312,266,14);ctx.fill();
-  ctx.save();ctx.beginPath();ctx.roundRect(84,65,312,266,14);ctx.clip();
-  for(let i=0;i<13;i++){ctx.strokeStyle=`rgba(235,247,210,${.08+i*.012})`;ctx.lineWidth=8;ctx.beginPath();ctx.arc(390,95,45+i*22,0,Math.PI*2);ctx.stroke();}ctx.restore();
-  ctx.fillStyle='#eff5e9';ctx.font='bold 27px Arial';ctx.fillText('A place of your own',30,377);
-  ctx.font='21px Arial';ctx.fillStyle='#93b4aa';ctx.fillText('mytunas / Local collection',30,408);
-  ctx.fillStyle='#31544b';ctx.fillRect(30,439,420,4);ctx.fillStyle='#bfdfab';ctx.fillRect(30,439,146,4);
-  ctx.font='17px Arial';ctx.fillStyle='#93b4aa';ctx.fillText('1:24',30,468);ctx.fillText('4:08',411,468);
-  ctx.fillStyle='#cfe8ba';ctx.beginPath();ctx.arc(240,519,34,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#10302b';ctx.fillRect(229,505,7,28);ctx.fillRect(245,505,7,28);
-  for(const x of [130,350]){ctx.fillStyle='#c0d3c5';ctx.beginPath();if(x<240){ctx.moveTo(x+9,507);ctx.lineTo(x-9,519);ctx.lineTo(x+9,531);}else{ctx.moveTo(x-9,507);ctx.lineTo(x+9,519);ctx.lineTo(x-9,531);}ctx.closePath();ctx.fill();ctx.fillRect(x<240?x-14:x+11,507,3,24);}
-  ctx.fillStyle='#6b9184';ctx.fillRect(185,575,110,4);
+const screen = texture(592,480,(ctx,w,h)=>{
+  ctx.fillStyle='#0b2226';ctx.fillRect(0,0,w,h);
+  ctx.fillStyle='#85aaa1';ctx.font='17px Arial';ctx.fillText('LOCAL COLLECTION',35,43);
+  ctx.fillStyle='#c4dfb8';ctx.fillRect(511,29,34,14);ctx.fillRect(547,33,3,6);
+  const gradient=ctx.createLinearGradient(38,85,260,335);gradient.addColorStop(0,'#c9dba0');gradient.addColorStop(.45,'#659e82');gradient.addColorStop(1,'#1f525a');
+  ctx.fillStyle=gradient;ctx.beginPath();ctx.roundRect(35,80,232,238,14);ctx.fill();
+  ctx.save();ctx.beginPath();ctx.roundRect(35,80,232,238,14);ctx.clip();
+  for(let i=0;i<12;i++){ctx.strokeStyle='rgba(237,249,208,.14)';ctx.lineWidth=5;ctx.beginPath();ctx.arc(240,92,25+i*22,0,Math.PI*2);ctx.stroke();}ctx.restore();
+  ctx.fillStyle='#d8e8d5';ctx.font='16px Arial';ctx.fillText('NOW PLAYING',300,106);
+  ctx.fillStyle='#eff3e7';ctx.font='bold 29px Arial';ctx.fillText('A place of',300,154);ctx.fillText('your own',300,191);
+  ctx.font='18px Arial';ctx.fillStyle='#8daf9f';ctx.fillText('mytunas',300,227);
+  ctx.fillStyle='#c8e1b8';ctx.beginPath();ctx.arc(412,287,28,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#153931';ctx.fillRect(403,276,5,23);ctx.fillRect(416,276,5,23);
+  for(const x of [333,490]){ctx.fillStyle='#bad0bc';ctx.beginPath();ctx.moveTo(x+(x<400?7:-7),277);ctx.lineTo(x+(x<400?-8:8),287);ctx.lineTo(x+(x<400?7:-7),297);ctx.fill();}
+  ctx.fillStyle='#31574f';ctx.fillRect(35,359,520,4);ctx.fillStyle='#c5dfad';ctx.fillRect(35,359,185,4);
+  ctx.font='16px Arial';ctx.fillStyle='#91afa0';ctx.fillText('1:24',35,389);ctx.fillText('4:08',522,389);
+  ctx.fillStyle='#719487';ctx.font='15px Arial';ctx.fillText('LIBRARY',60,440);ctx.fillText('PLAYING',255,440);ctx.fillText('SETTINGS',458,440);
 });
-const lcd=surface(parts.get('touch_glass'),aw,ah,[...d.center,d.glass_z-.012],screen,false,false);
-lcd.name='touch-ui';
-for(const id of ['battery','audio','interface_pcb','microsd','display_zif','touch_zif','control']){
-  const e=id==='battery'?parameters.battery:parameters.electronics.find(e=>e.id===id);
-  const text=id==='battery'?['PROTECTED LiPo','34 × 30 × 3.4','CAPACITY TBD']:id==='audio'?['AUDIO + JACK','18 × 22 × 5.2','DESIGN ALLOWANCE']:id==='interface_pcb'?['CUSTOM INTERFACE']:id==='microsd'?['microSD']:id==='control'?['I/O + POWER']:id==='display_zif'?['DISPLAY / 15P']:['TOUCH / 6P'];
-  label(parts.get(id),text,Math.min(e.size[0]-.6,28),Math.min(e.size[1]-.4,15),[...e.center,e.z+e.size[2]+.014],true,null,id==='battery'?'#273c3b':'#eff4dc');
-}
-const hint=label(parts.get('front_bezel'),['mytunas'],21,6,[0,-28,-.015],false,null,'#446057');
-
-// Detailed visual assembly. These meshes sit inside the validated envelopes and
-// are presentation geometry; the parametric CAD remains the fit authority.
-function detailedDisplay(group) {
-  const [x,y]=d.center,z=d.glass_z;
-  box(group,[d.glass_size[0],d.glass_size[1],d.glass_size[2]],[x,y,z+d.glass_size[2]/2],mats.silver,2.5);
-  box(group,[d.glass_size[0]-.8,d.glass_size[1]-.8,.08],[x,y,z+d.glass_size[2]+.05],mats.black,2.3);
-  box(group,[d.glass_size[0]-1.4,d.glass_size[1]-1.4,d.sensor_thickness],[x,y,z+d.glass_size[2]+d.sensor_thickness/2+.07],mats.wheel,2.3);
-  const ui=surface(group,aw,ah,[x,y,z+d.glass_size[2]+d.sensor_thickness+.08],screen,false,false);ui.name='touch-ui';
-  const lcdz=d.lcd_z; box(group,[d.lcd_size[0],d.lcd_size[1],d.lcd_size[2]],[x,y,lcdz+d.lcd_size[2]/2],mats.silver,1.6);
-  box(group,[d.lcd_size[0]-1.4,d.lcd_size[1]-1.4,.3],[x,y,lcdz+d.lcd_size[2]+.05],mats.black,1.2);
-  ribbon(group,[[x-5,y-d.glass_size[1]/2,z+1.2],[x-5,y-d.glass_size[1]/2-3,z+1.1],[x-6,y-d.glass_size[1]/2-7,z+.8]],4.5);
-  ribbon(group,[[x+8,y-d.glass_size[1]/2,z+1.2],[x+9,y-d.glass_size[1]/2-3,z+1.1],[x+9,y-d.glass_size[1]/2-7,z+.8]],3.2);
-}
-function detailedBattery(group) {
-  const b=parameters.battery,[x,y]=b.center,z=b.z;
-  box(group,[b.size[0],b.size[1],b.size[2]],[x,y,z+b.size[2]/2],mats.white,1.8);
-  box(group,[b.size[0]-.8,b.size[1]-.8,.12],[x,y,z+b.size[2]-.08],mats.tape,1.5);
-  label(group,['LiPo 1S','34 × 30 × 3.4','CAPACITY TBD'],22,11,[x,y,z+b.size[2]+.03],true,'#263d3b','#e6f1dc');
-  ribbon(group,[[x,y+b.size[1]/2,z+b.size[2]/2],[x+2,y+b.size[1]/2+2,z+b.size[2]/2],[x+6,y+b.size[1]/2+3,z+b.size[2]/2]],1.2);
-  box(group,[1,1.2,.8],[x+5,y+b.size[1]/2+3,z+b.size[2]/2],mats.red,.15);box(group,[1,1.2,.8],[x+6.2,y+b.size[1]/2+3,z+b.size[2]/2],mats.black,.15);
-}
-function detailedAudio(group) {
-  const e=parameters.electronics.find(e=>e.id==='audio'),[x,y]=e.center,z=e.z;
-  board(group,e.size[0],e.size[1],1,[x,y,z],mats.pcb,[[e.size[0]/2-2,e.size[1]/2-2,1]]);chip(group,x,y+2,z+1,7,5);chip(group,x-5,y-5,z+1,3,2);for(let i=0;i<5;i++)passive(group,x-5+i*2,y+7,z+1);label(group,['AUDIO','DAC + HP'],13,6,[x,y,z+1.7],true,null,'#dcebe2');
-  // The #6309 jack is on the right edge in this landscape placement. The CAD
-  // aperture is cut on that same edge, with a tight 5.2 mm circular mouth.
-  cylinder(group,2.3,4,[x+e.size[0]/2+1.5,y,z+2.6],mats.silver,32);cylinder(group,1.5,4.1,[x+e.size[0]/2+1.5,y,z+2.6],mats.black,32);
-}
-function detailedInterface(group) {
-  const e=parameters.electronics.find(e=>e.id==='interface_pcb'),[x,y]=e.center,z=e.z;
-  board(group,e.size[0],e.size[1],e.size[2],[x,y,z],mats.pcb,[[e.size[0]/2-2,e.size[1]/2-2,1]]);chip(group,x-8,y,z+.8,5,3);chip(group,x+2,y+3,z+.8,4,2.5);for(let i=0;i<10;i++)passive(group,x-12+(i%5)*5,y-5+Math.floor(i/5)*8,z+.8,.9,.6);label(group,['CUSTOM I/O','SPI + I2C'],12,5,[x,y,z+1.1],true,null,'#dcebe2');
-}
-function detailedMicroSD(group) {
-  const e=parameters.electronics.find(e=>e.id==='microsd'),[x,y]=e.center,z=e.z;
-  board(group,e.size[0],e.size[1],.8,[x,y,z],mats.blue);box(group,[14,10,1.7],[x,y,z+1.25],mats.silver,.8);box(group,[12,8,.25],[x,y-1,z+2.12],mats.black,.5);box(group,[10,6,.35],[x,y+1,z+2.3],mats.blue,.3);for(let i=0;i<8;i++)box(group,[.55,4,.06],[x-3.5+i,y-1,z+2.5],mats.gold,.05);
-}
-function detailedZif(group,id) {
-  const e=parameters.electronics.find(e=>e.id===id),[x,y]=e.center,z=e.z,contacts=id==='touch_zif'?6:15;
-  box(group,[e.size[0],e.size[1],1],[x,y,z+.5],mats.black,.35);box(group,[e.size[0]-.7,e.size[1]-.8,.3],[x,y,z+1.05],mats.silver,.15);
-  for(let i=0;i<contacts;i++)box(group,[.18,.9,.08],[x+(i-(contacts-1)/2)*(.5),y,z+1.23],mats.gold,.03);
-  ribbon(group,[[x,y+e.size[1]/2,z+1.2],[x,y+e.size[1]/2+3,z+1.2],[x+1,y+e.size[1]/2+5,z+1]],id==='touch_zif'?3:4.5);
-}
-function detailedControl(group) { const e=parameters.electronics.find(e=>e.id==='control'),[x,y]=e.center,z=e.z;board(group,e.size[0],e.size[1],.7,[x,y,z],mats.pcb);chip(group,x,y,z+.7,5,2.2); }
-detailedDisplay(parts.get('touch_glass'));detailedBattery(parts.get('battery'));detailedAudio(parts.get('audio'));detailedInterface(parts.get('interface_pcb'));detailedMicroSD(parts.get('microsd'));detailedZif(parts.get('display_zif'),'display_zif');detailedZif(parts.get('touch_zif'),'touch_zif');detailedControl(parts.get('control'));
+// Rounded active estimate respects the large corner radii in the actual photo.
+// One display surface only; all four physical layers come from CAD.
+const uiShape=new THREE.Shape(),rw=aw,rh=ah,rr=5.3;
+uiShape.moveTo(-rw/2+rr,-rh/2);uiShape.lineTo(rw/2-rr,-rh/2);uiShape.quadraticCurveTo(rw/2,-rh/2,rw/2,-rh/2+rr);uiShape.lineTo(rw/2,rh/2-rr);uiShape.quadraticCurveTo(rw/2,rh/2,rw/2-rr,rh/2);uiShape.lineTo(-rw/2+rr,rh/2);uiShape.quadraticCurveTo(-rw/2,rh/2,-rw/2,rh/2-rr);uiShape.lineTo(-rw/2,-rh/2+rr);uiShape.quadraticCurveTo(-rw/2,-rh/2,-rw/2+rr,-rh/2);
+const uiGeometry=new THREE.ShapeGeometry(uiShape,20),uv=uiGeometry.attributes.uv,pos=uiGeometry.attributes.position;
+for(let i=0;i<uv.count;i++)uv.setXY(i,(pos.getX(i)+rw/2)/rw,(pos.getY(i)+rh/2)/rh);
+const lcd=mesh(parts.get('touch_glass'),uiGeometry,new THREE.MeshBasicMaterial({map:screen,side:THREE.BackSide,toneMapped:false}),[...d.center,d.glass_z-.012],'touch-ui');lcd.userData.surface=true;
+const b=parameters.battery;
+label(parts.get('battery'),['503040 / 1S LiPo','600 mAh nominal','40 × 30 × 5 mm'],27,13,[...b.center,b.z+b.size[2]+.012],true,'#e0e5d8','#304a45');
+label(parts.get('lcd'),['JL-M201B002-01','LCD + BACKLIGHT'],22,8,[...d.center,d.lcd_z+d.lcd_size[2]+.012],true,null,'#465355');
+label(parts.get('front_bezel'),['mytunas'],23,7,[0,-23,-.012],false,null,'#405d54');
 for (const group of parts.values()) {
   group.traverse(item => {
     if (!item.isMesh || item.userData.surface || item.material.transparent) return;
@@ -242,7 +142,7 @@ for (const group of parts.values()) {
 function visibleParts() { return [...parts.values()].filter(p => p.visible); }
 function updateVisibility() {
   for (const [id, group] of parts) {
-    group.visible = groups[group.userData.group] && !hidden.has(id) && !(view === 'inside' && id === 'rear_shell');
+    group.visible = groups[group.userData.group] && !hidden.has(id) && !(view === 'inside' && ['rear_shell','case_screws'].includes(id));
     group.position.z = explode * 0.43 * group.userData.explode;
   }
   for (const lines of outlines) lines.visible = outline;
@@ -260,15 +160,14 @@ function render() {
   const w = canvas.clientWidth, h = canvas.clientHeight;
   renderer.setSize(w, h, false);
   const aspect = w / h;
-  const spread = explode / 100;
   const compact = w < 480;
-  const span = Math.max(compact ? 170 : 150, (view === 'inside' ? 85 : 94) / aspect) * (1 + spread * (aspect < 0.9 ? 0.55 : 0.17)) / zoom;
-  camera.left = -span * aspect / 2; camera.right = span * aspect / 2;
-  camera.top = span / 2; camera.bottom = -span / 2;
-  camera.updateProjectionMatrix();
-  orbit.rotation.set(pitch, yaw, 0, 'XYZ');
-  orbit.position.y = compact ? 8 : 0;
-  updateVisibility();
+  orbit.rotation.set(pitch,yaw,0,'XYZ');orbit.position.y=0;updateVisibility();orbit.updateMatrixWorld(true);
+  const fit=new THREE.Box3();for(const p of visibleParts())fit.union(new THREE.Box3().setFromObject(p));
+  const size=fit.getSize(new THREE.Vector3()),center=fit.getCenter(new THREE.Vector3());
+  // Reserve real stage space for controls; fit the visible exploded bounds.
+  const span=Math.max(size.y*(compact?1.75:1.48),size.x/aspect*1.28,80)/zoom;
+  camera.left=-span*aspect/2;camera.right=span*aspect/2;camera.top=span/2;camera.bottom=-span/2;
+  camera.position.set(center.x,center.y+(compact?3:0),400);camera.updateProjectionMatrix();
   renderer.render(scene, camera); axes();
   document.getElementById('meshcount').textContent = `${visibleParts().length} PARTS / ${renderer.info.render.triangles.toLocaleString()} TRIANGLES`;
 }
@@ -307,7 +206,7 @@ function updateControls() {
     c.checked = visible === members.length;
     c.indeterminate = visible > 0 && visible < members.length;
   });
-  document.getElementById('viewname').textContent = view === 'inside' ? 'Inside / rear shell removed' : explode ? 'Exploded assembly' : 'Touchscreen / T01';
+  document.getElementById('viewname').textContent = view === 'inside' ? 'Inside / rear shell removed' : explode ? 'Exploded assembly' : 'Touch / bottom-jack layout';
   invalidate();
 }
 document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => {
@@ -315,6 +214,7 @@ document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => {
   if (view === 'front') { yaw = 0; pitch = 0; }
   else if (view === 'back') { yaw = Math.PI; pitch = 0; }
   else if (view === 'inside') { yaw = Math.PI + 0.24; pitch = -0.16; groups.components = true; for (const [id, p] of parts) if (p.userData.group === 'components') hidden.delete(id); }
+  else if (view === 'ports') {yaw=-.55;pitch=-1.02;}
   else { yaw = -0.5; pitch = -0.14; }
   updateControls();
 });
@@ -378,7 +278,11 @@ canvas.addEventListener('webglcontextrestored', () => { document.getElementById(
 new ResizeObserver(invalidate).observe(canvas);
 updateControls();
 window.T01 = {
-  getState: () => ({variant:'T01_concept',view,explode,zoom,visible:visibleParts().length,hidden:[...hidden]}),
-  getInspection: () => ({parameters,ids:[...parts.keys()],screen:{width:aw,height:ah,parent: lcd.parent.name},validated:data.validation.passed}),
-  render:invalidate
+ getState:()=>({variant:'T02_bottom_jack',view,explode,zoom,visible:visibleParts().length,hidden:[...hidden]}),
+ getInspection:()=>({parameters,ids:[...parts.keys()],screen:{width:aw,height:ah,parent:lcd.parent.name},validated:data.validation.passed,validation:data.validation,
+ geometry:[...parts].map(([id,group])=>{
+  const physical=group.children.filter(m=>m.isMesh&&!m.userData.surface);const bound=new THREE.Box3();
+  let triangles=0;for(const m of physical){m.geometry.computeBoundingBox();bound.union(m.geometry.boundingBox);triangles+=m.geometry.attributes.position.count/3;}
+  return {id,bounds:[bound.min.toArray(),bound.max.toArray()],expected:group.userData.bounds_mm,physicalMeshes:physical.length,expectedMeshes:group.userData.batches.length,triangles,surfaces:group.children.filter(m=>m.userData.surface).map(m=>m.name)};
+ })}),render:invalidate
 };

@@ -14,21 +14,15 @@ working hypothesis, but **their pin order is unknown**. No new numbered touch
 pinout is inferred from connector size. The model now allocates a smaller
 six-pin touch ZIF, separate from the fifteen-pin display ZIF.
 
-T01 is now a landscape player. USB-C is on the lower edge; the microSD and
-headphone openings are on the right edge. The headphone opening is located from
-the Adafruit #6309 board envelope and jack axis in the assembly, rather than a
-generic centered hole. Exterior mouths are close fitting with blind internal
-reliefs for the connector bodies. They reduce exposed gaps but are not an IP
-seal; sealing requires a compatible gasket or plug.
+## T02 mechanical and audio update
 
-User layer estimates: cover glass 0.25 mm + touch sensor 0.70 mm = touch panel
-0.95 mm; LCD/backlight approximately 2.15 mm. This totals 3.10 mm without
-interlayer tape. T01 explicitly budgets another 0.20 mm of perimeter tape,
-making **3.30 mm**. These are approximate supplied specifications, not a
-verified manufacturer stack drawing. A reported 43 × 36 mm measurement is
-The user has now confirmed that the 43 × 36 mm measurement is the entire outer
-glass surface. T01 uses 36 × 43 mm for that envelope; the active-pixel aperture
-remains unmeasured.
+The latest user instruction places the battery above the intact Adafruit #6309, whose own jack faces the bottom wall. USB-C faces right and SD left. `geometry.py` derives the USB and jack axes from their manufacturer STEP coordinates, using the same rigid transforms as both CAD and viewer. Exterior openings are 9.4 × 3.7 mm (USB), 5 mm circular (jack), and 11.5 × 1.5 mm (SD). Blind internal reliefs preserve a 1 mm exterior lip. These are unsealed openings with no IP rating.
+
+The supplied display stack is 0.25 mm cover glass + 0.70 mm touch sensor + 0.20 mm allocated adhesive + 2.15 mm LCD/backlight = 3.30 mm. The user confirmed **43 × 36 mm outer glass**, modeled landscape. Active borders and approximately 7 mm glass corner radius remain estimated from the photographs. The right-side ribbon exits are observed; their inward folds, lengths, stiffeners and bend limits are not measured.
+
+The audio allowance is now an actual **Adafruit TLV320DAC3100 #6309**, with a published 33.7 × 25.4 × 7.1 mm envelope. The board requires I2C configuration and supports deriving its internal clock from I2S BCLK; it does not require a separate MCLK for this arrangement. Headphone operation can use its supported 3 V supply mode and its logic is 3.3 V. See [Adafruit's product specification](https://www.adafruit.com/product/6309). The ES9219/CS43131 discussion below audits the original proposal only; neither chip defines the current mechanical design.
+
+The battery is the nominal protected **503040 / 40 × 30 × 5 mm / 600 mAh** from the chart and P04 selection. Finished pack dimensions and protection/lead protrusions still need verification; the earlier unselected 3.4 mm battery is no longer used. The custom interface board and SD construction are provisional design allocations, explicitly distinguished from the two manufacturer CAD models.
 
 User follow-up identifies the donor as **T800 U2 / LJ737**, with an LJ736/JQ7011
 sibling-board association. This strengthens the working SPI hypothesis; the
@@ -140,10 +134,9 @@ no maximum stable SPI frequency is established for the salvaged panel.
   the guessed numbering alone.
 - Full glass outline, black-border widths, corner radius, total panel thickness,
   both tail exit positions/lengths, stiffeners, connector thickness and latch travel.
-- Actual DAC board schematic, maximum outline/height, clock, supply rails,
-  headphone load capability and jack axis/plug shoulder dimensions.
+- Verify the purchased Adafruit revision against the retained manufacturer CAD; measure the headphone plug shoulder and mounting-hole clearance.
 - Finished protected battery measurements and electrical ratings, including the
-  protection end and leads; capacity remains unspecified.
+  protection end and leads; 600 mAh is the nominal selected-pack rating, not a measured result.
 - A measured charging/current budget, sample fit, flex-fold trial, touch wake
   test and sustained audio + SD + redraw test.
 

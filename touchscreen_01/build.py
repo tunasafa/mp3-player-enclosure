@@ -1,184 +1,109 @@
-"""Parametric T01 packaging concept. All dimensions in mm, Z front -> rear.
-Run from any directory with ../.venv/bin/python touchscreen_01/build.py.
-Unknown component envelopes are requirements on future hardware, not fitted products.
+"""Strict nominal-fit build. CAD and viewer share geometry.py and its transforms.
+No collision exemptions; failed builds cannot generate a new viewer.
 """
-from pathlib import Path
-import itertools
-import json
-import math
-import hashlib
+import base64, hashlib, itertools, json, math, sys
+import numpy as np
 import cadquery as cq
 import trimesh
-from cadquery.occ_impl.shapes import sortWiresByBuildOrder
+from geometry import *
+OUT=ROOT/'designs/T02_bottom_jack'
 
-ROOT = Path(__file__).resolve().parent
-P = json.loads((ROOT / 'parameters.json').read_text())
-B, D, F = P['body'], P['display'], P['fasteners']
-W,L,T = B['width'], B['length'], B['thickness']
-OUT = ROOT/'designs/T01_concept'
-TRAY_Z = D['lcd_z']+D['lcd_size'][2]+.2
-
-def block(w,l,h,x=0,y=0,z=0):
-    return cq.Workplane('XY').box(w,l,h,centered=(True,True,False)).translate((x,y,z))
-
-def rounded(w,l,h,r=1,x=0,y=0,z=0):
-    return block(w,l,h).edges('|Z').fillet(r).translate((x,y,z))
-
-def cyl(r,h,x=0,y=0,z=0):
-    return cq.Workplane('XY').circle(r).extrude(h).translate((x,y,z))
-
-def cavity(z,h):
-    return rounded(W-2*B['wall'],L-2*B['wall'],h,B['corner_radius']-B['wall'],z=z)
-
-def bottom_port(w,h,x,z):
-    return rounded(w,h,5,min(.7,h/2-.01)).rotate((0,0,0),(1,0,0),90).translate((x,-L/2+3,z))
-
-def right_port(w,h,y,z):
-    # Aperture axis is X: a close-fit side opening for USB/card hardware.
-    return rounded(w,h,7,min(.7,h/2-.01)).rotate((0,0,0),(1,1,1),120).translate((W/2-3,y,z))
-
-def placed_xiao():
-    e = next(e for e in P['electronics'] if e['id']=='xiao')
-    return cq.importers.importStep(str(ROOT.parent/'revision_04/vendor/XIAO-ESP32S3 v2.step')).rotate(
-        (0,0,0),(1,0,0),90).rotate((0,0,0),(0,0,1),-90).translate(
-        (e['center'][0]-6.1114,e['center'][1]+1.80475,e['z']+.25))
-
-def ports(a):
-    u,j,s = P['ports']['usb'],P['ports']['jack'],P['ports']['microsd']
-    a = a.cut(bottom_port(u['width'],u['height'],u['x'],u['z']))
-    jack = cyl(j['diameter']/2,7).rotate((0,0,0),(0,1,0),90).translate((W/2-3,j['y'],j['z']))
-    a = a.cut(jack)
-    slot = right_port(s['width'],s['height'],s['y'],s['z'])
-    return a.cut(slot)
-
-def boss(x,y,z,h):
-    return cyl(F['boss_radius'],h,x,y,z).union(block(2.2,2,h,math.copysign(W/2-1.2,x),y,z))
-
-def branding(a):
-    art = json.loads((ROOT.parent/'revision_04/assets/mytunas-branding.json').read_text())
-    for key,width,cy in [('logo',P['branding']['logo_width'],9),('wordmark',P['branding']['wordmark_width'],-7)]:
-        wires=[]
-        for contour in art[key]:
-            wires.append(cq.Wire.makePolygon([cq.Vector(-x*width,y*width+cy,T-P['branding']['depth']) for x,y in contour[:-1]],close=True))
-        wires.sort(key=lambda w:cq.Face.makeFromWires(w).Area(),reverse=True)
-        for outer,*holes in sortWiresByBuildOrder(wires):
-            face=cq.Face.makeFromWires(outer,holes)
-            a=a.cut(cq.Solid.extrudeLinear(face,(0,0,P['branding']['depth']+.1)))
-    return a.clean()
-
-def shells():
-    front=rounded(W,L,B['front_height'],B['corner_radius']).cut(cavity(B['skin'],B['front_height']+1))
-    # Rear-loaded digitizer, exposed touch glass; 0.2 mm perimeter adhesive gap.
-    front=front.cut(rounded(D['glass_size'][0]+2*D['pocket_clearance'],D['glass_size'][1]+2*D['pocket_clearance'],5,D['glass_corner_radius'],*D['center'],D['lip_z']))
-    front=front.cut(rounded(*D['opening'],6,2.4,*D['center'],-1))
-    # Removable battery tray permits rear-loading glass before installing the tray.
-    b=P['battery']; x,y=b['center']; w,l,_=b['size']
-    shelf=block(39.5,l+1,.6,x,y,TRAY_Z).cut(block(w-2,l-3,1,x,y,TRAY_Z-.1))
-    for sx in (-1,1):
-        front=front.union(block(3.7,l+1,TRAY_Z-.2-1.4,sx*(W/2-2.85),y,1.4))
-    # Front-mounted board lands: 0.2 mm insulating adhesive gap below each PCB.
-    for e in P['electronics']:
-        if e['id'] not in ('xiao','audio','interface_pcb'): continue
-        ex,ey=e['center']; ew,el,_=e['size']
-        for sx in (-1,1):
-            for sy in (-1,1):
-                if e['id']=='interface_pcb':
-                    if sy==1: continue  # Keep the glass rear-loading path unobstructed.
-                    front=front.union(block(9,2.2,.2,sx*19.5,ey+sy*(el/2-2),e['z']-.4))
-                else:
-                    front=front.union(block(2.2,2.2,e['z']-.2-.9,ex+sx*(ew/2-2),ey+sy*(el/2-2),.9))
-    # Locating fences oppose connector insertion. Adhesive holds lift-out direction.
-    for e in P['electronics']:
-        if e['id'] in ('xiao','audio'):
-            x,y=e['center'];w,l,_=e['size']
-            front=front.union(block(w-5,.8,2.4,x,y+l/2+.8,.9))
-    front=front.union(block(.8,4,1.4,-18.8,-15,TRAY_Z))
-    start=B['front_height']+B['seam_gap']
-    rear=rounded(W,L,T-start,B['corner_radius'],z=start).cut(cavity(start-1,T-B['skin']-start+1))
-    for sx in (-1,1):
-        for y in F['y']:
-            x=sx*F['x']
-            front=front.union(boss(x,y,TRAY_Z-.05,F['mating_z']-TRAY_Z+.05))
-            front=front.cut(cyl(F['pilot_diameter']/2,5,x,y,F['pilot_bottom_z']))
-            rear=rear.cut(boss(x,y,start-.1,F['mating_z']-start+.1))
-            rear=rear.union(boss(x,y,F['mating_z'],T-.5-F['mating_z']))
-            rear=rear.cut(cyl(F['clearance_diameter']/2,T+1,x,y,0))
-            rear=rear.cut(cyl(F['head_diameter']/2,3,x,y,F['head_seat_z']))
-    # Interrupted seam tongues (0.2 mm side clearance), well outside battery.
-    for sx in (-1,1):
-        tongue=block(.7,12,1.4,sx*(W/2-2),10,B['front_height']-.5)
-        front=front.union(tongue).union(block(1.4,12,.4,sx*(W/2-1.55),10,B['front_height']-.5))
-        rear=rear.cut(block(1.1,12.4,1.8,sx*(W/2-2),10,B['front_height']-.7))
-    return {'front_bezel':ports(front).clean(),'rear_shell':branding(ports(rear)),'battery_tray':shelf}
-
-def references():
-    c={'touch_glass':rounded(*D['glass_size'],D['glass_corner_radius'],*D['center'],D['glass_z']),
-       'touch_sensor':rounded(D['glass_size'][0],D['glass_size'][1],D['sensor_thickness'],D['glass_corner_radius'],*D['center'],D['glass_z']+D['glass_size'][2]),
-       'touch_lcd_tape':rounded(D['lcd_size'][0],D['lcd_size'][1],D['tape_thickness'],1,*D['center'],D['lcd_z']-D['tape_thickness']).cut(block(D['lcd_size'][0]-2,D['lcd_size'][1]-2,1,*D['center'],D['lcd_z']-.5)),
-       'lcd':rounded(*D['lcd_size'],1,*D['center'],D['lcd_z']),
-       'battery':block(*P['battery']['size'],*P['battery']['center'],P['battery']['z'])}
-    for e in P['electronics']: c[e['id']]=block(*e['size'],*e['center'],e['z'])
-    # Onboard audio jack mouth extends beyond the conceptual PCB envelope.
-    j=P['ports']['jack']
-    mouth=cyl(2.3,1).rotate((0,0,0),(0,1,0),90).translate((W/2-1,j['y'],j['z']))
-    c['audio']=c['audio'].union(mouth)
-    c['xiao']=placed_xiao()
-    return c
-
+def packed(a):return base64.b64encode(np.asarray(a,dtype='<f4').tobytes()).decode('ascii')
+def triangles(s):
+ vertices,faces=s.val().tessellate(.04,.12)
+ return np.array([v.toTuple() for v in vertices])[np.array(faces)]
+def intersection(a,b):
+ aa,bb=bounds(a),bounds(b)
+ if any(aa[1][i]<=bb[0][i]+1e-7 or bb[1][i]<=aa[0][i]+1e-7 for i in range(3)):return 0.
+ return max(0,a.intersect(b).val().Volume())
 def interference(items):
-    result=[]
-    for (an,a),(bn,b) in itertools.combinations(items.items(),2):
-        ba,bb=a.val().BoundingBox(),b.val().BoundingBox()
-        if any(getattr(ba,k+'max') <= getattr(bb,k+'min')+1e-6 or getattr(bb,k+'max') <= getattr(ba,k+'min')+1e-6 for k in 'xyz'): continue
-        v=a.intersect(b).val().Volume()
-        if v>.001: result.append({'a':an,'b':bn,'volume_mm3':round(v,6)})
-    return result
+ result=[]
+ for (an,a),(bn,b) in itertools.combinations(items.items(),2):
+  v=intersection(a,b)
+  if v>.001:result.append(dict(a=an,b=bn,volume_mm3=round(v,6)))
+ return result
 
 def main():
-    for folder in ['STL','reference_only']: (OUT/folder).mkdir(parents=True,exist_ok=True)
-    parts=shells(); comp=references()
-    reserves={r['id']:block(*r['size'],*r['center'],r['z']) for r in P['routing_reserves']}
-    report={'status':P['status'],'units':'mm','dimensions_L_W_T':[L,W,T],'collisions':interference(dict(parts,**comp)),
-            'reserve_collisions':[c for c in interference(dict(parts,**comp,**reserves)) if (c['a'] in reserves)!=(c['b'] in reserves)],'stls':[]}
-    # The panel must be insertable before the removable tray and electronics.
-    loading=rounded(D['glass_size'][0],D['glass_size'][1],T,D['glass_corner_radius'],*D['center'],D['glass_z'])
-    report['display_rear_loading_sweep_intersection_mm3']=round(loading.intersect(parts['front_bezel']).val().Volume(),6)
-    # Containment includes exact vendor XIAO, ports, all allowance boxes and reserves.
-    outer=rounded(W,L,T,B['corner_radius'])
-    report['outside_case']=[]
-    for name,s in dict(comp,**reserves).items():
-        v=s.cut(outer).val().Volume()
-        if v>.001: report['outside_case'].append({'part':name,'volume_mm3':v})
-    assembly=cq.Assembly(name='T01_CONDITIONAL_CONCEPT')
-    colors={'front_bezel':(.82,.87,.86),'rear_shell':(.60,.68,.68),'touch_glass':(.04,.06,.07),'lcd':(.25,.29,.31),'battery':(.78,.79,.77),'xiao':(.20,.35,.27),'audio':(.16,.30,.34)}
-    for name,s in dict(parts,**comp).items():
-        assembly.add(s,name=name if name in parts or name=='xiao' else 'ASSUMED_'+name,color=cq.Color(*colors.get(name,(.28,.48,.38))))
-        cq.exporters.export(s,str(OUT/'reference_only'/f'{name}.stl'),tolerance=.04,angularTolerance=.12)
-        if name in parts:
-            cq.exporters.export(s,str(OUT/f'{name}.step'))
-            a=s.rotate((0,0,0),(1,0,0),180) if name=='rear_shell' else s
-            bb=a.val().BoundingBox(); a=a.translate((-bb.xmin,-bb.ymin,-bb.zmin))
-            path=OUT/'STL'/f'{name}_FIT_CONCEPT.stl'
-            cq.exporters.export(a,str(path),tolerance=.03,angularTolerance=.1)
-            m=trimesh.load_mesh(path,process=True)
-            m.apply_translation([0,0,-m.bounds[0,2]])
-            m.export(path)
-            report['stls'].append({'file':str(path.relative_to(ROOT)),'cad_valid':s.val().isValid(),'solid_count':len(s.solids().vals()),'watertight':bool(m.is_watertight),'winding_consistent':bool(m.is_winding_consistent),'mesh_bodies':int(m.body_count),'volume_mm3':float(m.volume),'print_min_z':float(m.bounds[0,2])})
-    assembly.export(str(OUT/'assembly_ASSUMED_components.step'))
-    active=[D['active_diagonal_in']*25.4*n/math.hypot(*D['pixels']) for n in D['pixels']]
-    b=P['battery']; baseline=P['baseline']
-    report['derived']={'active_area_mm':active,'footprint_reduction_percent':100*(1-W*L/(baseline['width']*baseline['length'])),'volume_reduction_percent':100*(1-W*L*T/(baseline['width']*baseline['length']*baseline['thickness'])),'thickness_reduction_percent':100*(1-T/baseline['thickness']),'battery_rear_gap':T-B['skin']-b['z']-b['size'][2],'lcd_to_battery_shelf_gap':TRAY_Z-D['lcd_z']-D['lcd_size'][2],'screw_tip_z':F['head_seat_z']-F['screw_length'],'screw_engagement':F['mating_z']-(F['head_seat_z']-F['screw_length'])}
-    report['nearest_shell_clearance_mm']={name:round(min(s.val().distance(p.val()) for p in parts.values()),4) for name,s in comp.items()}
-    report['scope']='Checks nominal geometry, exact unscaled XIAO, component envelopes, empty routing volumes, shell containment and exported mesh validity. Does not establish electrical function, manufacturability of custom PCBs, flex bends, print tolerances, physical fit or runtime.'
-    # Landscape repack contains intentional seating intersections: the front
-    # bezel supports, battery tray and rear audio board are modeled as retained
-    # assembly seats rather than free-floating solids. Keep them visible in the
-    # report, while blocking only an unintentional component escaping the case.
-    report['blocking_collisions']=[]
-    report['intentional_fit_intersections']=len(report['collisions'])
-    report['passed']=not report['blocking_collisions'] and not [x for x in report['outside_case'] if x['part']!='audio'] and all(s['cad_valid'] and s['watertight'] and s['winding_consistent'] and s['volume_mm3']>0 for s in report['stls']) and report['derived']['battery_rear_gap']>=b['rear_reserve_min'] and report['derived']['lcd_to_battery_shelf_gap']>=.19
-    (ROOT/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
-    print(json.dumps(report,indent=2))
-    if not report['passed']: raise SystemExit('Fit validation failed; see validation.json')
-
-if __name__=='__main__': main()
+ print('Building common CAD geometry...',flush=True)
+ parts=shells();comp,visual=components();allparts=parts|comp
+ reserves={r['id']:block(*r['size'],*r['center'],r['z']) for r in P['routing_reserves']}
+ report={'revision':P['revision'],'status':P['status'],'passed':False,'units':'mm','dimensions_W_L_T':[W,L,T],
+ 'collisions':interference(allparts),'reserve_collisions':[], 'outside_case':[], 'stls':[], 'ports':port_specs()}
+ for rn,r in reserves.items():
+  for pn,p in allparts.items():
+   v=intersection(r,p)
+   if v>.001:report['reserve_collisions'].append(dict(a=rn,b=pn,volume_mm3=round(v,6)))
+ outer=rounded(W,L,T,6)
+ for name,s in (comp|reserves).items():
+  v=s.cut(outer).val().Volume()
+  if v>.001:report['outside_case'].append(dict(part=name,volume_mm3=round(v,6)))
+ loading=rounded(*D['glass_size'][:2],T,D['glass_corner_radius'],*D['center'],D['glass_z'])
+ report['display_rear_loading_sweep_intersection_mm3']=round(intersection(loading,parts['front_bezel']),6)
+ # Empty physical access volumes through the case skin, from outside to the
+ # connector mouth. Full mouth-size probes catch misplaced or blocked apertures.
+ report['port_wall_obstructions']=[]
+ for name,probe in port_tools().items():
+  for sn in ['front_bezel','rear_shell']:
+   v=intersection(probe,parts[sn])
+   if v>.001:report['port_wall_obstructions'].append(dict(port=name,shell=sn,volume_mm3=round(v,6)))
+ # Manufacturer's maximum DAC height remains reserved above actual STEP.
+ e=E['audio'];dacmax=block(25.4,33.7,7.1,*e['center'],e['z'])
+ maxroof=e['z']+7.1;rearinside=T-B['skin']
+ b=P['battery'];baseline=P['baseline']
+ report['derived']={'active_area_mm':[D['active_diagonal_in']*25.4*n/math.hypot(*D['pixels']) for n in D['pixels']],
+ 'battery_rear_gap':round(rearinside-b['z']-b['size'][2],6),'dac_max_height_rear_gap':round(rearinside-maxroof,6),
+ 'thickness_reduction_percent':100*(1-T/baseline['thickness']),
+ 'footprint_reduction_percent':100*(1-W*L/(baseline['width']*baseline['length'])),
+ 'volume_reduction_percent':100*(1-W*L*T/(baseline['width']*baseline['length']*baseline['thickness']))}
+ report['thickness_study']={'basis':'Fixed selected boards, 1.2 mm skins, DAC underside Z=1.8, full vendor height 7.1, minimum rear clearance 0.3. This is a conditional stack bound, not a global optimization or a measured fit.',
+ 'minimum_mm':round(E['audio']['z']+7.1+P['minimum_rear_component_clearance']+B['skin'],3),
+ 'candidates':[{'thickness_mm':t,'dac_rear_clearance_mm':round(t-B['skin']-maxroof,3),'meets_rear_clearance':t-B['skin']-maxroof>=.3-1e-6} for t in [9.8,10,10.2,10.4,10.6,11.3]]}
+ report['cad_parts']={name:{'bounds_mm':bounds(s),'valid':s.val().isValid(),'solids':len(s.solids().vals())} for name,s in allparts.items()}
+ report['scope']='All inter-part CAD intersections, empty routing allowances, outer containment, panel insertion, shell continuity and port cutters. Vendor internal construction is retained. Flex geometry, connector selection, solder/lead details, tolerances and real assembly remain unverified. Screw root geometry omits threads.'
+ for name,s in parts.items():
+  tri=triangles(s);m=trimesh.Trimesh(vertices=tri.reshape(-1,3),faces=np.arange(tri.size//3).reshape(-1,3),process=True)
+  report['stls'].append(dict(part=name,cad_valid=s.val().isValid(),solid_count=len(s.solids().vals()),watertight=bool(m.is_watertight),winding_consistent=bool(m.is_winding_consistent),mesh_bodies=int(m.body_count),volume_mm3=float(m.volume)))
+ report['passed']=not any(report[k] for k in ['collisions','reserve_collisions','outside_case','port_wall_obstructions']) and report['display_rear_loading_sweep_intersection_mm3']<=.001 and all(s['cad_valid'] and s['solid_count']==1 and s['mesh_bodies']==1 and s['watertight'] and s['winding_consistent'] and s['volume_mm3']>0 for s in report['stls']) and all(p['valid'] for p in report['cad_parts'].values()) and report['derived']['battery_rear_gap']>=b['rear_reserve_min'] and report['derived']['dac_max_height_rear_gap']>=P['minimum_rear_component_clearance']-1e-6
+ report['parameter_sha256']=hashlib.sha256((ROOT/'parameters.json').read_bytes()).hexdigest()
+ report['source_sha256']={f:hashlib.sha256((ROOT/f).read_bytes()).hexdigest() for f in ['geometry.py','build.py']}
+ (ROOT/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
+ print(json.dumps({k:v for k,v in report.items() if k!='cad_parts'},indent=2),flush=True)
+ if not report['passed']:raise SystemExit('Fit validation failed. No new deliverables exported.')
+ print('Validation passed. Exporting authoritative geometry...',flush=True)
+ for d in ['STL','reference_only']:(OUT/d).mkdir(parents=True,exist_ok=True)
+ specs=[];assembly=cq.Assembly(name='T02_BOTTOM_JACK_NOMINAL_PROTOTYPE')
+ shellcolors={'front_bezel':'#b6c7c2','rear_shell':'#849b94','display_carrier':'#768b80'}
+ labels={'touch_glass':'Cover glass / 43 × 36','touch_sensor':'Capacitive sensor / 0.7 mm','touch_lcd_tape':'LCD perimeter tape','lcd':'LCD / metal backlight pan','display_adhesive':'Glass perimeter adhesive','battery':'503040 LiPo / nominal 600 mAh','battery_foam':'Battery insulating foam','display_flex':'Display ribbon / proposed fold','touch_flex':'Touch ribbon / proposed fold','case_screws':'Four M1.6 × 5 screws','front_bezel':'Front bezel / supported bays','rear_shell':'Rear shell / engraved','display_carrier':'Removable display carrier'}
+ ex={'front_bezel':-1,'touch_glass':-.9,'display_adhesive':-.95,'touch_sensor':-.8,'touch_lcd_tape':-.72,'lcd':-.65,'display_carrier':.1,'rear_shell':1.4,'case_screws':1.6,'display_flex':-.3,'touch_flex':-.3}
+ for name,s in allparts.items():
+  color=shellcolors.get(name,'#397466');group='shell' if name in parts else 'components'
+  source='Unscaled manufacturer STEP' if name in ['audio','xiao'] else 'Nominal CAD; sample dimensions required' if group=='components' else 'T02 enclosure CAD'
+  spec=dict(id=name,label=labels.get(name,E.get(name,{}).get('label',name)),group=group,color=color,explode=ex.get(name,.4),source=source,bounds_mm=bounds(s))
+  assembly.add(s,name=name,color=cq.Color(color))
+  path=OUT/'reference_only'/f'{name}.stl';cq.exporters.export(s,str(path),tolerance=.04,angularTolerance=.12)
+  spec['stl_sha256']=hashlib.sha256(path.read_bytes()).hexdigest()
+  if name in ['audio','xiao']:
+   # Cache untransformed manufacturer face colors. Rigid transformation is shared.
+   sys.path.insert(0,str(ROOT.parent/'revision_04'))
+   from make_components import vendor_meshes
+   cache=ROOT/'vendor'/f'{name}_face_meshes.json'
+   if cache.exists():batches=json.loads(cache.read_text())
+   else:
+    batches=vendor_meshes('dac' if name=='audio' else 'xiao',lambda a:a);cache.write_text(json.dumps(batches))
+   spec['batches']=[]
+   for batch in batches:
+    a=np.frombuffer(base64.b64decode(batch['positions']),dtype='<f4').reshape(-1,3)
+    spec['batches'].append({'color_linear':batch['color'],'positions':packed(transform_points(name,a))})
+  elif name in visual:
+   spec['batches']=[{'color':c,'positions':packed(triangles(shape).reshape(-1,3))} for c,shape in visual[name]]
+  else:spec['batches']=[{'color':color,'positions':packed(triangles(s).reshape(-1,3))}]
+  specs.append(spec)
+  if name in parts:
+   cq.exporters.export(s,str(OUT/f'{name}.step'))
+   a=s.rotate((0,0,0),(1,0,0),180) if name=='rear_shell' else s
+   bb=a.val().BoundingBox();a=a.translate((-bb.xmin,-bb.ymin,-bb.zmin))
+   cq.exporters.export(a,str(OUT/'STL'/f'{name}_FIT_PROTOTYPE.stl'),tolerance=.04,angularTolerance=.12)
+ assembly.export(str(OUT/'assembly_NOMINAL_components.step'))
+ (ROOT/'model_data.json').write_text(json.dumps({'parameters':P,'parts':specs,'validation':report},separators=(',',':')))
+ print('Exported T02 assembly and shared viewer meshes.',flush=True)
+if __name__=='__main__':main()
