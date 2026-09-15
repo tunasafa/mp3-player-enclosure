@@ -1,4 +1,6 @@
-# Model 02 — serviceable metal chassis prototype
+# Model 02 — current serviceable touchscreen player
+
+**One of the two current enclosure models.** The other is [P04, the clickwheel player](../revision_04/README.md).
 
 **64 × 128 × 8.3 mm**, with the 2.4-inch landscape touchscreen, two battery allocations and the intact Adafruit DAC's original headphone jack at the bottom. M02-03 uses the T03 metal finish, original bluefin engravings and mechanically removable supports in the nominal enclosure assembly.
 

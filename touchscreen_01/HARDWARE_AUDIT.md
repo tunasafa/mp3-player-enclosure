@@ -1,4 +1,6 @@
-# T01 touchscreen hardware audit
+# Historical T01/T02 touchscreen hardware audit
+
+This audit belongs to the superseded 2.01-inch touchscreen branch. It documents the older T01 concept and T02 bottom-jack prototype; it does not define the current [Model 02 touchscreen](../touchscreen_02/README.md), which has its own component evidence and release checklist.
 
 The concept is promising, but the supplied wiring is **not ready to power**. The
 15-pin assignments are user-supplied hypotheses. Searches for B006-01V0,

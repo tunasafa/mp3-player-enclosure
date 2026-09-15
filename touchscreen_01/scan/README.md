@@ -1,4 +1,6 @@
-# Display scan inspection
+# Historical T01 display scan inspection
+
+This scan supports the superseded T01/T02 touchscreen work. It is not evidence for the current [Model 02 touchscreen](../../touchscreen_02/README.md), which uses a different 2.4-inch display allocation.
 
 Source: user-uploaded `Scaniverse_2026_09_12_145606.obj` in
 `revision_04/designs/P04_compact/reference_only/`. The original is unchanged.

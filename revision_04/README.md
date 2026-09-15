@@ -1,4 +1,6 @@
-# mytunas / P04 - thinner repack
+# mytunas / P04 — current clickwheel player
+
+**One of the two current enclosure models.** The other is [Model 02, the touchscreen player](../touchscreen_02/README.md).
 
 **115 x 60 x 12.9 mm enclosure**, 0.2 mm thinner than the 13.1 mm baseline, with no footprint increase. The selected hardware is unchanged. The protected 600 mAh battery is entirely below the display, behind the wheel. The DAC is at the upper left, flipped 180 degrees about Y relative to the original 13.1 mm layout, with its components facing the rear and headphone socket at the top.
 

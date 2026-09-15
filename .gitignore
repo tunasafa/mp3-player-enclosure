@@ -4,7 +4,9 @@ __pycache__/
 .DS_Store
 node_modules/
 
-# Only revision_04 is tracked — exclude old revisions and root-level P01 files
+# Keep legacy P01/P02/P03 snapshots and generated root files out of the repository.
+# The current tracked model branches are revision_04, touchscreen_01,
+# touchscreen_02 and touchscreen_metal.
 revision_02/
 revision_03/
 /designs/
