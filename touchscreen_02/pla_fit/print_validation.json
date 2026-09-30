@@ -1,0 +1,121 @@
+{
+  "passed": true,
+  "scope": "Delivered STL/3MF manifold meshes, size agreement, bed orientation and non-overlapping plate; no toolpath slicing.",
+  "slicer_verified": false,
+  "parts": {
+    "carrier": {
+      "size_mm": [
+        60.79999923706055,
+        50.0,
+        1.399999976158142
+      ],
+      "volume_mm3": 1492.3028769558712,
+      "watertight": true,
+      "bed_min_mm": [
+        151.0,
+        5.0,
+        0.0
+      ],
+      "bed_max_mm": [
+        211.8,
+        55.0,
+        1.4
+      ]
+    },
+    "coupon_lid": {
+      "size_mm": [
+        26.0,
+        6.5,
+        2.5
+      ],
+      "volume_mm3": 91.48400294017797,
+      "watertight": true,
+      "bed_min_mm": [
+        155.0,
+        111.0,
+        0.0
+      ],
+      "bed_max_mm": [
+        181.0,
+        117.5,
+        2.5
+      ]
+    },
+    "coupon_receiver": {
+      "size_mm": [
+        26.0,
+        7.0,
+        2.0999999046325684
+      ],
+      "volume_mm3": 167.75999611854584,
+      "watertight": true,
+      "bed_min_mm": [
+        155.0,
+        95.0,
+        0.0
+      ],
+      "bed_max_mm": [
+        181.0,
+        102.0,
+        2.1
+      ]
+    },
+    "front_tray": {
+      "size_mm": [
+        64.0,
+        128.0,
+        7.900000095367432
+      ],
+      "volume_mm3": 7442.41472138737,
+      "watertight": true,
+      "bed_min_mm": [
+        5.0,
+        5.0,
+        0.0
+      ],
+      "bed_max_mm": [
+        69.0,
+        133.0,
+        7.9
+      ]
+    },
+    "rear_lid": {
+      "size_mm": [
+        64.0,
+        128.0,
+        7.699999809265138
+      ],
+      "volume_mm3": 3573.765390769409,
+      "watertight": true,
+      "bed_min_mm": [
+        78.0,
+        5.0,
+        0.0
+      ],
+      "bed_max_mm": [
+        142.0,
+        133.0,
+        7.7
+      ]
+    },
+    "xiao_gate": {
+      "size_mm": [
+        1.7000000476837158,
+        14.0,
+        0.800000011920929
+      ],
+      "volume_mm3": 19.040000817775734,
+      "watertight": true,
+      "bed_min_mm": [
+        155.0,
+        67.0,
+        0.0
+      ],
+      "bed_max_mm": [
+        156.7,
+        81.0,
+        0.8
+      ]
+    }
+  }
+}

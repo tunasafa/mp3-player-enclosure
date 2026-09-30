@@ -33,6 +33,8 @@ The current M02-03 layout uses the 2.4-inch Startek touchscreen allocation, two 
 
 Read the [Model 02 notes](touchscreen_02/README.md), [assembly and service sequence](touchscreen_02/ASSEMBLY.md), [component evidence](touchscreen_02/COMPONENT_DIMENSIONS.md), [release checklist](touchscreen_02/RELEASE_CHECKLIST.md), [BOM](touchscreen_02/BOM.csv), [validation report](touchscreen_02/validation.json) and [dimensioned drawings](touchscreen_02/drawings.pdf).
 
+The [M02-P01 PLA fit prototype](touchscreen_02/pla_fit/README.md) is a separate MK3S+ branch with the same exterior and component positions, four printed assembly parts and two releasable snaps. [Open the PLA assembly](touchscreen_02/pla_fit/preview.html) or [download the unsliced print plate](touchscreen_02/pla_fit/M02-P01_MK3S_PLA_UNSLICED.3mf). Physical printing and latch fit remain to be tested.
+
 ## Why this exists
 
 Every month, another €10 disappears into a streaming service that decides what I can listen to, when, and on which devices. Skip limits, offline restrictions, algorithms picking songs for me, entire albums vanishing from catalogs overnight because some licensing deal fell through. And if I ever stop paying? Everything is gone.

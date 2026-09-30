@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "source_sha256": {
+    "touchscreen_02/pla_fit/geometry_pla.py": "dfa4aa200bade77ea5f91400382da28dba48b8a9c435a9004a3a4ec22acee375",
+    "touchscreen_02/pla_fit/build.py": "19b970797443abbf77afc1e293dc3eb7f097e355d8eaa2c304d186b337f8cf28",
+    "touchscreen_02/pla_fit/viewer.js": "3ce71dedfc52f646b93da7138b490b12b9c7c9a644194e49e6f1abfc31815ba3",
+    "touchscreen_02/pla_fit/viewer.html": "278c51f90af378a49558dba14cb0fbe8d7a209b5598ca001352eaa3988df313f",
+    "touchscreen_02/geometry.py": "db78e99df37bd89ad99b283b55160679ab049ace4ef94fc5c41b3da03bd3b00e",
+    "touchscreen_02/parameters.json": "d0824a3ec31ed8cc7af93702e23fe2fd29492c5bc804fd7d681ce1e3819d40bb"
+  },
+  "captures": [
+    {
+      "name": "iso",
+      "pixels": 184692
+    },
+    {
+      "name": "inside",
+      "pixels": 187477
+    },
+    {
+      "name": "supports",
+      "pixels": 181266
+    },
+    {
+      "name": "exploded",
+      "pixels": 193188
+    },
+    {
+      "name": "rear",
+      "pixels": 227700
+    },
+    {
+      "name": "latch",
+      "pixels": 516344
+    },
+    {
+      "name": "mobile",
+      "pixels": 92952
+    }
+  ],
+  "errors": [],
+  "external_requests": []
+}

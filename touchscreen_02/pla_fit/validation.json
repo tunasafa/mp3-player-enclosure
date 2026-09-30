@@ -1,0 +1,349 @@
+{
+  "revision": "M02-P01",
+  "exterior_mm": [
+    64,
+    128,
+    8.3
+  ],
+  "passed": true,
+  "physically_tested": false,
+  "slicer_verified": false,
+  "production_ready": false,
+  "scope": "Nominal CAD fit, rigid assembly paths, print meshes and bed placement. Snap elasticity, extrusion, adhesion and purchased parts require physical trials.",
+  "ports": {
+    "usb": {
+      "edge": "right",
+      "center": [
+        31.60000003574027,
+        -9.992674052927162,
+        3.605000014901134
+      ],
+      "width": 9.24,
+      "height": 3.51,
+      "radial_allowance": 0.15
+    },
+    "jack": {
+      "edge": "bottom",
+      "center": [
+        18.859152700000003,
+        -63.60000000000001,
+        4.42248296
+      ],
+      "diameter": 5
+    },
+    "microsd": {
+      "edge": "left",
+      "center": [
+        -31.6,
+        29,
+        6.3999999999999995
+      ],
+      "width": 11.5,
+      "height": 1.5
+    }
+  },
+  "collisions": [],
+  "reserve_collisions": [],
+  "exterior_violations": [],
+  "port_obstructions": [],
+  "mesh_checks": {
+    "front_tray": {
+      "valid": true,
+      "solids": 1,
+      "watertight": true,
+      "winding_consistent": true,
+      "bodies": 1,
+      "volume_mm3": 7442.416697858222,
+      "bounds_mm": [
+        [
+          -32.0,
+          -64.0,
+          0.0
+        ],
+        [
+          32.0,
+          64.0,
+          7.9
+        ]
+      ]
+    },
+    "rear_lid": {
+      "valid": true,
+      "solids": 1,
+      "watertight": true,
+      "winding_consistent": true,
+      "bodies": 1,
+      "volume_mm3": 3573.7655995787063,
+      "bounds_mm": [
+        [
+          -32.0,
+          -64.0,
+          0.6
+        ],
+        [
+          32.0,
+          64.0,
+          8.3
+        ]
+      ]
+    },
+    "carrier": {
+      "valid": true,
+      "solids": 1,
+      "watertight": true,
+      "winding_consistent": true,
+      "bodies": 1,
+      "volume_mm3": 1492.3028401088243,
+      "bounds_mm": [
+        [
+          -30.4,
+          10.0,
+          4.35
+        ],
+        [
+          30.4,
+          60.0,
+          5.75
+        ]
+      ]
+    },
+    "xiao_gate": {
+      "valid": true,
+      "solids": 1,
+      "watertight": true,
+      "winding_consistent": true,
+      "bodies": 1,
+      "volume_mm3": 19.04000000000004,
+      "bounds_mm": [
+        [
+          8.1,
+          -16.25,
+          0.55
+        ],
+        [
+          8.9,
+          -2.25,
+          2.25
+        ]
+      ]
+    }
+  },
+  "unchanged_components": {
+    "touch_glass": true,
+    "lcd": true,
+    "audio": true,
+    "xiao": true,
+    "cell_A_envelope": true,
+    "cell_B_envelope": true,
+    "microsd_pcb": true,
+    "microsd_socket": true,
+    "microsd_card": true,
+    "interface_pcb": true,
+    "display_zif": true,
+    "touch_zif": true,
+    "interface_control": true,
+    "pack_protection": true
+  },
+  "assembly_checks": {
+    "screen_loading_mm3": 0,
+    "cell_A_envelope_loading_mm3": 0,
+    "cell_B_envelope_loading_mm3": 0,
+    "xiao_sampled_insertion_mm3": 0.0,
+    "audio_sampled_insertion_mm3": 0.0,
+    "sd_into_carrier_mm3": 0.0,
+    "carrier_vertical_loading_mm3": 0.0,
+    "loaded_carrier_vertical_loading_mm3": 0.0,
+    "lid_rigid_vertical_loading_mm3": 0.0
+  },
+  "support_contacts": [
+    {
+      "a": "carrier",
+      "b": "front_tray",
+      "gap_mm": 8.881784197001252e-16,
+      "target_mm": 0
+    },
+    {
+      "a": "display_cushion",
+      "b": "carrier",
+      "gap_mm": 0.0,
+      "target_mm": 0
+    },
+    {
+      "a": "microsd_pcb",
+      "b": "carrier",
+      "gap_mm": 0.0,
+      "target_mm": 0
+    },
+    {
+      "a": "interface_pcb",
+      "b": "carrier",
+      "gap_mm": 0.0,
+      "target_mm": 0
+    },
+    {
+      "a": "xiao",
+      "b": "front_tray",
+      "gap_mm": 1.4901159306468514e-08,
+      "target_mm": 0
+    },
+    {
+      "a": "rear_lid",
+      "b": "front_tray",
+      "gap_mm": 0.0,
+      "target_mm": 0
+    },
+    {
+      "a": "audio",
+      "b": "audio_insulator",
+      "gap_mm": 0.0,
+      "target_mm": 0
+    },
+    {
+      "a": "touch_glass",
+      "b": "display_adhesive",
+      "gap_mm": 0.0,
+      "target_mm": 0
+    },
+    {
+      "a": "xiao_gate",
+      "b": "gate_tape",
+      "gap_mm": 0.0,
+      "target_mm": 0
+    }
+  ],
+  "retention_checks": {
+    "-1": {
+      "locked_overlap_mm3": 0.2879999999999997,
+      "released_overlap_mm3": 0,
+      "release_travel_mm": 0.7
+    },
+    "1": {
+      "locked_overlap_mm3": 0.28799999999999715,
+      "released_overlap_mm3": 0,
+      "release_travel_mm": 0.7
+    }
+  },
+  "snap_approach_interference_mm3": 0.5759999999999756,
+  "snap_flex_space_collisions": [],
+  "counts": {
+    "printed_assembly_parts": 4,
+    "screws": 0,
+    "threaded_inserts": 0,
+    "snap_tongues": 2,
+    "integrated_dac_landing_pads": 3
+  },
+  "thin_features_mm": {
+    "front_skin": 0.4,
+    "rear_skin": 0.4,
+    "carrier_deck": 0.5,
+    "snap_beam_width": 0.8,
+    "snap_beam_length": 18
+  },
+  "derived": {
+    "dac_published_height_roof_gap_mm": 0.25,
+    "battery_expansion_reserve_mm": 1.7,
+    "printed_dimensions_change_mm": [
+      0,
+      0,
+      0
+    ]
+  },
+  "fault_probes": {
+    "battery_intrusion_detected": true,
+    "usb_block_detected": true,
+    "expansion_intrusion_detected": true,
+    "floating_carrier_detected": true
+  },
+  "source_sha256": {
+    "touchscreen_02/pla_fit/geometry_pla.py": "dfa4aa200bade77ea5f91400382da28dba48b8a9c435a9004a3a4ec22acee375",
+    "touchscreen_02/pla_fit/build.py": "19b970797443abbf77afc1e293dc3eb7f097e355d8eaa2c304d186b337f8cf28",
+    "touchscreen_02/pla_fit/viewer.js": "3ce71dedfc52f646b93da7138b490b12b9c7c9a644194e49e6f1abfc31815ba3",
+    "touchscreen_02/pla_fit/viewer.html": "278c51f90af378a49558dba14cb0fbe8d7a209b5598ca001352eaa3988df313f",
+    "touchscreen_02/geometry.py": "db78e99df37bd89ad99b283b55160679ab049ace4ef94fc5c41b3da03bd3b00e",
+    "touchscreen_02/parameters.json": "d0824a3ec31ed8cc7af93702e23fe2fd29492c5bc804fd7d681ce1e3819d40bb"
+  },
+  "bed_layout": [
+    {
+      "part": "front_tray",
+      "xy_mm": [
+        5,
+        5
+      ],
+      "size_mm": [
+        64.0,
+        128.0,
+        7.9
+      ]
+    },
+    {
+      "part": "rear_lid",
+      "xy_mm": [
+        78,
+        5
+      ],
+      "size_mm": [
+        64.0,
+        128.0,
+        7.7000000000000055
+      ]
+    },
+    {
+      "part": "carrier",
+      "xy_mm": [
+        151,
+        5
+      ],
+      "size_mm": [
+        60.8,
+        50.0,
+        1.4000000000000004
+      ]
+    },
+    {
+      "part": "xiao_gate",
+      "xy_mm": [
+        155,
+        67
+      ],
+      "size_mm": [
+        1.7,
+        14.0,
+        0.8000000000000007
+      ]
+    },
+    {
+      "part": "coupon_receiver",
+      "xy_mm": [
+        155,
+        95
+      ],
+      "size_mm": [
+        26.0,
+        7.0,
+        2.1000000000000005
+      ]
+    },
+    {
+      "part": "coupon_lid",
+      "xy_mm": [
+        155,
+        111
+      ],
+      "size_mm": [
+        26.0,
+        6.5,
+        2.500000000000001
+      ]
+    }
+  ],
+  "coupon_mesh_checks": {
+    "coupon_receiver": {
+      "watertight": true,
+      "bodies": 1
+    },
+    "coupon_lid": {
+      "watertight": true,
+      "bodies": 1
+    }
+  }
+}
