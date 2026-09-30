@@ -189,7 +189,7 @@ def main():
     print('Checking solids, component fit, keepouts and assembly paths...',flush=True)
     report=validate(parts,printed,reserves,original)
     report['source_sha256']={str(p.relative_to(ROOT.parent.parent)):hashlib.sha256(p.read_bytes()).hexdigest()
-                             for p in [ROOT/'geometry_pla.py',ROOT/'build.py',ROOT/'viewer.js',ROOT/'viewer.html',ROOT.parent/'geometry.py',ROOT.parent/'parameters.json']}
+                             for p in [ROOT/'geometry_pla.py',ROOT/'build.py',ROOT/'viewer.js',ROOT/'viewer.html',ROOT.parent/'viewer_ui.js',ROOT.parent/'geometry.py',ROOT.parent/'parameters.json']}
     (ROOT/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({k:v for k,v in report.items() if k not in ['mesh_checks','source_sha256','ports']},indent=2),flush=True)
     if not report['passed']:

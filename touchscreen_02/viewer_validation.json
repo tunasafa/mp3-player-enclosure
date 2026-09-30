@@ -2726,157 +2726,157 @@
     {
       "name": "preview_iso.png",
       "pixels": {
-        "count": 184692,
-        "minX": 300,
-        "maxX": 603,
-        "minY": 64,
-        "maxY": 724,
-        "w": 890,
-        "h": 790
+        "count": 110951,
+        "minX": 273,
+        "maxX": 507,
+        "minY": 50,
+        "maxY": 560,
+        "w": 770,
+        "h": 612
       }
     },
     {
       "name": "preview_front.png",
       "pixels": {
-        "count": 227698,
-        "minX": 276,
-        "maxX": 613,
-        "minY": 57,
-        "maxY": 732,
-        "w": 890,
-        "h": 790
+        "count": 134656,
+        "minX": 255,
+        "maxX": 514,
+        "minY": 43,
+        "maxY": 562,
+        "w": 770,
+        "h": 606
       }
     },
     {
       "name": "preview_rear.png",
       "pixels": {
-        "count": 227698,
-        "minX": 276,
-        "maxX": 613,
-        "minY": 57,
-        "maxY": 732,
-        "w": 890,
-        "h": 790
+        "count": 134656,
+        "minX": 255,
+        "maxX": 514,
+        "minY": 43,
+        "maxY": 562,
+        "w": 770,
+        "h": 606
       }
     },
     {
       "name": "preview_inside.png",
       "pixels": {
-        "count": 187136,
-        "minX": 282,
-        "maxX": 620,
-        "minY": 89,
-        "maxY": 730,
-        "w": 890,
-        "h": 790
+        "count": 110239,
+        "minX": 260,
+        "maxX": 519,
+        "minY": 68,
+        "maxY": 560,
+        "w": 770,
+        "h": 606
       }
     },
     {
       "name": "preview_side.png",
       "pixels": {
-        "count": 29085,
-        "minX": 425,
-        "maxX": 469,
-        "minY": 70,
-        "maxY": 719,
-        "w": 890,
-        "h": 790
+        "count": 16941,
+        "minX": 370,
+        "maxX": 403,
+        "minY": 53,
+        "maxY": 552,
+        "w": 770,
+        "h": 606
       }
     },
     {
       "name": "preview_bottom.png",
       "pixels": {
-        "count": 59119,
-        "minX": 116,
-        "maxX": 773,
-        "minY": 362,
-        "maxY": 451,
-        "w": 890,
-        "h": 790
+        "count": 42429,
+        "minX": 105,
+        "maxX": 664,
+        "minY": 275,
+        "maxY": 350,
+        "w": 770,
+        "h": 606
       }
     },
     {
       "name": "preview_ports_open.png",
       "pixels": {
-        "count": 59119,
-        "minX": 116,
-        "maxX": 773,
-        "minY": 362,
-        "maxY": 451,
-        "w": 890,
-        "h": 790
+        "count": 42429,
+        "minX": 105,
+        "maxX": 664,
+        "minY": 275,
+        "maxY": 350,
+        "w": 770,
+        "h": 606
       }
     },
     {
       "name": "preview_port_usb.png",
       "pixels": {
-        "count": 259880,
+        "count": 190960,
         "minX": 0,
-        "maxX": 889,
-        "minY": 230,
-        "maxY": 521,
-        "w": 890,
-        "h": 790
+        "maxX": 769,
+        "minY": 163,
+        "maxY": 410,
+        "w": 770,
+        "h": 606
       }
     },
     {
       "name": "preview_port_sd.png",
       "pixels": {
-        "count": 258990,
+        "count": 190960,
         "minX": 0,
-        "maxX": 889,
-        "minY": 328,
-        "maxY": 618,
-        "w": 890,
-        "h": 790
+        "maxX": 769,
+        "minY": 246,
+        "maxY": 493,
+        "w": 770,
+        "h": 606
       }
     },
     {
       "name": "preview_port_jack.png",
       "pixels": {
-        "count": 334228,
+        "count": 232686,
         "minX": 0,
-        "maxX": 889,
-        "minY": 219,
-        "maxY": 594,
-        "w": 890,
-        "h": 790
+        "maxX": 769,
+        "minY": 161,
+        "maxY": 463,
+        "w": 770,
+        "h": 606
       }
     },
     {
       "name": "preview_exploded.png",
       "pixels": {
-        "count": 213482,
-        "minX": 226,
-        "maxX": 623,
-        "minY": 116,
-        "maxY": 720,
-        "w": 890,
-        "h": 790
+        "count": 125812,
+        "minX": 217,
+        "maxX": 522,
+        "minY": 89,
+        "maxY": 552,
+        "w": 770,
+        "h": 606
       }
     },
     {
       "name": "preview_mobile.png",
       "pixels": {
-        "count": 107457,
-        "minX": 40,
-        "maxX": 321,
-        "minY": 82,
-        "maxY": 510,
-        "w": 390,
-        "h": 560
+        "count": 32870,
+        "minX": 85,
+        "maxX": 240,
+        "minY": 45,
+        "maxY": 281,
+        "w": 342,
+        "h": 309
       }
     },
     {
       "name": "preview_mobile_inside.png",
       "pixels": {
-        "count": 94171,
-        "minX": 80,
-        "maxX": 319,
-        "minY": 63,
-        "maxY": 517,
-        "w": 390,
-        "h": 560
+        "count": 28792,
+        "minX": 107,
+        "maxX": 239,
+        "minY": 35,
+        "maxY": 285,
+        "w": 342,
+        "h": 309
       }
     }
   ]

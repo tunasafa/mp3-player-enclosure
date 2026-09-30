@@ -1,3 +1,4 @@
+import {setupViewerUI} from './viewer_ui.js';
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {RoomEnvironment} from 'three/examples/jsm/environments/RoomEnvironment.js';
@@ -50,7 +51,8 @@ document.querySelector('#covers').onchange=e=>{for(const [id,g] of groups)if(g.u
 document.querySelector('#explode').oninput=e=>{const t=Number(e.target.value)/100;for(const [id,g] of groups){g.position.set(0,0,g.userData.explode*t);if(id==='usb_cover')g.position.set(12*t,0,0);if(id==='sd_cover')g.position.set(-12*t,0,0);if(id==='jack_cover')g.position.set(0,-12*t,0);}};
 document.querySelector('#reset').onclick=()=>{document.querySelector('#explode').value=0;document.querySelector('#reserves').checked=false;document.querySelector('#covers').checked=false;for(const [id,g] of groups){g.position.set(0,0,0);setVisible(id,!g.userData.reserve&&g.userData.kind!=='cover');}view('iso');};
 document.querySelector('#check').textContent=data.report.passed?`${data.parts.filter(p=>!p.reserve).length} physical part groups. CAD fit and assembly-access checks passed. Samples, tolerances and ingress tests remain outstanding.`:'Fit check failed.';
-function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}new ResizeObserver(resize).observe(stage);resize();view('iso');
-function render(){requestAnimationFrame(render);controls.update();renderer.render(scene,camera);}render();
+function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}new ResizeObserver(resize).observe(stage);resize();view('iso');
+const drawAxes=setupViewerUI(camera,groups,checks);
+function render(){requestAnimationFrame(render);controls.update();renderer.render(scene,camera);drawAxes();}render();
 window.PACKING={report:data.report,parameters:data.parameters,cameraState:()=>({position:camera.position.toArray(),target:controls.target.toArray(),quaternion:camera.quaternion.toArray(),up:camera.up.toArray(),zoom:camera.zoom}),inspect:()=>[...groups].map(([id,g])=>{const b=new THREE.Box3().setFromObject(g);return {id,visible:g.visible,kind:g.userData.kind,physicalMeshes:g.children.filter(c=>c!==screen).length,expectedMeshes:g.userData.batches.length,bounds:[b.min.toArray(),b.max.toArray()],expected:g.userData.bounds_mm};})};
 }catch(e){const el=document.querySelector('#error');el.hidden=false;el.textContent='3D preview unavailable: '+e.message;throw e;}

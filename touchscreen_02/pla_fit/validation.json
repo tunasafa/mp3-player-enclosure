@@ -256,9 +256,10 @@
   },
   "source_sha256": {
     "touchscreen_02/pla_fit/geometry_pla.py": "dfa4aa200bade77ea5f91400382da28dba48b8a9c435a9004a3a4ec22acee375",
-    "touchscreen_02/pla_fit/build.py": "19b970797443abbf77afc1e293dc3eb7f097e355d8eaa2c304d186b337f8cf28",
-    "touchscreen_02/pla_fit/viewer.js": "3ce71dedfc52f646b93da7138b490b12b9c7c9a644194e49e6f1abfc31815ba3",
-    "touchscreen_02/pla_fit/viewer.html": "278c51f90af378a49558dba14cb0fbe8d7a209b5598ca001352eaa3988df313f",
+    "touchscreen_02/pla_fit/build.py": "cec1dbcdf9e6f28ad6268ceff13f118753a1f25204fda28ec287c5695ac9d081",
+    "touchscreen_02/pla_fit/viewer.js": "6ac1da872e2a28ee2b7473a3822df734392f04e7e5542583e1a9000b0a3fb6a8",
+    "touchscreen_02/pla_fit/viewer.html": "cf59fe8c300f848c1fb123e424ae6055b421fa77a1abff8cabc160afe0881164",
+    "touchscreen_02/viewer_ui.js": "9dcdb5b3cfd57df40f7ce6f9e639081c63336e00ebae8b48c96a02ed03678aa9",
     "touchscreen_02/geometry.py": "db78e99df37bd89ad99b283b55160679ab049ace4ef94fc5c41b3da03bd3b00e",
     "touchscreen_02/parameters.json": "d0824a3ec31ed8cc7af93702e23fe2fd29492c5bc804fd7d681ce1e3819d40bb"
   },
