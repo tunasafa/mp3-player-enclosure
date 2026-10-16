@@ -53,7 +53,7 @@
       "watertight": true,
       "winding_consistent": true,
       "bodies": 1,
-      "volume_mm3": 7429.185092528166,
+      "volume_mm3": 7425.919190099686,
       "bounds_mm": [
         [
           -32.0,
@@ -220,7 +220,7 @@
   "print_overhangs": {
     "front_tray": {
       "unsupported_mm2": 0.0,
-      "bridged_port_roofs_mm2": 23.831406745240802
+      "bridged_port_roofs_mm2": 24.140547322792905
     },
     "rear_lid": {
       "unsupported_mm2": 0.0,
@@ -241,6 +241,38 @@
     "coupon_lid": {
       "unsupported_mm2": 0.0,
       "bridged_port_roofs_mm2": 0.0
+    }
+  },
+  "clearance_checks": {
+    "min_clearance_mm": 0.1,
+    "tight": [],
+    "gaps": {
+      "front_tray/touch_glass": 0.15,
+      "front_tray/lcd": 0.27,
+      "front_tray/audio": 0.15,
+      "front_tray/cell_A_envelope": 0.25,
+      "front_tray/cell_B_envelope": 0.25,
+      "front_tray/microsd_pcb": 0.5,
+      "front_tray/microsd_socket": 0.15,
+      "front_tray/microsd_card": 0.188,
+      "front_tray/pack_protection": 0.3,
+      "front_tray/xiao_gate": 0.15,
+      "rear_lid/audio": 0.15,
+      "rear_lid/xiao": 0.3,
+      "rear_lid/cell_A_envelope": 0.1,
+      "rear_lid/microsd_pcb": 0.15,
+      "rear_lid/microsd_socket": 0.45,
+      "rear_lid/interface_pcb": 0.15,
+      "rear_lid/touch_zif": 0.15,
+      "rear_lid/audio_insulator": 0.219,
+      "rear_lid/carrier": 0.15,
+      "rear_lid/xiao_gate": 0.15,
+      "carrier/microsd_socket": 0.8,
+      "carrier/display_zif": 0.8,
+      "carrier/touch_zif": 0.8,
+      "carrier/interface_control": 0.8,
+      "xiao_gate/xiao": 0.218,
+      "xiao_gate/cell_A_envelope": 0.1
     }
   },
   "counts": {
@@ -277,8 +309,8 @@
     "floating_carrier_detected": true
   },
   "source_sha256": {
-    "touchscreen_02/pla_fit/geometry_pla.py": "16d05aa449e943b79b942f9cdb22b4cfceab41731c7de34e5e46652222c23526",
-    "touchscreen_02/pla_fit/build.py": "985fed40582cd9dbb276decb33be63533f56adb80a019b8e238c671d0199b330",
+    "touchscreen_02/pla_fit/geometry_pla.py": "c30103af4a4e50a03ae9ee3f557799249873c35c76503a54cade4b994d392ceb",
+    "touchscreen_02/pla_fit/build.py": "16f45fc8f66c93ce6f7fc962fcf25e2b735237758f44c2025d2bc91ee319580c",
     "touchscreen_02/pla_fit/viewer.js": "3f4abb442f3bb7633b810463555298e7f5849272f720e4b21dd96c2ec66ff2b1",
     "touchscreen_02/pla_fit/viewer.html": "c10e2005aa4d52c8ac37ae99d058542866cf63775d89593d9aea7c6751ffe5ac",
     "touchscreen_02/viewer_ui.js": "9dcdb5b3cfd57df40f7ce6f9e639081c63336e00ebae8b48c96a02ed03678aa9",

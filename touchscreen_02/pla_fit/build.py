@@ -12,6 +12,17 @@ from geometry_pla import *
 from validate import intersection, interference
 
 OUT = ROOT / 'parts'
+# Pairs that touch by design (support planes, tape/cushion layers, the lid
+# seat and the bored jack). Every other printed-part pair must keep
+# MIN_CLEARANCE, so a nominal 0.00 mm "fit" cannot pass as clearance.
+CONTACTS = {frozenset(p) for p in [
+    ('carrier', 'front_tray'), ('carrier', 'display_cushion'), ('carrier', 'lcd'),
+    ('carrier', 'microsd_pcb'), ('carrier', 'interface_pcb'),
+    ('front_tray', 'xiao'), ('front_tray', 'rear_lid'), ('front_tray', 'display_adhesive'),
+    ('front_tray', 'audio_insulator'), ('front_tray', 'gate_tape'),
+    ('front_tray', 'cell_A_envelope_adhesive'), ('front_tray', 'cell_B_envelope_adhesive'),
+    ('front_tray', 'pack_protection_pad'),
+    ('rear_lid', 'xiao_saddle_pad'), ('xiao_gate', 'gate_tape')]}
 
 
 def triangles(shape):
@@ -51,6 +62,7 @@ def validate(parts, printed, reserves, original):
     # Crush ribs press into the tray wall by design; every other overlap fails.
     ribs = all_ribs()
     rigid_lid = parts['rear_lid'].cut(ribs)
+    rigid_parts = parts | {'rear_lid': rigid_lid}
     report = dict(revision='M02-P01', exterior_mm=[64, 128, 8.3], passed=False,
                   physically_tested=False, slicer_verified=False, production_ready=False,
                   scope='Nominal CAD fit, rigid assembly paths, print meshes and bed placement. '
@@ -131,9 +143,22 @@ def validate(parts, printed, reserves, original):
         rib_other_collisions=[n for n,s in (parts|reserves).items()
                               if n not in ['rear_lid','front_tray'] and intersection(ribs,s) > .001])
     print('  Support-free print check...', flush=True)
-    ports = [bounds(t) for t in metal.port_tools().values()]
+    ports = [bounds(t) for t in [*metal.port_tools().values(), jack_bore()]]
     for n, s in (printed|coupons(printed)).items():
         report['print_overhangs'][n] = overhangs(n, s, ports if n == 'front_tray' else ())
+    print('  Minimum clearances...', flush=True)
+    report['clearance_checks'] = dict(min_clearance_mm=MIN_CLEARANCE, tight=[], gaps={})
+    for a in printed:
+        for b, s in rigid_parts.items():
+            if b == a or (b in printed and list(printed).index(b) < list(printed).index(a)):
+                continue
+            if frozenset((a, b)) in CONTACTS:
+                continue
+            gap = rigid_parts[a].val().distance(s.val())
+            if gap < 1:
+                report['clearance_checks']['gaps'][a+'/'+b] = round(gap, 3)
+            if gap < MIN_CLEARANCE-1e-6:
+                report['clearance_checks']['tight'].append([a, b, round(gap, 3)])
     for a,b,target in [('carrier','front_tray',0),('display_cushion','carrier',0),
                        ('microsd_pcb','carrier',0),('interface_pcb','carrier',0),
                        ('xiao','front_tray',0),('rear_lid','front_tray',0),
@@ -163,6 +188,7 @@ def validate(parts, printed, reserves, original):
         and all(x['gap_mm']<.005 for x in report['support_contacts'])
         and report['retention_checks']['rib_tray_interference_mm3']>.01 and not report['retention_checks']['rib_other_collisions']
         and all(x['unsupported_mm2']<.05 for x in report['print_overhangs'].values())
+        and not report['clearance_checks']['tight']
         and all(report['fault_probes'].values()))
     return report
 

@@ -2,6 +2,8 @@
 
 > **Support-free, logo-free revision (2026-10-16).** Every print is built so it needs no support material and has no logo, text or engraving. A slicer should neither add supports nor offer a color change. The snap hooks, which printed a flat shoulder over open air, are replaced by friction skirts with vertical crush ribs. Shallow port-pocket ceilings are now 45° chamfers, and carrier features no longer overhang the deck edge. The builder now checks each print in its bed orientation: no surface faces down at less than 45° except the three through-port roofs, which are short bridges anchored on both sides. Every file in `parts/` (STL **and** STEP) is already in print orientation on Z0.
 
+> **Clearance revision (2026-10-16).** The headphone bore is now Ø5.40 mm (was an exact Ø5.00 around the Ø5.00 jack nose, which a printed, bridged hole would close up). The lid's two carrier stops moved 0.25 mm toward the top edge so they clear the carrier's stiffening rail by 0.30 mm instead of 0.05 mm. The builder now fails any printed-part gap under 0.10 mm unless that pair is a declared contact (support plane, tape layer or the lid seat).
+
 This is the PLA fit-prototype branch of Touchscreen 02, designed for a **Prusa i3 MK3S+ with its stock 0.4 mm nozzle**. The nominal outside remains **64 × 128 × 8.30 mm, R6 corners**. All electronics, display and battery allocations retain their M02-03 positions and sizes. The metal design is preserved separately.
 
 [Interactive assembly](preview.html) · [Unsliced print plate](M02-P01_MK3S_PLA_UNSLICED.3mf) · [Individual prints](parts/) · [CAD validation](validation.json) · [Metal reference](https://tunasafa.github.io/mp3-player-enclosure/touchscreen_02/preview.html)
@@ -85,6 +87,6 @@ node touchscreen_02/pla_fit/verify_viewer.mjs
 .venv/bin/python touchscreen_02/pla_fit/package.py
 ```
 
-The builder checks all physical part intersections, reserved volumes, original component identity, exterior containment, open ports, solid and mesh validity, sampled insertion paths, support contacts, crush-rib engagement, and a support-free print check of every part in its bed pose. Intentional rib interference is reported separately from rigid-body collisions. Geometry checks do not simulate printed-material flex or prove tolerance capability. The original metal source and exports are not rebuilt or overwritten.
+The builder checks all physical part intersections, reserved volumes, original component identity, exterior containment, open ports, solid and mesh validity, sampled insertion paths, support contacts, a 0.10 mm minimum clearance between printed parts and everything they do not deliberately touch, crush-rib engagement, and a support-free print check of every part in its bed pose. Intentional rib interference is reported separately from rigid-body collisions. Geometry checks do not simulate printed-material flex or prove tolerance capability. The original metal source and exports are not rebuilt or overwritten.
 
 The ZIP contains the geometry and a standalone offline viewer. Rebuilding the supplied source requires this repository and its existing CadQuery/Node dependencies; it is not a standalone source distribution.

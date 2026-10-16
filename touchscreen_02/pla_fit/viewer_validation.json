@@ -1,8 +1,8 @@
 {
   "passed": true,
   "source_sha256": {
-    "touchscreen_02/pla_fit/geometry_pla.py": "16d05aa449e943b79b942f9cdb22b4cfceab41731c7de34e5e46652222c23526",
-    "touchscreen_02/pla_fit/build.py": "985fed40582cd9dbb276decb33be63533f56adb80a019b8e238c671d0199b330",
+    "touchscreen_02/pla_fit/geometry_pla.py": "c30103af4a4e50a03ae9ee3f557799249873c35c76503a54cade4b994d392ceb",
+    "touchscreen_02/pla_fit/build.py": "16f45fc8f66c93ce6f7fc962fcf25e2b735237758f44c2025d2bc91ee319580c",
     "touchscreen_02/pla_fit/viewer.js": "3f4abb442f3bb7633b810463555298e7f5849272f720e4b21dd96c2ec66ff2b1",
     "touchscreen_02/pla_fit/viewer.html": "c10e2005aa4d52c8ac37ae99d058542866cf63775d89593d9aea7c6751ffe5ac",
     "touchscreen_02/viewer_ui.js": "9dcdb5b3cfd57df40f7ce6f9e639081c63336e00ebae8b48c96a02ed03678aa9",
@@ -20,7 +20,7 @@
     },
     {
       "name": "supports",
-      "pixels": 115741
+      "pixels": 115724
     },
     {
       "name": "exploded",

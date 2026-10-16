@@ -20,6 +20,12 @@ SKIRT_GAP = .2
 RIB_R = .4
 RIB_INTERFERENCE = .1
 LIFT_NOTCH_X = 4.0
+# Printed horizontal holes come out undersize and their bridged roofs sag, so
+# the jack bore gets radial clearance the metal (exact Ø5.00) bore did not need.
+JACK_CLEARANCE = .2
+# Smallest gap allowed between printed parts and anything they do not
+# deliberately touch (see build.CONTACTS); below this FDM error closes it.
+MIN_CLEARANCE = .1
 
 
 def bounds(shape):
@@ -43,6 +49,12 @@ def wedge(axis, inner, back, roof, length, along):
     if axis == 'x':
         return cq.Workplane('XZ').polyline(pts).close().extrude(length/2, both=True).translate((0, along, 0))
     return cq.Workplane('YZ').polyline(pts).close().extrude(length/2, both=True).translate((along, 0, 0))
+
+
+def jack_bore():
+    j = metal.port_specs()['jack']
+    return cyl(2.5+JACK_CLEARANCE, 8).rotate((0, 0, 0), (1, 0, 0), 90).translate(
+        (j['center'][0], -60, j['center'][2]))
 
 
 def rib(x, y):
@@ -97,6 +109,7 @@ def make():
     wall = wall.cut(block(.9, 28, 3.5, 30.45, 39, 2.3))
     for tool in metal.port_tools().values():
         wall = wall.cut(tool)
+    wall = wall.cut(jack_bore())
     # 45-degree ceilings over the shallow inner pockets (USB, recess, jack):
     # self-supporting instead of flat 0.5-0.6 mm overhangs.
     wall = wall.cut(wedge('x', 30.4, 31.0, u['center'][2]+2.4, 12, u['center'][1]))
@@ -172,8 +185,9 @@ def make():
         for r in ribs:
             lid = lid.union(r)
     # Lid captures carrier and board pocket contents; no screwed clamps.
+    # Carrier stops clear the Y57 stiffening rail by 0.30 mm as they descend.
     for xx in [-20, 20]:
-        lid = lid.union(block(3, 2, 2.9, xx, 58.5, 5.0))
+        lid = lid.union(block(3, 2, 2.9, xx, 58.75, 5.0))
     for xx, yy in [(-9.5, 23), (-9.5, 35), (14.6, 24), (14.6, 53)]:
         lid = lid.union(block(1.0, 1.6, 2.1, xx, yy, 5.8))
     # Three integrated rounded rectangular pads use existing DAC mounting
