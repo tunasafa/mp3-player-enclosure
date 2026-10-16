@@ -11,7 +11,7 @@ for name,h in report['source_sha256'].items():
     assert hashlib.sha256((ROOT.parents[1]/name).read_bytes()).hexdigest()==h
 names=['README.md','validation.json','viewer_validation.json','print_validation.json','M02-P01_MK3S_PLA_UNSLICED.3mf',
        'assembly_REFERENCE_ONLY.step','preview.html','preview_iso.png','preview_inside.png',
-       'preview_supports.png','preview_exploded.png','preview_rear.png','preview_latch.png','geometry_pla.py','build.py',
+       'preview_supports.png','preview_exploded.png','preview_rear.png','preview_lift.png','geometry_pla.py','build.py',
        'viewer.js','viewer.html','verify_viewer.mjs','verify_prints.py','package.py']
 files=[ROOT/n for n in names]+sorted((ROOT/'parts').glob('*'))
 manifest={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in files}

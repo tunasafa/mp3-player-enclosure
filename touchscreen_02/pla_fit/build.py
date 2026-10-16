@@ -28,15 +28,36 @@ def encode(a):
     return base64.b64encode(np.asarray(a, dtype='<f4').tobytes()).decode()
 
 
+def overhangs(name, shape, allowed=()):
+    """Downward faces steeper than 45 deg above the bed, in the print pose.
+
+    Only roofs of through-ports (short bridges anchored on both sides) are
+    allowed; anything else would need support material.
+    """
+    posed = print_pose(name, shape)
+    shift = np.array(bounds(posed)[0])-np.array(bounds(shape)[0])
+    m = mesh(posed)
+    down = (m.face_normals[:, 2] < -np.cos(np.radians(44)))&(m.triangles_center[:, 2] > .01)
+    centers = m.triangles_center[down]-shift if name == 'front_tray' else m.triangles_center[down]
+    keep = np.ones(len(centers), bool)
+    for lo, hi in allowed:
+        keep &= ~np.all((centers > np.array(lo)-.05)&(centers < np.array(hi)+.05), axis=1)
+    area = m.area_faces[down]
+    return dict(unsupported_mm2=float(area[keep].sum()), bridged_port_roofs_mm2=float(area[~keep].sum()))
+
+
 def validate(parts, printed, reserves, original):
     print('  Pairwise part intersections...', flush=True)
+    # Crush ribs press into the tray wall by design; every other overlap fails.
+    ribs = all_ribs()
+    rigid_lid = parts['rear_lid'].cut(ribs)
     report = dict(revision='M02-P01', exterior_mm=[64, 128, 8.3], passed=False,
                   physically_tested=False, slicer_verified=False, production_ready=False,
                   scope='Nominal CAD fit, rigid assembly paths, print meshes and bed placement. '
                         'Snap elasticity, extrusion, adhesion and purchased parts require physical trials.',
-                  ports=metal.port_specs(), collisions=interference(parts), reserve_collisions=[],
+                  ports=metal.port_specs(), collisions=interference(parts | {'rear_lid': rigid_lid}), reserve_collisions=[],
                   exterior_violations=[], port_obstructions=[], mesh_checks={}, unchanged_components={},
-                  assembly_checks={}, support_contacts=[], retention_checks={})
+                  assembly_checks={}, support_contacts=[], retention_checks={}, print_overhangs={})
     outer = rounded(64, 128, 8.3, 6)
     print('  Print meshes and keepouts...', flush=True)
     for n, s in printed.items():
@@ -97,45 +118,33 @@ def validate(parts, printed, reserves, original):
     report['assembly_checks']['loaded_carrier_vertical_loading_mm3'] = max(
         intersection(parts[n].translate((0,0,z)), tray)
         for n in carrier_group if n != 'microsd_card' for z in np.linspace(8,0,17))
-    # Lid lowers straight down. Only the two explicit snap teeth may touch the
-    # tray during approach; their modeled interference is the intended flex.
-    teeth = compound([snap_tooth(-1), snap_tooth(1)])
-    rigid_lid = parts['rear_lid'].cut(teeth)
-    print('  Lid insertion and release engagement...', flush=True)
+    # Lid lowers straight down. Only the crush ribs may touch the tray; their
+    # modeled overlap is the intended friction interference.
+    print('  Lid insertion and friction rib engagement...', flush=True)
     lid_blockers = [s for n,s in parts.items() if n != 'rear_lid']
     report['assembly_checks']['lid_rigid_vertical_loading_mm3'] = max(
         intersection(rigid_lid.translate((0,0,z)), s) for z in [9,6,4,2,1,.5,.25,.1,0] for s in lid_blockers)
-    report['snap_approach_interference_mm3'] = max(
-        intersection(teeth.translate((0,0,z)), tray) for z in np.linspace(2,0,21))
-    # Explicit engagements: upward extraction meets the retaining shoulders,
-    # inward tooth displacement clears them. This is geometry, not FEA.
-    for sign in [-1,1]:
-        tooth = snap_tooth(sign)
-        locked = intersection(tooth.translate((0,0,.5)), tray)
-        released = intersection(tooth.translate((0,-sign*SNAP_DEFLECTION,.5)), tray)
-        report['retention_checks'][str(sign)] = dict(locked_overlap_mm3=locked,
-                                                    released_overlap_mm3=released,
-                                                    release_travel_mm=SNAP_DEFLECTION)
-    # Conservative rectangular volume covering the full tongue's inward flex.
-    # Check other components/keepouts, not the surrounding same-part lid skin.
-    flex_hits=[]
-    for sign in [-1,1]:
-        sweep=block(18, .8+SNAP_DEFLECTION, 1.7, -1+SNAP_X,
-                    sign*(61.7-SNAP_DEFLECTION/2),6.6)
-        for n,s in (parts|reserves).items():
-            if n in ['rear_lid','front_tray']:continue
-            if (v:=intersection(sweep,s))>.001:flex_hits.append([sign,n,v])
-    report['snap_flex_space_collisions']=flex_hits
+    report['retention_checks'] = dict(
+        rib_tray_interference_mm3=intersection(ribs, tray),
+        rib_interference_per_side_mm=RIB_INTERFERENCE,
+        rib_count=len(ribs.solids().vals()),
+        rib_other_collisions=[n for n,s in (parts|reserves).items()
+                              if n not in ['rear_lid','front_tray'] and intersection(ribs,s) > .001])
+    print('  Support-free print check...', flush=True)
+    ports = [bounds(t) for t in metal.port_tools().values()]
+    for n, s in (printed|coupons(printed)).items():
+        report['print_overhangs'][n] = overhangs(n, s, ports if n == 'front_tray' else ())
     for a,b,target in [('carrier','front_tray',0),('display_cushion','carrier',0),
                        ('microsd_pcb','carrier',0),('interface_pcb','carrier',0),
                        ('xiao','front_tray',0),('rear_lid','front_tray',0),
                        ('audio','audio_insulator',0),('touch_glass','display_adhesive',0),
                        ('xiao_gate','gate_tape',0)]:
         report['support_contacts'].append(dict(a=a,b=b,gap_mm=parts[a].val().distance(parts[b].val()),target_mm=target))
-    report['counts'] = dict(printed_assembly_parts=4, screws=0, threaded_inserts=0,
-                           snap_tongues=2, integrated_dac_landing_pads=3)
+    report['counts'] = dict(printed_assembly_parts=4, screws=0, threaded_inserts=0, snap_tongues=0,
+                           friction_skirt_segments=len(skirts()), crush_ribs=report['retention_checks']['rib_count'],
+                           integrated_dac_landing_pads=3, logos_or_engravings=0, support_material_needed=False)
     report['thin_features_mm'] = dict(front_skin=.4, rear_skin=.4, carrier_deck=.5,
-                                    snap_beam_width=.8, snap_beam_length=18)
+                                    skirt_width=.8, crush_rib_diameter=2*RIB_R)
     report['derived'] = dict(dac_published_height_roof_gap_mm=.25,
                              battery_expansion_reserve_mm=1.7,
                              printed_dimensions_change_mm=[0,0,0])
@@ -146,13 +155,14 @@ def validate(parts, printed, reserves, original):
         expansion_intrusion_detected=intersection(reserves['cell_A_expansion'],block(3,3,1,-10,-6,6))>1,
         floating_carrier_detected=parts['carrier'].translate((0,0,.3)).val().distance(tray.val())>.1)
     report['passed'] = (
-        not any(report[k] for k in ['collisions','reserve_collisions','exterior_violations','port_obstructions','snap_flex_space_collisions'])
+        not any(report[k] for k in ['collisions','reserve_collisions','exterior_violations','port_obstructions'])
         and all(m['valid'] and m['solids']==1 and m['watertight'] and m['winding_consistent']
                 and m['bodies']==1 and m['volume_mm3']>0 for m in report['mesh_checks'].values())
         and all(report['unchanged_components'].values())
         and all(x<.001 for x in report['assembly_checks'].values())
         and all(x['gap_mm']<.005 for x in report['support_contacts'])
-        and all(x['locked_overlap_mm3']>.01 and x['released_overlap_mm3']<.001 for x in report['retention_checks'].values())
+        and report['retention_checks']['rib_tray_interference_mm3']>.01 and not report['retention_checks']['rib_other_collisions']
+        and all(x['unsupported_mm2']<.05 for x in report['print_overhangs'].values())
         and all(report['fault_probes'].values()))
     return report
 
@@ -199,7 +209,8 @@ def main():
     for name,shape in (printed|samples).items():
         m=mesh(print_pose(name,shape));assert m.is_watertight and m.body_count==1,name
         m.export(OUT/(name+'.stl'))
-        cq.exporters.export(shape,str(OUT/(name+'.step')))
+        # STEP also in the print pose: every file in parts/ drops onto the bed as-is.
+        cq.exporters.export(print_pose(name,shape),str(OUT/(name+'.step')))
     report['bed_layout']=write_3mf(printed|samples)
     report['coupon_mesh_checks']={n:dict(watertight=bool(mesh(s).is_watertight),bodies=int(mesh(s).body_count)) for n,s in samples.items()}
     (ROOT/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
@@ -230,7 +241,7 @@ def main():
         '__SCRIPT__',(ROOT/'viewer.bundle.js').read_text().replace('</script','<\\/script')).replace(
         '__LICENSE__',(ROOT.parents[1]/'revision_04/vendor/LICENSE-viewer.txt').read_text())
     (ROOT/'preview.html').write_text(html)
-    print('PASS: four assembly prints, two coupon prints, 3MF, STEP and offline viewer exported.',flush=True)
+    print('PASS: four support-free assembly prints, two coupon prints, 3MF, STEP and offline viewer exported.',flush=True)
 
 
 if __name__=='__main__':

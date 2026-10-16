@@ -2,7 +2,7 @@
 
 **One of the two current enclosure models.** The other is [P04, the clickwheel player](../revision_04/README.md).
 
-**PLA fit-prototype branch:** [M02-P01 print/assembly instructions](pla_fit/README.md) · [interactive screwless assembly](pla_fit/preview.html) · [MK3S+ print plate](pla_fit/M02-P01_MK3S_PLA_UNSLICED.3mf). This separate branch keeps the 64 × 128 × 8.3 mm envelope and component positions, using four printed parts and two release snaps. The M02-03 metal design below remains the reference; PLA snap performance still needs a coupon trial.
+**PLA fit-prototype branch:** [M02-P01 print/assembly instructions](pla_fit/README.md) · [interactive screwless assembly](pla_fit/preview.html) · [MK3S+ print plate](pla_fit/M02-P01_MK3S_PLA_UNSLICED.3mf). This separate branch keeps the 64 × 128 × 8.3 mm envelope and component positions, using four support-free, logo-free printed parts and a friction-fit lid. The M02-03 metal design below remains the reference; PLA lid fit still needs a coupon trial.
 
 **64 × 128 × 8.3 mm**, with the 2.4-inch landscape touchscreen, two battery allocations and the intact Adafruit DAC's original headphone jack at the bottom. M02-03 uses the T03 metal finish, original bluefin engravings and mechanically removable supports in the nominal enclosure assembly.
 

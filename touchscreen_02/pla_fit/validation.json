@@ -53,7 +53,7 @@
       "watertight": true,
       "winding_consistent": true,
       "bodies": 1,
-      "volume_mm3": 7442.416697858222,
+      "volume_mm3": 7429.185092528166,
       "bounds_mm": [
         [
           -32.0,
@@ -73,7 +73,7 @@
       "watertight": true,
       "winding_consistent": true,
       "bodies": 1,
-      "volume_mm3": 3573.7655995787063,
+      "volume_mm3": 3588.1409847195077,
       "bounds_mm": [
         [
           -32.0,
@@ -93,7 +93,7 @@
       "watertight": true,
       "winding_consistent": true,
       "bodies": 1,
-      "volume_mm3": 1492.3028401088243,
+      "volume_mm3": 1491.1508401088242,
       "bounds_mm": [
         [
           -30.4,
@@ -212,32 +212,54 @@
     }
   ],
   "retention_checks": {
-    "-1": {
-      "locked_overlap_mm3": 0.2879999999999997,
-      "released_overlap_mm3": 0,
-      "release_travel_mm": 0.7
+    "rib_tray_interference_mm3": 0.4733953463343749,
+    "rib_interference_per_side_mm": 0.1,
+    "rib_count": 14,
+    "rib_other_collisions": []
+  },
+  "print_overhangs": {
+    "front_tray": {
+      "unsupported_mm2": 0.0,
+      "bridged_port_roofs_mm2": 23.831406745240802
     },
-    "1": {
-      "locked_overlap_mm3": 0.28799999999999715,
-      "released_overlap_mm3": 0,
-      "release_travel_mm": 0.7
+    "rear_lid": {
+      "unsupported_mm2": 0.0,
+      "bridged_port_roofs_mm2": 0.0
+    },
+    "carrier": {
+      "unsupported_mm2": 0.0,
+      "bridged_port_roofs_mm2": 0.0
+    },
+    "xiao_gate": {
+      "unsupported_mm2": 0.0,
+      "bridged_port_roofs_mm2": 0.0
+    },
+    "coupon_receiver": {
+      "unsupported_mm2": 0.0,
+      "bridged_port_roofs_mm2": 0.0
+    },
+    "coupon_lid": {
+      "unsupported_mm2": 0.0,
+      "bridged_port_roofs_mm2": 0.0
     }
   },
-  "snap_approach_interference_mm3": 0.5759999999999756,
-  "snap_flex_space_collisions": [],
   "counts": {
     "printed_assembly_parts": 4,
     "screws": 0,
     "threaded_inserts": 0,
-    "snap_tongues": 2,
-    "integrated_dac_landing_pads": 3
+    "snap_tongues": 0,
+    "friction_skirt_segments": 6,
+    "crush_ribs": 14,
+    "integrated_dac_landing_pads": 3,
+    "logos_or_engravings": 0,
+    "support_material_needed": false
   },
   "thin_features_mm": {
     "front_skin": 0.4,
     "rear_skin": 0.4,
     "carrier_deck": 0.5,
-    "snap_beam_width": 0.8,
-    "snap_beam_length": 18
+    "skirt_width": 0.8,
+    "crush_rib_diameter": 0.8
   },
   "derived": {
     "dac_published_height_roof_gap_mm": 0.25,
@@ -255,10 +277,10 @@
     "floating_carrier_detected": true
   },
   "source_sha256": {
-    "touchscreen_02/pla_fit/geometry_pla.py": "dfa4aa200bade77ea5f91400382da28dba48b8a9c435a9004a3a4ec22acee375",
-    "touchscreen_02/pla_fit/build.py": "cec1dbcdf9e6f28ad6268ceff13f118753a1f25204fda28ec287c5695ac9d081",
-    "touchscreen_02/pla_fit/viewer.js": "6ac1da872e2a28ee2b7473a3822df734392f04e7e5542583e1a9000b0a3fb6a8",
-    "touchscreen_02/pla_fit/viewer.html": "cf59fe8c300f848c1fb123e424ae6055b421fa77a1abff8cabc160afe0881164",
+    "touchscreen_02/pla_fit/geometry_pla.py": "16d05aa449e943b79b942f9cdb22b4cfceab41731c7de34e5e46652222c23526",
+    "touchscreen_02/pla_fit/build.py": "985fed40582cd9dbb276decb33be63533f56adb80a019b8e238c671d0199b330",
+    "touchscreen_02/pla_fit/viewer.js": "3f4abb442f3bb7633b810463555298e7f5849272f720e4b21dd96c2ec66ff2b1",
+    "touchscreen_02/pla_fit/viewer.html": "c10e2005aa4d52c8ac37ae99d058542866cf63775d89593d9aea7c6751ffe5ac",
     "touchscreen_02/viewer_ui.js": "9dcdb5b3cfd57df40f7ce6f9e639081c63336e00ebae8b48c96a02ed03678aa9",
     "touchscreen_02/geometry.py": "db78e99df37bd89ad99b283b55160679ab049ace4ef94fc5c41b3da03bd3b00e",
     "touchscreen_02/parameters.json": "d0824a3ec31ed8cc7af93702e23fe2fd29492c5bc804fd7d681ce1e3819d40bb"
@@ -319,9 +341,9 @@
         95
       ],
       "size_mm": [
-        26.0,
-        7.0,
-        2.1000000000000005
+        24.0,
+        7.5,
+        7.9
       ]
     },
     {
@@ -331,9 +353,9 @@
         111
       ],
       "size_mm": [
-        26.0,
-        6.5,
-        2.500000000000001
+        24.0,
+        7.5,
+        1.6000000000000014
       ]
     }
   ],

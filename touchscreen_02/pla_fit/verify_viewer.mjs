@@ -52,8 +52,8 @@ try {
  await page.locator('#reset').click();
  await page.locator('[data-view="rear"]').click();
  await capture('rear');
- await page.locator('[data-view="latch"]').click();
- await capture('latch');
+ await page.locator('[data-view="lift"]').click();
+ await capture('lift');
  await page.setViewportSize({width:390,height:844});
  await page.locator('#reset').click();
  await capture('mobile');

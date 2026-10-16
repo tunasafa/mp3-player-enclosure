@@ -14,10 +14,12 @@ from OCP.Bnd import Bnd_Box
 ROOT = Path(__file__).resolve().parent
 SKIN = .4
 LID_Z = 7.9
-SNAP_LENGTH = 18.0
-SNAP_WIDTH = .8
-SNAP_DEFLECTION = .7
-SNAP_X = -12.0
+# Support-free retention: friction skirts with vertical crush ribs replace the
+# former snap hooks, whose retaining shoulders printed over open air.
+SKIRT_GAP = .2
+RIB_R = .4
+RIB_INTERFERENCE = .1
+LIFT_NOTCH_X = 4.0
 
 
 def bounds(shape):
@@ -28,13 +30,46 @@ def bounds(shape):
     return [list(b[:3]), list(b[3:])]
 
 
-def snap_tooth(sign=1):
-    # YZ section: lead-in on underside; horizontal retaining shoulder on top.
-    # Tongue bends IN THE PRINT PLANE, not across a short vertical layer stack.
-    points = [(61.7, 6.6), (62.1, 6.6), (62.8, 7.1),
-              (62.8, 7.5), (61.7, 7.5)]
-    s = cq.Workplane('YZ').polyline(points).close().extrude(2.4).translate((5.6+SNAP_X, 0, 0))
-    return s if sign == 1 else s.mirror('XZ')
+def wedge(axis, inner, back, roof, length, along):
+    """45-degree cut above a shallow wall pocket so its roof needs no support.
+
+    `inner` is the cavity-side wall face, `back` the pocket's far face and
+    `roof` its flat ceiling; the cut only removes material (more clearance).
+    """
+    d, e = abs(back-inner), .02
+    # The slope passes exactly through the pocket's back roof edge; extending
+    # it slightly past that edge leaves no flat sliver of ceiling behind.
+    pts = [(inner, roof-e), (back+np.sign(back-inner)*e, roof-e), (inner, roof+d)]
+    if axis == 'x':
+        return cq.Workplane('XZ').polyline(pts).close().extrude(length/2, both=True).translate((0, along, 0))
+    return cq.Workplane('YZ').polyline(pts).close().extrude(length/2, both=True).translate((along, 0, 0))
+
+
+def rib(x, y):
+    # Vertical crush rib with a conical lead-in. In the print pose the cone
+    # points up, so every rib grows straight from the rear skin on the bed.
+    cone = cq.Workplane('XY').newObject([cq.Solid.makeCone(.1, RIB_R, .25)]).translate((x, y, 6.75))
+    return cyl(RIB_R, LID_Z-7.0, x, y, 7.0).union(cone)
+
+
+def skirts():
+    """(segment, ribs) pairs; segments sit SKIRT_GAP inside the tray wall."""
+    out = []
+    reach = RIB_R-SKIRT_GAP-RIB_INTERFERENCE
+    for xx in [-29.8, 29.8]:
+        face = abs(xx)+.4
+        for yy in [-42, 2]:
+            ribs = [rib((face-reach)*np.sign(xx), yy+dy) for dy in [-2.5, 2.5]]
+            out.append((block(.8, 8, 1.2, xx, yy, 6.7), ribs))
+    for sign in [-1, 1]:
+        # Ends: where the old snap beams were, already clear of all components.
+        ribs = [rib(xx, sign*(62.2-reach)) for xx in [-19, -13, -7]]
+        out.append((block(18, .8, 1.2, -13, sign*61.8, 6.7), ribs))
+    return out
+
+
+def all_ribs():
+    return compound([r for _, ribs in skirts() for r in ribs])
 
 
 def make():
@@ -62,10 +97,14 @@ def make():
     wall = wall.cut(block(.9, 28, 3.5, 30.45, 39, 2.3))
     for tool in metal.port_tools().values():
         wall = wall.cut(tool)
-    # Two latch windows, not screw holes. Open through the edge for inspection
-    # and release; 0.4 mm roof above the shoulder. No exterior protrusions.
+    # 45-degree ceilings over the shallow inner pockets (USB, recess, jack):
+    # self-supporting instead of flat 0.5-0.6 mm overhangs.
+    wall = wall.cut(wedge('x', 30.4, 31.0, u['center'][2]+2.4, 12, u['center'][1]))
+    wall = wall.cut(wedge('x', 30.4, 30.9, 5.8, 28, 39))
+    wall = wall.cut(wedge('y', -62.4, -63.0, j['center'][2]+3.1, 8, j['center'][0]))
+    # Fingernail lift notches under the lid edge at both ends; open-topped.
     for sign in [-1, 1]:
-        wall = wall.cut(block(3.0, 2.2, .8, 6.8+SNAP_X, sign*63.2, 6.8))
+        wall = wall.cut(block(10, 1.0, .7, LIFT_NOTCH_X, sign*63.5, 7.2))
     tray = front.union(wall)
 
     # Low battery fences: no feature crosses either expansion volume.
@@ -93,10 +132,13 @@ def make():
 
     # Carrier is a flat printable deck, using the previous steel + tape depth.
     # Its board support plane remains Z4.85, and LCD cushion stays at Z4.30.
-    carrier = rounded(59, 50, .5, 1, 0, 35, 4.35)
-    carrier = carrier.cut(block(7, 29, 2, 26, 39, 4.2))
-    for yy in [26, 44]:
-        carrier = carrier.cut(rounded(8, 9, 2, 1, 3.5, yy, 4.2))
+    def deck(h):
+        d = rounded(59, 50, h, 1, 0, 35, 4.35)
+        d = d.cut(block(7, 29, h+1, 26, 39, 4.2))
+        for yy in [26, 44]:
+            d = d.cut(rounded(8, 9, h+1, 1, 3.5, yy, 4.2))
+        return d
+    carrier = deck(.5)
     # Outside-board stiffening rails: >=0.8 mm instead of 0.3 mm welded blades.
     for yy in [15, 57]:
         carrier = carrier.union(block(54, .9, .9, -1, yy, 4.85))
@@ -112,6 +154,8 @@ def make():
         # Tail side deliberately has a routing window instead of a long fence.
         for yy in [24, 54]:
             carrier = carrier.union(block(.8, 2.4, .8, xx, yy, 4.85))
+    # Raised features stop at the deck edge: nothing prints over open air.
+    carrier = deck(.5).union(carrier.intersect(deck(3)))
     # Four tabs locate the lift-out carrier in open-top wall pockets.
     for xx in [-29.7, 29.7]:
         for yy in [11.5, 58.5]:
@@ -120,21 +164,13 @@ def make():
 
     # Thin rear skin, strengthened only where component/expansion space allows.
     lid = rounded(64, 128, .4, 6, z=7.9)
-    # Free each 18 mm cantilever along both sides and tip, including the skin.
-    for sign in [-1, 1]:
-        for yy in [60.95, 62.45]:
-            lid = lid.cut(block(18.6, .7, 1, -.7+SNAP_X, sign*yy, 7.7))
-        lid = lid.cut(block(.6, 2.2, 1, 8.3+SNAP_X, sign*61.7, 7.7))
-        beam = block(18, .8, 1.7, -1+SNAP_X, sign*61.7, 6.6)
-        # Root connects to uncut skin. Both beams stay left of the DAC, also
-        # during release deflection; no component is used as a spring stop.
-        root = block(1.6, 1.2, 1.3, -10.4+SNAP_X, sign*61.7, 6.6)
-        lid = lid.union(beam).union(root).union(snap_tooth(sign))
-    # Alignment skirt: short open segments, all inside the original envelope.
+    # Friction skirt: short open segments, all inside the original envelope.
     # Deliberately avoid ports, screen tail, board connectors and battery space.
-    for xx in [-29.8, 29.8]:
-        for yy in [-42, 2]:
-            lid = lid.union(block(.8, 8, 1.2, xx, yy, 6.7))
+    # Crush ribs give 0.1 mm interference per side against the tray wall.
+    for segment, ribs in skirts():
+        lid = lid.union(segment)
+        for r in ribs:
+            lid = lid.union(r)
     # Lid captures carrier and board pocket contents; no screwed clamps.
     for xx in [-20, 20]:
         lid = lid.union(block(3, 2, 2.9, xx, 58.5, 5.0))
@@ -159,7 +195,7 @@ def make():
 
     for name, s, label, color, explosion in [
         ('front_tray', tray, 'PLA front tray / integral frame and locating rails', '#4c7776', -12),
-        ('rear_lid', lid, 'PLA rear lid / two releasable snap tongues', '#ccd8d4', 42),
+        ('rear_lid', lid, 'PLA rear lid / friction skirts with crush ribs', '#ccd8d4', 42),
         ('carrier', carrier, 'PLA lift-out display and board carrier', '#dfb574', 12),
         ('xiao_gate', gate, 'PLA removable USB-board stop', '#dfb574', 9),
     ]:
@@ -180,8 +216,11 @@ def print_pose(name, shape):
 
 
 def coupons(printed):
-    crop = block(26, 7, 4, -1+SNAP_X, 61, 5.8)
+    # Friction-fit trial around one end skirt: same wall, ribs and lift notch.
+    crop = block(24, 8, 9, -12, 60.5, -.5)
     receiver = printed['front_tray'].intersect(crop)
-    receiver = receiver.union(block(26, 7, .6, -1+SNAP_X, 60.5, 5.8))
-    cap = printed['rear_lid'].intersect(crop)
+    cap = rounded(64, 128, .4, 6, z=7.9).intersect(crop)
+    segment, ribs = skirts()[-1]
+    for s in [segment]+ribs:
+        cap = cap.union(s)
     return {'coupon_receiver': receiver.clean(), 'coupon_lid': cap.clean()}

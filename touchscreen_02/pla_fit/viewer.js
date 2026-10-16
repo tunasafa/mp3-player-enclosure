@@ -24,7 +24,7 @@ for(const part of [...data.parts].sort((a,b)=>partOrder[a.kind]-partOrder[b.kind
 }
 const ui=document.createElement('canvas');ui.width=640;ui.height=480;const c=ui.getContext('2d');c.fillStyle='#112e34';c.fillRect(0,0,640,480);c.fillStyle='#94cbb8';c.font='24px sans-serif';c.fillText('MYTUNAS / NOW PLAYING',35,55);c.fillStyle='#2e6963';c.fillRect(35,100,200,235);c.fillStyle='#b3dbc6';c.font='bold 90px sans-serif';c.fillText('m',83,248);c.fillStyle='#eef8f0';c.font='bold 31px sans-serif';c.fillText('Night walking',265,160);c.font='22px sans-serif';c.fillText('Your music, anywhere',265,205);c.fillText('02:14                 04:36',265,303);c.fillStyle='#83bfa9';c.fillRect(35,380,570,5);c.fillStyle='#fff';c.font='24px sans-serif';c.fillText('PREV                 PAUSE                 NEXT',35,439);
 const texture=new THREE.CanvasTexture(ui);texture.colorSpace=THREE.SRGBColorSpace;const screen=new THREE.Mesh(new THREE.PlaneGeometry(48.96,36.72),new THREE.MeshBasicMaterial({map:texture,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1}));screen.rotation.y=Math.PI;screen.position.set(0,35,.50);groups.get('touch_glass').add(screen);
-const poses={iso:[-190,-56,-348],front:[0,0,-235],rear:[0,0,235],inside:[95,100,220],side:[235,0,4],bottom:[0,-235,4],usb:[1,0,0],sd:[-1,0,0],jack:[0,-1,0],latch:[-35,100,90]};
+const poses={iso:[-190,-56,-348],front:[0,0,-235],rear:[0,0,235],inside:[95,100,220],side:[235,0,4],bottom:[0,-235,4],usb:[1,0,0],sd:[-1,0,0],jack:[0,-1,0],lift:[25,120,90]};
 const portIds={usb:'usb',sd:'microsd',jack:'jack'};
 function setVisible(id,on){groups.get(id).visible=on;if(checks.has(id))checks.get(id).checked=on;}
 // Reframe only for an explicit view preset or Reset. Model options and resize
@@ -33,7 +33,7 @@ function fit(){
  scene.updateMatrixWorld(true);const box=new THREE.Box3();
  for(const g of groups.values())if(g.visible)box.union(new THREE.Box3().setFromObject(g));
  if(portIds[current]){const p=new THREE.Vector3(...data.report.ports[portIds[current]].center);const size=current==='jack'?new THREE.Vector3(14,4,11):new THREE.Vector3(4,19,11);box.setFromCenterAndSize(p,size);}
- if(current==='latch')box.setFromCenterAndSize(new THREE.Vector3(-13,61.7,7),new THREE.Vector3(28,10,8));
+ if(current==='lift')box.setFromCenterAndSize(new THREE.Vector3(-4,61.5,7),new THREE.Vector3(34,10,8));
  if(box.isEmpty())return;const center=box.getCenter(new THREE.Vector3()),dir=new THREE.Vector3(...poses[current]).normalize();
  camera.up.set(...(current==='bottom'||portIds[current]?[0,0,-1]:[0,1,0]));camera.position.copy(center).addScaledVector(dir,300);camera.lookAt(center);camera.updateMatrixWorld();
  const inv=camera.quaternion.clone().invert(),tanV=Math.tan(THREE.MathUtils.degToRad(camera.fov/2)),tanH=tanV*camera.aspect;let distance=20;
@@ -43,7 +43,7 @@ function fit(){
 function view(name){current=name;
  const open=name==='inside';for(const [id,g] of groups)if(['rear_lid'].includes(id)||id.startsWith('case_screw_')||id.startsWith('dac_retainer_')||id.startsWith('dac_rear_screw_'))setVisible(id,!open);
  if(portIds[name]){document.querySelector('#covers').checked=false;for(const [id,g] of groups)if(g.userData.kind==='cover')setVisible(id,false);}
- document.querySelector('#view-note').textContent=name==='latch'?'Top release tongue · push hook inward to release':portIds[name]?({usb:'USB-C · right edge',sd:'microSD · left edge',jack:'Headphones · bottom edge'})[name]+' / covers removed':open?'Rear removed · service access':'Drag to rotate · scroll to zoom';
+ document.querySelector('#view-note').textContent=name==='lift'?'Friction skirt & crush ribs · lift at the edge notch':portIds[name]?({usb:'USB-C · right edge',sd:'microSD · left edge',jack:'Headphones · bottom edge'})[name]+' / covers removed':open?'Rear removed · service access':'Drag to rotate · scroll to zoom';
  document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===name)));fit();
 }
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>view(b.dataset.view));
@@ -52,7 +52,7 @@ document.querySelector('#covers').onchange=e=>{for(const [id,g] of groups)if(g.u
 document.querySelector('#explode').oninput=e=>{const t=Number(e.target.value)/100;for(const [id,g] of groups){g.position.set(0,0,g.userData.explode*t);if(id==='usb_cover')g.position.set(12*t,0,0);if(id==='sd_cover')g.position.set(-12*t,0,0);if(id==='jack_cover')g.position.set(0,-12*t,0);}};
 document.querySelector('#supports').onclick=()=>{for(const [id,g] of groups)setVisible(id,g.userData.kind==='structure'&&id!=='rear_lid');view('inside');document.querySelector('#view-note').textContent='Printed supports only · Reset restores components';};
 document.querySelector('#reset').onclick=()=>{document.querySelector('#explode').value=0;document.querySelector('#reserves').checked=false;document.querySelector('#covers').checked=false;for(const [id,g] of groups){g.position.set(0,0,0);setVisible(id,!g.userData.reserve&&g.userData.kind!=='cover');}view('iso');};
-document.querySelector('#check').textContent=data.report.passed?`${data.parts.filter(p=>!p.reserve).length} physical part groups. Nominal CAD checks passed. PLA print and snap fit need a physical coupon trial; no slicer or physical qualification.`:'Fit check failed.';
+document.querySelector('#check').textContent=data.report.passed?`${data.parts.filter(p=>!p.reserve).length} physical part groups. Nominal CAD checks passed. Support-free, logo-free prints; friction fit needs a physical coupon trial.`:'Fit check failed.';
 function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}new ResizeObserver(resize).observe(stage);resize();view('iso');
 const drawAxes=setupViewerUI(camera,groups,checks);
 function render(){requestAnimationFrame(render);controls.update();renderer.render(scene,camera);drawAxes();}render();
