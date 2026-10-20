@@ -1,6 +1,6 @@
 {
   "BOM.csv": "a373dda3696b8793d23cf9139f44693b10848134526483943bd1a13d58dbc9a2",
-  "README.md": "52f8502edc8dab5c0b0f6f355ad2da154a7b7aab54ce02c90fb5190bef4d9e34",
+  "README.md": "428c7bebb4570ef6c624e452785a13cb5dcba65532301063fb661fac4514d348",
   "THICKNESS_STUDY.md": "732209a11fde4b64b5f564dafdbc38f443b036976a867d30b3b7084f9b4ac02d",
   "build.py": "44d6f7d9b89fdccd93645b1251bfb2eb9d0a6d682aa8f9244c5c3156d7995381",
   "design_overview.pdf": "eb4167eef564a1bc176246fb10c55b56c7d5ddcbc47fa8ad87943fd1d4ab22bc",
@@ -69,8 +69,8 @@
   "vendor/viewer.bundle.js": "e11945e51df40f76ff15477aac5eb5a8cf357d332cac40142c2e6a247e5dcba4",
   "vendor/xiao_face_meshes.json": "9fe1a79f82bf5e2b7321c932171ae2c4697297027e97e2608ed9de6384768299",
   "verify_fit.py": "13054cbb8a6d107351e3b666ae936eb24c190f0e9a575909f12f081a938019d1",
-  "verify_viewer.mjs": "29fc77d0de832fc7abd31fb3c7280f438229caa123dfac81c491991987134869",
+  "verify_viewer.mjs": "6d0bb0b38c816ab6b21b71eebf9bd1dd0039590d5b3ec9b937c9bbae21827a16",
   "viewer.html": "62d7f81a26a44762b278a7aa11e0df174e2e91586b00f2ba0cb7603c3b70ee96",
   "viewer.js": "426584f441ba6aaabe5fa871e90475234b56848f41f2d39ac07e05fee4334793",
-  "viewer_validation.json": "b427c1ad448c72df9740a70d989f4c625a486251861b6f970876eeccad1eb540"
+  "viewer_validation.json": "6809fc39a03130cdab5a278438c3373ea902f01b08aa455907f294156d31da22"
 }
