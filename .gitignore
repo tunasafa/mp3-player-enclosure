@@ -3,6 +3,10 @@ __pycache__/
 *.pyc
 .DS_Store
 node_modules/
+.tools/
+hardware_bringup/build/
+hardware_bringup/backups/
+hardware_bringup/logs/
 
 # Keep legacy P01/P02/P03 snapshots and generated root files out of the repository.
 # The current tracked model branches are revision_04, touchscreen_01,

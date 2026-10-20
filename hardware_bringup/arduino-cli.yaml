@@ -1,0 +1,9 @@
+board_manager:
+  additional_urls:
+    - https://espressif.github.io/arduino-esp32/package_esp32_index.json
+build_cache:
+  path: /Volumes/ssd1/mp3-player-enclosure/.tools/arduino/build-cache
+directories:
+  data: /Volumes/ssd1/mp3-player-enclosure/.tools/arduino/data
+  downloads: /Volumes/ssd1/mp3-player-enclosure/.tools/arduino/downloads
+  user: /Volumes/ssd1/mp3-player-enclosure/.tools/arduino/user
