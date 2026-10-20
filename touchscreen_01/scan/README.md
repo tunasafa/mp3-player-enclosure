@@ -4,8 +4,7 @@ This scan supports the superseded T01/T02 touchscreen work. It is not evidence f
 
 Source: user-uploaded `Scaniverse_2026_09_12_145606.obj` in
 `revision_04/designs/P04_compact/reference_only/`. The original is unchanged.
-Open the [inspection image](inspection.png), [interactive scan](preview.html),
-[raw context image](raw_inspection.png) or [numeric report](scan_report.json).
+Open the [interactive scan](preview.html) or [numeric report](scan_report.json).
 
 The OBJ explicitly declares **metres**, so coordinates were multiplied by 1000
 to inspect in millimetres. It contains 60,440 vertices and 115,278 triangles,

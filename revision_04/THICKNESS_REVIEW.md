@@ -4,8 +4,7 @@ The active device is the 115 x 60 x 12.9 mm P04 with the intact Adafruit #6309,
 its onboard headphone jack, and the existing protected 503040 battery. The
 detached SJ-3523, extra headphone leads, and separate socket cradle have been
 removed from the active model and BOM because they did not reduce the complete
-device's dimensions. The experiment is preserved under
-`studies/detached_jack/` and excluded from the manufacturing ZIP.
+device's dimensions. The experiment was rejected and excluded from the manufacturing ZIP.
 
 ## What actually limits thickness
 

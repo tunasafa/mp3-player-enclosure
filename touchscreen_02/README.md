@@ -29,7 +29,7 @@ The mechanical prototype includes engraved steel faces, a continuous polymer fra
 | `COMPONENT_DIMENSIONS.md` | Evidence and uncertainty for bought and custom parts |
 | `assets/front_engraving.svg`, `assets/rear_engraving.svg` | Original vector engraving artwork in face coordinates |
 
-`packing_REFERENCE_ONLY.step` remains a compatibility alias for the current complete assembly. The GitHub source-file view will not run an HTML viewer; open the Pages link or the downloaded HTML in a browser.
+The complete assembly is available at `designs/M02_03/assembly_NOMINAL.step`. The GitHub source-file view will not run an HTML viewer; open the Pages link or the downloaded HTML in a browser.
 
 The explosion slider, part toggles, covers and routing allowances preserve your current rotation, pan and zoom. Resizing the window also preserves the camera position. Choose a view preset or Reset when you want to reframe the assembly.
 

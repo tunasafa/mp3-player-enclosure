@@ -33,7 +33,7 @@ The 0.03 mm laser engravings and silicone port plugs are omitted from this fit f
 
 ## Print on the MK3S+
 
-The 3MF is an **unsliced geometry plate**, not a PrusaSlicer settings project or ready-to-run G-code. PrusaSlicer was not installed in the design workspace, so actual slicing and extrusion-path review remain to be done. The STL and STEP files in `parts/` are already oriented on Z0 for printing. Assembly coordinates are only in `assembly_REFERENCE_ONLY.step` — never print that file.
+The 3MF is an **unsliced geometry plate**, not a PrusaSlicer settings project or ready-to-run G-code. PrusaSlicer was not installed in the design workspace, so actual slicing and extrusion-path review remain to be done. The STL and STEP files in `parts/` are already oriented on Z0 for printing. Assembly coordinates can be inspected in the interactive 3D preview.
 
 1. Open the 3MF in PrusaSlicer and select **Original Prusa i3 MK3S & MK3S+, 0.4 mm nozzle** and the profile for your PLA. Keep **100% scale**, in millimetres. Do not join the separate objects into a single mesh.
 2. Print only `coupon_receiver` and `coupon_lid` first. Use the same filament, orientation and settings you will use for the case. They reproduce one end wall and its 18 mm skirt with three crush ribs, so you can feel how tight the lid will be.

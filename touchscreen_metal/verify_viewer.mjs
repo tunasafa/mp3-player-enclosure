@@ -56,34 +56,10 @@ try {
  await page.setViewportSize({width:390,height:844});await capture('preview_mobile.png');
  await page.locator('[data-view="inside"]').click();await capture('preview_mobile_inside.png');
  await page.setViewportSize({width:1200,height:950});
- // Conditional study has its own scope; never treat its packing check as a
- // completed enclosure qualification. Check real-board mesh placement too.
- await page.goto(pathToFileURL(join(root,'studies/side_jack/preview.html')).href);
- await page.waitForFunction(()=>window.PACKING);
- const study=await page.evaluate(()=>PACKING.report);
- assert(study.nominal_packing_passed);
- assert.equal(study.qualified_for_fabrication,false);
- assert.equal(study.screen_stock_confirmed,false);
- assert.deepEqual(study.exterior_mm,[64,128,8.3]);
- for(const part of await page.evaluate(()=>PACKING.inspect())){
-  for(let side=0;side<2;side++)for(let axis=0;axis<3;axis++)assert(Math.abs(part.bounds[side][axis]-part.expected[side][axis])<.09,`Study mesh differs from CAD: ${part.id}`);
- }
- await capture('studies/side_jack/preview_iso.png');
- for(const view of ['front','rear','side']){await page.locator(`[data-view="${view}"]`).click();await capture(`studies/side_jack/preview_${view}.png`);}
- await page.locator('[data-view="iso"]').click();
- await page.locator('#reserves').check();await page.locator('#explode').fill('100');
- await capture('studies/side_jack/preview_exploded.png');
- await page.setViewportSize({width:390,height:844});await capture('studies/side_jack/preview_mobile.png');
- await page.locator('[data-part="startek_envelope"]').uncheck();
- assert.equal((await page.evaluate(()=>PACKING.inspect())).find(p=>p.id==='startek_envelope').visible,false);
- await page.setViewportSize({width:1200,height:950});
  await page.goto(pathToFileURL(join(root,'../touchscreen_01/scan/preview.html')).href);
  await page.waitForFunction(()=>window.T01_SCAN);
  assert.equal(await page.evaluate(()=>T01_SCAN.units),'mm');
  assert((await page.evaluate(()=>T01_SCAN.triangles))>1000);
- await page.locator('[data-view="rear"]').click();
- await page.waitForTimeout(400);
- await page.screenshot({path:join(root,'scan_preview_check.png'),fullPage:true});
  assert.deepEqual(errors,[]);assert.deepEqual(requests,[]);
  await writeFile(join(root,'viewer_validation.json'),JSON.stringify({passed:true,variant:'T03_metal',parameter_sha256:info.validation.parameter_sha256,geometry:info.geometry,ports:info.validation.ports,errors,externalRequests:requests,checks},null,2)+'\n');
  console.log('PASS: desktop/mobile views, exploded assembly, part toggles, no clipping/errors/network requests');

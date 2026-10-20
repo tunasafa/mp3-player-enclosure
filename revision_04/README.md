@@ -32,7 +32,7 @@ The DAC still shares the upper LCD area. Behind the thicker wheel it would requi
 
 These are lower bounds for this layered arrangement and the retained allowances, not a proof of globally optimal packing. Further reductions need measured component maxima, revised allowances or a different enclosure architecture. No board trimming, connector removal, battery compression or electrical substitutions are made.
 
-The original and older compact comparison baselines remain in the repository. `validation.json.requested_repack` compares against both the 13.1 mm target and the rejected 13.8 mm battery-behind-display version. The older `studies/dac_orientation/` folder is historical and excluded from the manufacturing ZIP.
+The original and older compact comparison baselines remain in the repository. `validation.json.requested_repack` compares against both the 13.1 mm target and the rejected 13.8 mm battery-behind-display version. The older DAC orientation study was historical and excluded from the manufacturing ZIP.
 
 ## Tight connector openings
 

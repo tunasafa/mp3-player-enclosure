@@ -46,7 +46,7 @@ From the repository root:
 node touchscreen_01/verify_viewer.mjs
 ```
 
-Current exports are under `designs/T02_bottom_jack/`: two shell STEP/STL files, a removable display carrier, and `assembly_NOMINAL_components.step`. Print files are **fit prototypes**, not a fabrication release. The older `designs/T01_concept/` files are superseded and contain known interference; do not print them.
+Current exports are under `designs/T02_bottom_jack/`: two shell STEP/STL files, a removable display carrier, and `assembly_NOMINAL_components.step`. Print files are **fit prototypes**, not a fabrication release. The older T01 concept was superseded and removed due to known interference.
 
 The build fails on inter-part collisions, reserved-volume collisions, protruding components, blocked port cutters, a blocked glass insertion sweep, or disconnected/invalid/non-watertight printed parts. Viewer packaging rejects stale parameters or geometry sources. Browser checks compare every displayed physical part's bounds and mesh count with the validated data, then exercise desktop/mobile views and controls.
 
