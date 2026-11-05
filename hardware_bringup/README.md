@@ -196,6 +196,58 @@ Current in mA = volts × 1000 / 100.
 Resistors for the remaining bring-up: 100 Ω and 47 Ω for the backlight; 10 kΩ x2 for testing power
 rails; 1 kΩ x6 in series with signals; 10 kΩ x2 for I2C pullups.
 
+Result (2026-11-05): panel lit from `3V3 → 100 Ω → pad 1`, `pad 15 → GND`. Rail read 3.25 V and the
+resistor dropped 0.56 V, so about 5.6 mA at about 2.7 V across the backlight.
+
+### Power rail test
+
+Limit current with 10 kΩ from 3V3, with pad 3 on XIAO GND. Measure against pad 4, not the breadboard,
+so that a loose ground wire reads wrong rather than falsely healthy. Feed rail A at pad 5 and read
+pads 6, 7 and 8. Then feed rail B at pad 7 and read pads 7, 6 and 8.
+
+First attempt (2026-11-05): feeding pad 5 read 0.04, 0.03, 0.01 V on pads 6, 7, 8; feeding pad 7 read
+0.07, 0.01, 0.04 V on pads 7, 6, 8. Treated as invalid: the rails read open toward ground in the diode
+sweep, so these near-zero values point to a wire not making contact, not to a shorted rail.
+
+Repeat with contact confirmed (2026-11-05), measured against pad 4, supply about 3.25 V through 10 kΩ:
+
+| Fed pad | Pad read | Volts |
+| --- | --- | --- |
+| 5 | 6 | 3.20 |
+| 5 | 7 | 0 |
+| 5 | 8 | 0 |
+| 7 | 7 | 3.23 |
+| 7 | 6 | 0.02 |
+| 7 | 8 | 0 |
+
+Each rail draws only a few microamps and neither clamps below 3.2 V, so neither behaves like a chip's
+output or a low-voltage clamp. Rails A and B are independent. This does not prove their rated voltage.
+Next: both rails together through 1 kΩ each, to see the current when the chip has both supplies.
+
+Both rails together through 1 kΩ each (2026-11-05): pad 6 read 3.24 V and pad 7 read 3.06 V, so about
+10 µA and 190 µA. Pad 7 alone drew about 2 µA, so its current appears only when both rails are powered.
+Both rails can be fed directly from 3V3 for the signal test.
+
+### Signal discovery
+
+`lcd_pin_finder/` tries every ordering of RST, CS, DC, SCL and SDA across pads 8–13 and looks for an ID
+reply. It compiles, and has not yet run on hardware. Each pad goes through 1 kΩ to its XIAO pin:
+pad 8 D0, pad 9 D1, pad 10 D3, pad 11 D8, pad 12 D9, pad 13 D10.
+
+First wired run (2026-11-05): no controller reply over several passes, but the finder's link test showed
+pads 8, 9, 10 and 11 joined together, while 12 and 13 were separate. The diode sweep from pad 8 showed
+no path to 9, 10 or 11 on the flex itself, so the join is expected in the jumper or breadboard wiring.
+That run is not a valid test of the panel. Idle reads were all `1/0`, so nothing was driving a line at idle.
+
+After rewiring (2026-11-05): pads 8, 9 and 11 stayed linked for about 40 s, then the link cleared without a
+reflash, so a wire moved. The next 60 s showed no links and no controller reply. This does not yet rule out
+loose contact on the six signal wires, which are held by friction and tape rather than solder.
+
+Signal contact check (2026-11-05), red on pad 4, black at each signal's empty column: pad 8 = 673, 9 = 677,
+10 = 671, 11 = 675, 12 = 656, 13 = 663. All six touch their pads. A photo shows six resistors, and the near
+row's leg spacing fits D0, D1, D3, though parallax prevents confirming the pins from the photo. `lcd_wire_check/` confirms
+the XIAO pin behind each pad: each line outputs its own PWM duty, read at the pad as a steady DC voltage.
+
 ## 3. Full wiring, USB unplugged
 
 These tables assume the first pinout and are a template only: redo the left column from
