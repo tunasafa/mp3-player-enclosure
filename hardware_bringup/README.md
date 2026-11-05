@@ -71,6 +71,11 @@ and [Espressif Arduino core](https://github.com/espressif/arduino-esp32).
 
 # Salvaged watch screen probe — b006-01v0 LCD + q1356-fc-a touch
 
+**Abandoned 2026-11-05.** The user stopped work on this panel to wait for the 2.8-inch screen's flex cables.
+The controller never answered, but the last run still had a suspect ground, so the panel was not proven faulty.
+The XIAO was left running `lcd_wire_check`, which drives D0, D1, D3, D8, D9 and D10: flash other firmware
+before wiring a new screen to those pins.
+
 Temporary stand-in while the 2.8-inch screen's flex cables are in transit.
 `watch_lcd_probe/` compiles, but has **not yet run on hardware**.
 
@@ -247,6 +252,12 @@ Signal contact check (2026-11-05), red on pad 4, black at each signal's empty co
 10 = 671, 11 = 675, 12 = 656, 13 = 663. All six touch their pads. A photo shows six resistors, and the near
 row's leg spacing fits D0, D1, D3, though parallax prevents confirming the pins from the photo. `lcd_wire_check/` confirms
 the XIAO pin behind each pad: each line outputs its own PWM duty, read at the pad as a steady DC voltage.
+
+Wire check, first run (2026-11-05), volts against pad 4: 6 = 2.34, 7 = 2.34, 8 = -0.56, 9 = -0.04, 10 = -0.48,
+11 = 0.88, 12 = 0.01, 13 = 0. Negative values and both rails 0.9 V low mean the panel's ground sits about 0.9 V above
+XIAO GND, so the ground wire is not making good contact. Pads 8, 9 and 11 fit their expected values after subtracting
+that offset. Earlier finder runs may therefore have been made without a real ground and do not rule out a reply.
+Pads 10, 12 and 13 need rechecking once ground is good.
 
 ## 3. Full wiring, USB unplugged
 
